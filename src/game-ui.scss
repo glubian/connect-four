@@ -1,0 +1,10 @@
+@use "sass:math";
+
+$field-size: 7;
+$border-width: 2px;
+$padding: 8px;
+$spacing: $padding * 2;
+$size: 32px;
+$cont-size: $size + $spacing;
+$half-cont-size: math.div($cont-size, 2);
+$field-size-ui: $field-size * $cont-size;

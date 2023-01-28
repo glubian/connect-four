@@ -1,0 +1,234 @@
+{
+  "en": {
+    "page": {
+      "welcome": {
+        "startPlayingLocally": "Start playing locally, or",
+        "createLobbyButton": "Join on another device"
+      },
+      "resumeButton": "Resume",
+      "rematchButton": "Rematch",
+      "createLobbyButton": "Join on another device",
+      "disconnectButton": "Disconnect",
+      "dialog": {
+        "disconnect": {
+          "areYouSure": "Are you sure?",
+          "closeButton": "Close",
+          "disconnectButton": "Disconnect"
+        },
+        "serverMaxLobbies": {
+          "message": "Server is currently full. Try again later.",
+          "closeButton": "Close"
+        },
+        "inviteInvalid": {
+          "message": "Failed to join. Your invite is invalid.",
+          "closeButton": "Close"
+        },
+        "lobbyJoinError": {
+          "message": "Server encountered an error while adding you to the lobby. Try again later.",
+          "closeButton": "Close"
+        },
+        "lobbyFull": {
+          "message": "The lobby you are trying to join is full.",
+          "closeButton": "Close"
+        },
+        "lobbyClosed": {
+          "message": "The lobby was closed.",
+          "closeButton": "Close"
+        },
+        "gameStarted": {
+          "message": "Your code did not match.",
+          "closeButton": "Close"
+        },
+        "gameEnded": {
+          "message": "Your opponent has left the game.",
+          "closeButton": "Close"
+        },
+        "lobbyOverloaded": {
+          "message": "The lobby you are trying to join is overloaded.",
+          "closeButton": "Close"
+        },
+        "serverOverloaded": {
+          "message": "Server is overloaded. Try again later.",
+          "closeButton": "Close"
+        },
+        "shuttingDown": {
+          "message": "Server is shutting down for maintenance. Try again in a few minutes.",
+          "closeButton": "Close"
+        },
+        "couldNotConnect": {
+          "message": "Failed to connect to the server.",
+          "closeButton": "Close"
+        },
+        "connectionError": {
+          "message": "Unexpected connection error. Server might have shut down.",
+          "closeButton": "Close"
+        },
+        "connectionClosed": {
+          "message": "Connection closed unexpectedly. Server might be offline.",
+          "closeButton": "Close"
+        },
+        "offline": {
+          "message": "You are offline.",
+          "closeButton": "Close"
+        }
+      },
+      "links": {
+        "github": "GitHub"
+      },
+      "statusIndicator": {
+        "paused": "Paused",
+        "p1Won": "Blue won!",
+        "p2Won": "Red won!",
+        "victory": "You win!",
+        "defeat": "You lose!",
+        "draw": "It's a draw!"
+      },
+      "remotePlaySetup": {
+        "setUpRemotePlay": "Set up remote play",
+        "inviteYourFriend": "Invite your friend",
+        "inviteYourFriendText": "Show them this QR code, or send them this link:",
+        "copyLinkButton": "Copy",
+        "qrCodeLinkAlt": "QR code",
+        "qrCodeNoLinkAlt": "QR code failed to load",
+        "addYourFriend": "Add your friend",
+        "addYourFriendText": "People trying to join will appear here. Make sure the code matches the one on your friends' device.",
+        "searchPlaceholder": "Search...",
+        "joinAsP1": "As blue",
+        "joinAsP2": "As red"
+      }
+    },
+    "joiningPage": {
+      "connectingText": "Connecting...",
+      "connectedText": "Waiting to join, your code is:",
+      "cancelButton": "Cancel and play locally"
+    },
+    "settings": {
+      "theme": {
+        "section": "Theme",
+        "light": "Light",
+        "darkAMOLED": "Dark",
+        "system": "Use system theme"
+      },
+      "langSection": "Language",
+      "fullScreen": {
+        "enter": "Enter full screen mode",
+        "exit": "Exit full screen mode"
+      }
+    }
+  },
+  "pl": {
+    "page": {
+      "welcome": {
+        "startPlayingLocally": "Graj lokalnie, lub",
+        "createLobbyButton": "Dołącz na innym urządzeniu"
+      },
+      "resumeButton": "Wznów",
+      "rematchButton": "Zagraj ponownie",
+      "createLobbyButton": "Dołącz na innym urządzeniu",
+      "disconnectButton": "Rozłącz",
+      "dialog": {
+        "disconnect": {
+          "areYouSure": "Czy na pewno chcesz się rozłączyć?",
+          "closeButton": "Anuluj",
+          "disconnectButton": "Rozłącz"
+        },
+        "serverMaxLobbies": {
+          "message": "Serwer jest pełny. Spróbuj później.",
+          "closeButton": "Zamknij"
+        },
+        "inviteInvalid": {
+          "message": "Nie udało się dołączyć. Twój link jest błędny.",
+          "closeButton": "Zamknij"
+        },
+        "lobbyJoinError": {
+          "message": "Serwer napotkał błąd podczas dołączania do gry. Spróbuj później.",
+          "closeButton": "Zamknij"
+        },
+        "lobbyFull": {
+          "message": "Brak miejsc.",
+          "closeButton": "Zamknij"
+        },
+        "lobbyClosed": {
+          "message": "Gra odwołana.",
+          "closeButton": "Zamknij"
+        },
+        "gameStarted": {
+          "message": "Twój kod nie pasował.",
+          "closeButton": "Zamknij"
+        },
+        "gameEnded": {
+          "message": "Przeciwnik opuścił grę.",
+          "closeButton": "Zamknij"
+        },
+        "lobbyOverloaded": {
+          "message": "Jest zbyt wielu chętnych do gry. Spróbuj później.",
+          "closeButton": "Zamknij"
+        },
+        "serverOverloaded": {
+          "message": "Serwer jest przeciążony. Spróbuj później.",
+          "closeButton": "Zamknij"
+        },
+        "shuttingDown": {
+          "message": "Serwer zatrzymuje się w celu konserwacji. Spróbuj za kilka minut.",
+          "closeButton": "Zamknij"
+        },
+        "couldNotConnect": {
+          "message": "Nie udało się połączyć z serwerem.",
+          "closeButton": "Zamknij"
+        },
+        "connectionError": {
+          "message": "Nieoczekiwany błąd połączenia. Serwer mógł zostać wyłączony.",
+          "closeButton": "Zamknij"
+        },
+        "connectionClosed": {
+          "message": "Połączenie nieoczekiwanie zamknięte. Serwer może być wyłączony.",
+          "closeButton": "Zamknij"
+        },
+        "offline": {
+          "message": "Brak połączenia z internetem.",
+          "closeButton": "Zamknij"
+        }
+      },
+      "links": {
+        "github": "GitHub"
+      },
+      "statusIndicator": {
+        "paused": "Pauza",
+        "p1Won": "Niebieski wygrywa!",
+        "p2Won": "Czerwony wygrywa!",
+        "victory": "Zwycięstwo!",
+        "defeat": "Przegrana!",
+        "draw": "Remis!"
+      },
+      "remotePlaySetup": {
+        "setUpRemotePlay": "Konfiguracja gry zdalnej",
+        "inviteYourFriend": "Zaproś znajomego",
+        "inviteYourFriendText": "Pokaż kod QR, lub wyślij ten link:",
+        "copyLinkButton": "Kopiuj",
+        "addYourFriend": "Dodaj znajomego",
+        "addYourFriendText": "Gracze, którzy chcą dołączyć pojawią się poniżej. Wybierz kartę z kodem twojego znajomego.",
+        "searchPlaceholder": "Szukaj...",
+        "joinAsP1": "Jako niebieski",
+        "joinAsP2": "Jako czerwony"
+      }
+    },
+    "joiningPage": {
+      "connectingText": "Łączenie...",
+      "connectedText": "Poczekaj aż host zatwierdzi twój kod",
+      "cancelButton": "Anuluj i graj lokalnie"
+    },
+    "settings": {
+      "theme": {
+        "section": "Motyw",
+        "light": "Jasny",
+        "darkAMOLED": "Ciemny",
+        "system": "Użyj motywu systemowego"
+      },
+      "langSection": "Język",
+      "fullScreen": {
+        "enter": "Włącz tryb pełnoekranowy",
+        "exit": "Wyłącz tryb pełnoekranowy"
+      }
+    }
+  }
+}

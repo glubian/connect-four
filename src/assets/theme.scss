@@ -1,0 +1,407 @@
+@use "sass:color";
+
+$black: #000;
+
+$dark-gray1: #121212;
+$dark-gray2: #1a1a1a;
+$dark-gray3: #242424;
+$dark-gray4: #323232;
+$dark-gray5: #484848;
+
+$gray1: #808080;
+$gray2: #888;
+$gray4: #9c9c9c;
+$gray3: #aaa;
+
+$light-gray1: #bababa;
+$light-gray2: #c6c6c6;
+$light-gray3: #dcdcdc;
+$light-gray4: #e6e6e6;
+$light-gray5: #f1f1f1;
+$light-gray6: #fafafa;
+
+$red1: #9b2c47;
+$red2: #ae304e;
+$red3: #cd3559;
+$red4: #e13d64;
+$red5: #fa4772;
+
+$blue1: #2248a9;
+$blue2: #2f59c7;
+$blue3: #426ad2;
+$blue4: #557ee8;
+$blue5: #6690fd;
+
+$text-on-black: rgba(255, 255, 255, 0.84);
+$text-on-black-secondary: $gray2;
+
+$text-on-dark-gray1: rgba(255, 255, 255, 0.94);
+$text-on-dark-gray2: rgba(255, 255, 255, 0.94);
+
+$text-on-light-gray1: rgba(0, 0, 0, 0.94);
+$text-on-light-gray3: rgba(0, 0, 0, 0.94);
+$text-on-light-gray4: rgba(0, 0, 0, 0.94);
+$text-on-light-gray5: rgba(0, 0, 0, 0.94);
+$text-on-light-gray6: rgba(0, 0, 0, 0.96);
+$text-on-light-gray6-secondary: $gray4;
+
+
+@function solidify($color, $transparent-color) {
+  $alpha: color.alpha($transparent-color) * 100%;
+  $transparent-color: color.change($transparent-color, $alpha: 1);
+  @return mix($color, $transparent-color, $weight: 100% - $alpha);
+}
+
+$text-on-red1: solidify($red1, $text-on-dark-gray1);
+$text-on-red2: solidify($red2, $text-on-dark-gray1);
+$text-on-red3: solidify($red3, $text-on-dark-gray1);
+$text-on-red4: solidify($red4, $text-on-dark-gray1);
+$text-on-red5: solidify($red5, $text-on-dark-gray1);
+
+$text-on-blue1: solidify($blue1, $text-on-dark-gray1);
+$text-on-blue2: solidify($blue2, $text-on-dark-gray1);
+$text-on-blue3: solidify($blue3, $text-on-dark-gray1);
+$text-on-blue4: solidify($blue4, $text-on-dark-gray1);
+$text-on-blue5: solidify($blue5, $text-on-dark-gray1);
+
+$shadow-on-dark-gray1: rgba(0, 0, 0, 0.44);
+$shadow-on-light-gray4: rgba(0, 0, 0, 0.24);
+$shadow-on-light-gray6: rgba(0, 0, 0, 0.22);
+
+$drop-shadow-on-dark-gray1: 4px 4px 0 solidify($dark-gray1, $shadow-on-dark-gray1);
+$drop-shadow-on-light-gray4: 4px 4px 0 solidify($light-gray4, $shadow-on-light-gray4);
+$drop-shadow-on-light-gray6: 4px 4px 0 solidify($light-gray6, $shadow-on-light-gray6);
+
+$filter-hover-dark-gray1: rgba(0, 0, 0, 0.16);
+$filter-hover-dark-gray3: rgba(0, 0, 0, 0.18);
+$filter-hover-dark-gray4: rgba(0, 0, 0, 0.16);
+$filter-hover-dark-gray5: rgba(0, 0, 0, 0.18);
+$filter-hover-light-gray1: rgba(0, 0, 0, 0.04);
+$filter-hover-light-gray2: rgba(0, 0, 0, 0.04);
+$filter-hover-light-gray3: rgba(0, 0, 0, 0.04);
+$filter-hover-light-gray4: rgba(0, 0, 0, 0.04);
+
+$filter-active-dark-gray1: rgba(0, 0, 0, 0.32);
+$filter-active-dark-gray3: rgba(0, 0, 0, 0.26);
+$filter-active-dark-gray4: rgba(0, 0, 0, 0.32);
+$filter-active-dark-gray5: rgba(0, 0, 0, 0.26);
+$filter-active-light-gray1: rgba(0, 0, 0, 0.06);
+$filter-active-light-gray2: rgba(0, 0, 0, 0.06);
+$filter-active-light-gray3: rgba(0, 0, 0, 0.06);
+$filter-active-light-gray4: rgba(0, 0, 0, 0.06);
+
+$p1-svg: "data:image/svg+xml," +
+  "<svg width='48' height='48' viewBox='0 0 48 48' fill='none'" +
+  "  xmlns='http://www.w3.org/2000/svg'>" +
+  "  <g stroke='rgba(102, 144, 253, 1)'>" +
+  "    <line x1='6.35355' y1='19.6883' x2='28.981' y2='42.3157' />" +
+  "    <line x1='9.8643' y1='16.1778' x2='32.4917' y2='38.8052' />" +
+  "    <line x1='13.375' y1='12.6674' x2='36.0025' y2='35.2948' />" +
+  "    <line x1='16.8848' y1='9.1569' x2='39.5122' y2='31.7843' />" +
+  "    <line x1='20.3955' y1='5.64643' x2='43.023' y2='28.2738' />" + "  </g>" +
+  "</svg>";
+
+$p2-svg: "data:image/svg+xml," +
+  "<svg width='48' height='48' viewBox='0 0 48 48' fill='none'" +
+  "  xmlns='http://www.w3.org/2000/svg'>" +
+  "  <g stroke='rgba(250, 71, 114, 1)'>" +
+  "    <line x1='5.64645' y1='28.2739' x2='28.2739' y2='5.64645' />" +
+  "    <line x1='9.15719' y1='31.7843' x2='31.7846' y2='9.15691' />" +
+  "    <line x1='12.667' y1='35.2948' x2='35.2944' y2='12.6674' />" +
+  "    <line x1='16.1777' y1='38.8052' x2='38.8051' y2='16.1778' />" +
+  "    <line x1='19.6884' y1='42.3157' x2='42.3159' y2='19.6883' />" + "  </g>" +
+  "</svg>";
+
+$p1-button-svg: "data:image/svg+xml," +
+  "<svg width='8' height='8' viewBox='0 0 8 8' fill='none'" +
+  "  xmlns='http://www.w3.org/2000/svg'>" +
+  "  <g opacity='0.42' transform='rotate(90 4 4)'>" +
+  "    <line x1='-4' y1='4' x2='4' y2='-4' stroke='black' />" +
+  "    <line x1='0' y1='8' x2='8' y2='0' stroke='black' />" +
+  "    <line x1='4' y1='12' x2='12' y2='4' stroke='black' />" + "  </g>" +
+  "</svg>";
+$p2-button-svg: "data:image/svg+xml," +
+  "<svg width='8' height='8' viewBox='0 0 8 8' fill='none'" +
+  "  xmlns='http://www.w3.org/2000/svg'>" + "  <g opacity='0.38'>" +
+  "    <line x1='-4' y1='4' x2='4' y2='-4' stroke='black' />" +
+  "    <line x1='0' y1='8' x2='8' y2='0' stroke='black' />" +
+  "    <line x1='4' y1='12' x2='12' y2='4' stroke='black' />" + "  </g>" +
+  "</svg>";
+
+// Naming scheme: --c[ELEVATION]-<NAME>
+// elevation starts at 0 and is omitted for colors that do not depend on it;
+// `c` stands for color
+
+// Variables shared across all themes
+:root {
+  // Player image backgrounds
+  --c-p1-image: url("#{$p1-svg}");
+  --c-p2-image: url("#{$p2-svg}");
+  --c-p1-button-image: url("#{$p1-button-svg}");
+  --c-p2-button-image: url("#{$p2-button-svg}");
+}
+
+// Set dark-AMOLED theme as default
+:root {
+  --c0: #{$black};
+  --c0-text: #{$text-on-black};
+  --c0-text-secondary: #{$text-on-black-secondary};
+  --c0-drop-shadow: transparent;
+
+  --c0-button: #{$dark-gray1};
+  --c0-button-border: 1px solid #{$dark-gray4};
+  --c0-button-text: var(--c0-text);
+  --c0-button-box-shadow: none;
+  --c0-button-transform: translate(0, 0);
+
+  --c0-button-hover: #{solidify($dark-gray1, $filter-hover-dark-gray1)};
+  --c0-button-hover-border: 1px solid #{solidify($dark-gray4, $filter-hover-dark-gray4)};
+  --c0-button-hover-text: var(--c0-text);
+  --c0-button-hover-box-shadow: none;
+  --c0-button-hover-transform: translate(0, 0);
+
+  --c0-button-active: #{solidify($dark-gray1, $filter-active-dark-gray1)};
+  --c0-button-active-border: 1px solid #{solidify($dark-gray4, $filter-active-dark-gray4)};
+  --c0-button-active-text: var(--c0-text);
+  --c0-button-active-box-shadow: none;
+  --c0-button-active-transform: translate(0, 0);
+
+  --c0-game-border: 2px solid #{$gray3};
+  --c0-p1: #{$blue5};
+  --c0-p2: #{$red5};
+  --c0-slot-none-border: 1px solid #{$gray2};
+  --c0-slot-none-background: var(--c0);
+  --c0-slot-p1-border: 2px solid var(--c0-p1);
+  --c0-slot-p1-background: var(--c0);
+  --c0-slot-p2-border: 2px solid var(--c0-p2);
+  --c0-slot-p2-background: var(--c0);
+
+  --c1: #{$dark-gray1};
+  --c1-text: #{$text-on-dark-gray1};
+  --c1-drop-shadow: #{$shadow-on-dark-gray1};
+  --c1-card: #{$dark-gray2};
+  --c1-card-text: #{$text-on-dark-gray2};
+  --c1-card-drop-shadow: #{$drop-shadow-on-dark-gray1};
+
+  --c1-button: #{$dark-gray3};
+  --c1-button-border: 1px solid #{$dark-gray5};
+  --c1-button-text: var(--c1-text);
+  --c1-button-drop-shadow: #{$drop-shadow-on-dark-gray1};
+  --c1-button-transform: translate(0, 0);
+
+  --c1-button-hover: #{solidify($dark-gray3, $filter-hover-dark-gray3)};
+  --c1-button-hover-border: 1px solid #{solidify($dark-gray5, $filter-hover-dark-gray3)};
+  --c1-button-hover-text: var(--c1-text);
+  --c1-button-hover-drop-shadow: #{$drop-shadow-on-dark-gray1};
+  --c1-button-hover-transform: translate(0, 0);
+
+  --c1-button-active: #{solidify($dark-gray3, $filter-active-dark-gray3)};
+  --c1-button-active-border: 1px solid #{solidify($dark-gray5, $filter-active-dark-gray5)};
+  --c1-button-active-text: var(--c1-text);
+  --c1-button-active-drop-shadow: none;
+  --c1-button-active-transform: translate(2px, 2px);
+
+  --c1-p1-button: #{$blue3};
+  --c1-p1-button-border: 1px solid var(--c1-p1-button);
+  --c1-p1-button-text: #{$text-on-blue3};
+  --c1-p2-button: #{$red3};
+  --c1-p2-button-border: 1px solid var(--c1-p2-button);
+  --c1-p2-button-text: #{$text-on-red3};
+
+  --c1-p1-button-hover: #{$blue2};
+  --c1-p1-button-hover-border: 1px solid var(--c1-p1-button-hover);
+  --c1-p1-button-hover-text: #{$text-on-blue2};
+  --c1-p2-button-hover: #{$red2};
+  --c1-p2-button-hover-border: 1px solid var(--c1-p2-button-hover);
+  --c1-p2-button-hover-text: #{$text-on-red2};
+
+  --c1-p1-button-active: #{$blue1};
+  --c1-p1-button-active-border: 1px solid var(--c1-p1-button-active);
+  --c1-p1-button-active-text: #{$text-on-blue1};
+  --c1-p2-button-active: #{$red1};
+  --c1-p2-button-active-border: 1px solid var(--c1-p2-button-active);
+  --c1-p2-button-active-text: #{$text-on-red1};
+
+  --c-dialog-background: rgba(0, 0, 0, 0.4);
+  --c-dialog-drop-shadow: none;
+  --c-context-menu-separator-color: #{$dark-gray3};
+  --c-context-menu-separator: 1px solid var(--c-context-menu-separator-color);
+  --c-context-menu-drop-shadow: none;
+  --c-context-menu-hover: #{$filter-active-dark-gray1};
+  --c-focus-visible-border-color: #{$light-gray3};
+}
+
+.light {
+  --c0: #{$light-gray6};
+  --c0-text: #{$text-on-light-gray6};
+  --c0-text-secondary: #{$text-on-light-gray6-secondary};
+  --c0-drop-shadow: #{$shadow-on-light-gray6};
+
+  --c0-button: #{$light-gray4};
+  --c0-button-border: 1px solid #{$light-gray2};
+  --c0-button-text: #{$text-on-light-gray4};
+  --c0-button-drop-shadow: #{$drop-shadow-on-light-gray6};
+  --c0-button-transform: translate(0, 0);
+
+  --c0-button-hover: #{solidify($light-gray4, $filter-hover-light-gray4)};
+  --c0-button-hover-border: 1px solid #{solidify($light-gray2, $filter-hover-light-gray2)};
+  --c0-button-hover-text: #{$text-on-light-gray4};
+  --c0-button-hover-drop-shadow: #{$drop-shadow-on-light-gray6};
+  --c0-button-hover-transform: translate(0, 0);
+
+  --c0-button-active: #{solidify($light-gray4, $filter-active-light-gray4)};
+  --c0-button-active-border: 1px solid #{solidify($light-gray2, $filter-active-light-gray2)};
+  --c0-button-active-text: #{$text-on-light-gray4};
+  --c0-button-active-drop-shadow: none;
+  --c0-button-active-transform: translate(2px, 2px);
+
+  --c0-game-border: 2px solid #{$gray1};
+  --c0-p1: #{$blue5};
+  --c0-p2: #{$red5};
+  --c0-slot-none-border: 1px solid #{$gray4};
+  --c0-slot-none-background: #{$light-gray5};
+  --c0-slot-p1-border: 2px solid var(--c0-p1);
+  --c0-slot-p1-background: #{mix($light-gray6, $blue5, $weight: 80%)};
+  --c0-slot-p2-border: 2px solid var(--c0-p2);
+  --c0-slot-p2-background: #{mix($light-gray6, $red5, $weight: 80%)};
+
+  --c1: #{$light-gray4};
+  --c1-text: #{$text-on-light-gray4};
+  --c1-drop-shadow: #{$shadow-on-light-gray4};
+  --c1-card: #{$light-gray5};
+  --c1-card-text: #{$text-on-light-gray5};
+  --c1-card-drop-shadow: #{$drop-shadow-on-light-gray4};
+
+  --c1-button: #{$light-gray3};
+  --c1-button-border: 1px solid #{$light-gray1};
+  --c1-button-text: #{$text-on-light-gray3};
+  --c1-button-drop-shadow: #{$drop-shadow-on-light-gray4};
+  --c1-button-transform: translate(0, 0);
+
+  --c1-button-hover: #{solidify($light-gray3, $filter-hover-light-gray3)};
+  --c1-button-hover-border: 1px solid #{solidify($light-gray1, $filter-hover-light-gray1)};
+  --c1-button-hover-text: #{$text-on-light-gray3};
+  --c1-button-hover-drop-shadow: #{$drop-shadow-on-light-gray4};
+  --c1-button-hover-transform: translate(0, 0);
+
+  --c1-button-active: #{solidify($light-gray3, $filter-active-light-gray3)};
+  --c1-button-active-border: 1px solid #{solidify($light-gray1, $filter-active-light-gray1)};
+  --c1-button-active-text: #{$text-on-light-gray3};
+  --c1-button-active-drop-shadow: none;
+  --c1-button-active-transform: translate(2px, 2px);
+
+  --c1-p1-button: #{$blue5};
+  --c1-p1-button-border: 1px solid var(--c1-p1-button);
+  --c1-p1-button-text: #{$text-on-blue5};
+  --c1-p2-button: #{$red5};
+  --c1-p2-button-border: 1px solid var(--c1-p2-button);
+  --c1-p2-button-text: #{$text-on-red5};
+
+  --c1-p1-button-hover: #{$blue4};
+  --c1-p1-button-hover-border: 1px solid var(--c1-p1-button-hover);
+  --c1-p1-button-hover-text: #{$text-on-blue4};
+  --c1-p2-button-hover: #{$red4};
+  --c1-p2-button-hover-border: 1px solid var(--c1-p2-button-hover);
+  --c1-p2-button-hover-text: #{$text-on-red4};
+
+  --c1-p1-button-active: #{$blue3};
+  --c1-p1-button-active-border: 1px solid var(--c1-p1-button-active);
+  --c1-p1-button-active-text: #{$text-on-blue3};
+  --c1-p2-button-active: #{$red3};
+  --c1-p2-button-active-border: 1px solid var(--c1-p2-button-active);
+  --c1-p2-button-active-text: #{$text-on-red3};
+
+  --c-dialog-background: rgba(255, 255, 255, 0.4);
+  --c-dialog-drop-shadow: 16px 16px 0 rgba(0, 0, 0, 0.22);
+  --c-context-menu-separator-color: #{$light-gray2};
+  --c-context-menu-separator: 1px solid var(--c-context-menu-separator-color);
+  --c-context-menu-drop-shadow: 8px 8px 0 rgba(0, 0, 0, 0.22);
+  --c-context-menu-hover: #{$filter-hover-light-gray4};
+  --c-focus-visible-border-color: #{$dark-gray3};
+}
+
+// CSS classes that define surface levels
+
+.c0,
+body {
+  --c: var(--c0);
+  --c-text: var(--c0-text);
+  --c-text-secondary: var(--c0-text-secondary);
+  --c-drop-shadow: var(--c0-drop-shadow);
+
+  --c-button: var(--c0-button);
+  --c-button-border: var(--c0-button-border);
+  --c-button-text: var(--c0-button-text);
+  --c-button-drop-shadow: var(--c0-button-drop-shadow);
+  --c-button-transform: var(--c0-button-transform);
+
+  --c-button-hover: var(--c0-button-hover);
+  --c-button-hover-border: var(--c0-button-hover-border);
+  --c-button-hover-text: var(--c0-button-hover-text);
+  --c-button-hover-drop-shadow: var(--c0-button-hover-drop-shadow);
+  --c-button-hover-transform: var(--c0-button-hover-transform);
+
+  --c-button-active: var(--c0-button-active);
+  --c-button-active-border: var(--c0-button-active-border);
+  --c-button-active-text: var(--c0-button-active-text);
+  --c-button-active-drop-shadow: var(--c0-button-active-drop-shadow);
+  --c-button-active-transform: var(--c0-button-active-transform);
+
+  --c-game-border: var(--c0-game-border);
+  --c-p1: var(--c0-p1);
+  --c-p2: var(--c0-p2);
+  --c-slot-none-border: var(--c0-slot-none-border);
+  --c-slot-none-background: var(--c0-slot-none-background);
+  --c-slot-p1-border: var(--c0-slot-p1-border);
+  --c-slot-p1-background: var(--c0-slot-p1-background);
+  --c-slot-p2-border: var(--c0-slot-p2-border);
+  --c-slot-p2-background: var(--c0-slot-p2-background);
+}
+
+.c1 {
+  --c: var(--c1);
+  --c-text: var(--c1-text);
+  --c-drop-shadow: var(--c1-drop-shadow);
+  --c-card: var(--c1-card);
+  --c-card-text: var(--c1-card-text);
+  --c-card-drop-shadow: var(--c1-card-drop-shadow);
+
+  --c-button: var(--c1-button);
+  --c-button-border: var(--c1-button-border);
+  --c-button-text: var(--c1-button-text);
+  --c-button-drop-shadow: var(--c1-button-drop-shadow);
+  --c-button-transform: var(--c1-button-transform);
+
+  --c-button-hover: var(--c1-button-hover);
+  --c-button-hover-border: var(--c1-button-hover-border);
+  --c-button-hover-text: var(--c1-button-hover-text);
+  --c-button-hover-drop-shadow: var(--c1-button-hover-drop-shadow);
+  --c-button-hover-transform: var(--c1-button-hover-transform);
+
+  --c-button-active: var(--c1-button-active);
+  --c-button-active-border: var(--c1-button-active-border);
+  --c-button-active-text: var(--c1-button-active-text);
+  --c-button-active-drop-shadow: var(--c1-button-active-drop-shadow);
+  --c-button-active-transform: var(--c1-button-active-transform);
+
+  --c-p1-button: var(--c1-p1-button);
+  --c-p1-button-border: var(--c1-p1-button-border);
+  --c-p1-button-text: var(--c1-p1-button-text);
+  --c-p2-button: var(--c1-p2-button);
+  --c-p2-button-border: var(--c1-p2-button-border);
+  --c-p2-button-text: var(--c1-p2-button-text);
+
+  --c-p1-button-hover: var(--c1-p1-button-hover);
+  --c-p1-button-hover-border: var(--c1-p1-button-hover-border);
+  --c-p1-button-hover-text: var(--c1-p1-button-hover-text);
+  --c-p2-button-hover: var(--c1-p2-button-hover);
+  --c-p2-button-hover-border: var(--c1-p2-button-hover-border);
+  --c-p2-button-hover-text: var(--c1-p2-button-hover-text);
+
+  --c-p1-button-active: var(--c1-p1-button-active);
+  --c-p1-button-active-border: var(--c1-p1-button-active-border);
+  --c-p1-button-active-text: var(--c1-p1-button-active-text);
+  --c-p2-button-active: var(--c1-p2-button-active);
+  --c-p2-button-active-border: var(--c1-p2-button-active-border);
+  --c-p2-button-active-text: var(--c1-p2-button-active-text);
+}

@@ -1,0 +1,85 @@
+@use "sass:map";
+@use "sass:math";
+@use "./inter";
+
+$font-scale: 1.2;
+$font-base-size: 1rem;
+
+@function get-font-size($change: 0) {
+  $result: $font-base-size;
+  $change-abs: abs($change);
+  @for $i from 0 to $change-abs {
+    @if $change < 0 {
+      $result: math.div($result, $font-scale);
+    } @else {
+      $result: $result * $font-scale;
+    }
+  }
+
+  @return $result;
+}
+
+* {
+  font-family: Inter, Roboto, sans-serif;
+}
+
+h1 {
+  font-size: get-font-size(+3);
+  font-weight: 600;
+
+  &.large {
+    font-size: get-font-size(+6);
+    &.layout-mobile {
+      font-size: get-font-size(+5);
+    }
+  }
+
+  &.game-state {
+    font-weight: 500;
+  }
+
+  &.lobby-state {
+    font-size: get-font-size(+1);
+    font-weight: 400;
+  }
+}
+
+h2 {
+  font-size: get-font-size(+2);
+  font-weight: 500;
+}
+
+.context-menu .section .title {
+  font-size: get-font-size(-2);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.player-code {
+  font-size: get-font-size(+5);
+  font-weight: 600;
+}
+
+.card-player-code {
+  font-size: get-font-size(+4);
+  font-weight: 500;
+}
+
+.text-actionable,
+button {
+  font-size: $font-base-size;
+  font-weight: 500;
+}
+
+.small {
+  font-size: get-font-size(-1);
+}
+
+a {
+  font-weight: 500;
+}
+
+.text-pending-invite {
+  font-size: get-font-size(+3);
+  font-weight: 500;
+}

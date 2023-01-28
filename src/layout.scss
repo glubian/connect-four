@@ -1,0 +1,10 @@
+@use "./game-ui" as g;
+
+$padding: 16px;
+$snapping: 32px;
+
+$panel-appear-duration: 260ms;
+$panel-min-width: 512px;
+$panel-max-width: 800px;
+$panel-layout-tablet: $panel-min-width + $snapping;
+$panel-layout-desktop: g.$field-size-ui + 2 * $padding + $panel-min-width;

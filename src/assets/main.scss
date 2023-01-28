@@ -1,0 +1,152 @@
+@use "sass:math";
+@use "./theme";
+@use "./typography";
+@use "mono-icons/iconfont/icons.css";
+
+html,
+body,
+#app {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+
+  background: var(--c);
+  color: var(--c-text);
+}
+
+a {
+  color: var(--c-text);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+button {
+  box-sizing: border-box;
+  vertical-align: bottom;
+  height: 40px;
+  padding: 0 15px;
+  border-radius: 4px;
+
+  transition-property: transform, box-shadow;
+  transition-duration: 48ms;
+  transition-timing-function: ease-in-out;
+}
+
+button.icon {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  font-size: 24px;
+
+  background: transparent;
+  border: transparent;
+  box-shadow: none;
+}
+
+.card {
+  background: var(--c-card);
+  color: var(--c-card-text);
+  box-shadow: var(--c-card-drop-shadow);
+}
+
+button {
+  background: var(--c-button);
+  color: var(--c-button-text);
+  border: var(--c-button-border);
+  box-shadow: var(--c-button-drop-shadow);
+  transform: var(--c-button-transform);
+
+  &:focus-visible:is(&, .p1, p2, .icon, .flat):is(&, :hover, :active) {
+    outline: none;
+    border-color: var(--c-focus-visible-border-color);
+  }
+
+  &:hover {
+    background: var(--c-button-hover);
+    color: var(--c-button-hover-text);
+    border: var(--c-button-hover-border);
+    box-shadow: var(--c-button-hover-drop-shadow);
+    transform: var(--c-button-hover-transform);
+  }
+
+  &:active {
+    background: var(--c-button-active);
+    color: var(--c-button-active-text);
+    border: var(--c-button-active-border);
+    box-shadow: var(--c-button-active-drop-shadow);
+    transform: var(--c-button-active-transform);
+  }
+}
+
+button.p1 {
+  background: var(--c-p1-button) var(--c-p1-button-image);
+  color: var(--c-p1-button-text);
+  border: var(--c-p1-button-border);
+
+  &:hover {
+    background: var(--c-p1-button-hover) var(--c-p1-button-image);
+    color: var(--c-p1-button-hover-text);
+    border: var(--c-p1-button-hover-border);
+  }
+
+  &:active {
+    background: var(--c-p1-button-active) var(--c-p1-button-image);
+    color: var(--c-p1-button-active-text);
+    border: var(--c-p1-button-active-border);
+  }
+}
+
+button.p2 {
+  background: var(--c-p2-button) var(--c-p2-button-image);
+  color: var(--c-p2-button-text);
+  border: var(--c-p2-button-border);
+
+  &:hover {
+    background: var(--c-p2-button-hover) var(--c-p2-button-image);
+    color: var(--c-p2-button-hover-text);
+    border: var(--c-p2-button-hover-border);
+  }
+
+  &:active {
+    background: var(--c-p2-button-active) var(--c-p2-button-image);
+    color: var(--c-p2-button-active-text);
+    border: var(--c-p2-button-active-border);
+  }
+}
+
+button.icon {
+  background: transparent;
+  color: var(--c-button-text);
+  border: none;
+
+  & > * {
+    grid-area: 1 / 1;
+  }
+
+  &:focus-visible {
+    &:after {
+      content: "";
+      grid-area: 1 / 1;
+      box-sizing: border-box;
+      $size: 32px;
+      width: $size;
+      height: $size;
+      border: 1px solid var(--c-focus-visible-border-color);
+      border-radius: 4px;
+    }
+  }
+}
+
+button:is(.p1, .p2, .icon, .flat):is(button, :hover, :active) {
+  box-shadow: none;
+  transform: none;
+}
