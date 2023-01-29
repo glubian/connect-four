@@ -233,7 +233,7 @@ function onSlideAnimationEvent() {
 footer {
   display: flex;
   align-items: center;
-  justify-content: right;
+  justify-content: space-between;
 
   min-height: 56px;
   padding: 0 16px;
@@ -245,7 +245,7 @@ footer {
 
   p {
     color: var(--c-text-secondary);
-    margin: 0 16px;
+    margin-right: 16px;
   }
 
   transition: opacity 180ms ease-in-out;
@@ -340,6 +340,10 @@ main {
 
   .bottom > * {
     margin-top: 48px;
+  }
+
+  footer {
+    justify-content: right;
   }
 }
 </style>
