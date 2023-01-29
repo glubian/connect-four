@@ -1,5 +1,6 @@
 const FIELD_SIZE = 7;
 const WIN_LENGTH = 4;
+const LAST_TURN = FIELD_SIZE * FIELD_SIZE - 1;
 
 type GameField = (Player | null)[][];
 type GameMatch = [[number, number], [number, number]];
@@ -148,7 +149,7 @@ function getDiagonalMatches(matches: GameMatch[], field: GameField) {
   }
 }
 
-function getResult(field: GameField): GameResult | null {
+function getResult(field: GameField, turn: number): GameResult | null {
   const matches: GameMatch[] = [];
 
   getHorizontalAndVerticalMatches(matches, field);
@@ -180,6 +181,10 @@ function getResult(field: GameField): GameResult | null {
     return { winner, matches };
   }
 
+  if (turn >= LAST_TURN) {
+    return { winner: GameWinner.Draw, matches: [] };
+  }
+
   return null;
 }
 
@@ -198,6 +203,11 @@ class Game {
   private updateResult(x: number, y: number) {
     const { field, state, rules } = this;
     const { turn, player } = this.state;
+
+    if (turn >= LAST_TURN) {
+      state.gameResolved(getResult(field, turn) as GameResult);
+      return;
+    }
 
     let skipIncrementalCheck = false;
     if (rules.allowDraws) {
@@ -218,9 +228,7 @@ class Game {
     }
 
     if (skipIncrementalCheck || this.isMoveWinning(x, y, player)) {
-      state.gameResolved(getResult(field) as GameResult);
-    } else if (this.state.turn >= FIELD_SIZE * FIELD_SIZE - 1) {
-      state.gameResolved({ matches: [], winner: GameWinner.Draw });
+      state.gameResolved(getResult(field, turn) as GameResult);
     }
   }
 
