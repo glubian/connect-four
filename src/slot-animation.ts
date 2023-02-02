@@ -298,18 +298,14 @@ export function slotAnimation({
 
   init();
 
-  /**
-   * Initializes slot animation.
-   */
+  /** Initializes slot animation. */
   function init() {
     el.style.opacity = "0";
     el.addEventListener("animationend", removeAnimationClasses);
     el.addEventListener("animationcancel", removeAnimationClasses);
   }
 
-  /**
-   * Removes CSS classes and event listeners.
-   */
+  /** Removes CSS classes and event listeners. */
   function destroy() {
     el.style.opacity = "";
     el.classList.remove(ENTER_CLASS, LEAVE_CLASS);
@@ -317,9 +313,7 @@ export function slotAnimation({
     el.removeEventListener("animationcancel", removeAnimationClasses);
   }
 
-  /**
-   * Resets the animation state.
-   */
+  /** Resets the animation state. */
   function reset() {
     const a = animation;
     transition.complete();
@@ -343,9 +337,7 @@ export function slotAnimation({
     isTransitionComplete = false;
   }
 
-  /**
-   * Removes visibility animation classes.
-   */
+  /** Removes visibility animation classes. */
   function removeAnimationClasses() {
     if (el.classList.contains(ENTER_CLASS)) {
       el.style.opacity = "1";
@@ -427,9 +419,7 @@ export function slotAnimation({
     }
   }
 
-  /**
-   * Returns the index of the column currently being hovered over
-   */
+  /** Returns the index of the column currently being hovered over */
   function colFromPointer(): number {
     const x = vector.pointer.x + HALF_CONT_SIZE;
     return clamp(floor(x / CONT_SIZE), 0, FIELD_SIZE - 1);
@@ -581,9 +571,7 @@ export function slotAnimation({
     updateFocus(isFocused, Device.Keyboard);
   }
 
-  /**
-   * Updates whether the pointer is currently on screen.
-   */
+  /** Updates whether the pointer is currently on screen. */
   function pointer(isEntering: boolean) {
     if (isDisabled) {
       isPointerHovering = isEntering;
@@ -616,9 +604,7 @@ export function slotAnimation({
     }
   }
 
-  /**
-   * Updates whether the pointer is currently pressed.
-   */
+  /** Updates whether the pointer is currently pressed. */
   function pointerPressed(isPressed: boolean) {
     updateFocus(false, Device.Pointer);
     isPointerPressed = isPressed;
