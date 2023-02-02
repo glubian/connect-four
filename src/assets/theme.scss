@@ -33,7 +33,6 @@ $blue4: #557ee8;
 $blue5: #6690fd;
 
 $text-on-black: rgba(255, 255, 255, 0.84);
-$text-on-black-secondary: $gray2;
 
 $text-on-dark-gray1: rgba(255, 255, 255, 0.94);
 $text-on-dark-gray2: rgba(255, 255, 255, 0.94);
@@ -43,7 +42,6 @@ $text-on-light-gray3: rgba(0, 0, 0, 0.94);
 $text-on-light-gray4: rgba(0, 0, 0, 0.94);
 $text-on-light-gray5: rgba(0, 0, 0, 0.94);
 $text-on-light-gray6: rgba(0, 0, 0, 0.96);
-$text-on-light-gray6-secondary: $gray4;
 
 
 @function solidify($color, $transparent-color) {
@@ -145,7 +143,6 @@ $p2-button-svg: "data:image/svg+xml," +
 :root {
   --c0: #{$black};
   --c0-text: #{$text-on-black};
-  --c0-text-secondary: #{$text-on-black-secondary};
   --c0-drop-shadow: transparent;
 
   --c0-button: #{$dark-gray1};
@@ -234,7 +231,6 @@ $p2-button-svg: "data:image/svg+xml," +
 .light {
   --c0: #{$light-gray6};
   --c0-text: #{$text-on-light-gray6};
-  --c0-text-secondary: #{$text-on-light-gray6-secondary};
   --c0-drop-shadow: #{$shadow-on-light-gray6};
 
   --c0-button: #{$light-gray4};
@@ -326,7 +322,6 @@ $p2-button-svg: "data:image/svg+xml," +
 body {
   --c: var(--c0);
   --c-text: var(--c0-text);
-  --c-text-secondary: var(--c0-text-secondary);
   --c-drop-shadow: var(--c0-drop-shadow);
 
   --c-button: var(--c0-button);

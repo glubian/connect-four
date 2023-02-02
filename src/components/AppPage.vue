@@ -202,7 +202,6 @@ function onSlideAnimationEvent() {
     </main>
 
     <footer class="small" v-show="showHeaderAndFooter">
-      <p>Made by Grzegorz Łubian</p>
       <a href="https://github.com/glubian/connect-four">{{
         $t("page.links.github")
       }}</a>
@@ -233,7 +232,7 @@ function onSlideAnimationEvent() {
 footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: right;
 
   min-height: 56px;
   padding: 0 16px;
@@ -241,11 +240,6 @@ footer {
 
   & > * {
     margin: 0 8px;
-  }
-
-  p {
-    color: var(--c-text-secondary);
-    margin-right: 16px;
   }
 
   transition: opacity 180ms ease-in-out;
@@ -340,10 +334,6 @@ main {
 
   .bottom > * {
     margin-top: 48px;
-  }
-
-  footer {
-    justify-content: right;
   }
 }
 </style>
