@@ -47,7 +47,7 @@ function randomRange(min: number, max: number): number {
   return lerp(min, max, random());
 }
 
-/** Returns the rotation of a point, in relation point C. */
+/** Returns the rotation of a point relative to point C. */
 function rotation(
   [cx, cy]: [number, number],
   [x, y]: [number, number]
