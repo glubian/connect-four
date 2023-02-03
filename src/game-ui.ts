@@ -20,14 +20,3 @@ export function playerClass(player: Player | null): PlayerClass | "" {
 
   return "";
 }
-
-export function victoriousPlayer(winner: GameWinner): Player | null {
-  switch (winner) {
-    case GameWinner.P1:
-      return Player.P1;
-    case GameWinner.P2:
-      return Player.P2;
-  }
-
-  return null;
-}

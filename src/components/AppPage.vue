@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { GameWinner } from "@/game";
-import { victoriousPlayer } from "@/game-ui";
+import { GameWinner, Player } from "@/game";
 import { gameUIStore } from "@/game-ui-store";
 import { store } from "@/store";
 import {
@@ -64,8 +63,7 @@ const statusMessage = computed(() => {
   if (result) {
     const { winner } = result;
     if (store.isConnected && winner !== GameWinner.Draw) {
-      const player = victoriousPlayer(winner);
-      if (player === store.remoteRole) {
+      if ((winner as unknown as Player) === store.remoteRole) {
         return t("page.statusIndicator.victory");
       } else {
         return t("page.statusIndicator.defeat");
