@@ -207,6 +207,8 @@
         "inviteYourFriendText": "Pokaż kod QR, lub wyślij ten link:",
         "copyLinkButton": "Kopiuj",
         "shareTitle": "Connect Four",
+        "qrCodeLinkAlt": "Kod QR",
+        "qrCodeNoLinkAlt": "Nie się wygenerować kodu QR.",
         "addYourFriend": "Dodaj znajomego",
         "addYourFriendText": "Gracze, którzy chcą dołączyć pojawią się poniżej. Wybierz kartę z kodem twojego znajomego.",
         "searchPlaceholder": "Szukaj...",
