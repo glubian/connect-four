@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { asTransformScaleValue } from "@/compatibility-fixes";
+import { useI18n } from "vue-i18n";
 
 const props = defineProps<{ value?: string }>();
 
@@ -20,6 +21,10 @@ const buttonStyle = {
   "--transform-to": TRANSFORM_TO,
 } as const;
 
+const IS_SHARING_SUPPORTED = !!navigator.share;
+
+const { t } = useI18n();
+
 function copyToClipboard() {
   const text = props.value;
   if (!text) {
@@ -27,6 +32,24 @@ function copyToClipboard() {
   }
 
   navigator.clipboard.writeText(text);
+}
+
+function share() {
+  const text = props.value;
+  if (!text) {
+    return;
+  }
+
+  /* global ShareData */
+  const shareData: ShareData = { title: t("page.remotePlaySetup.shareTitle") };
+  try {
+    new URL(text);
+    shareData.url = text;
+  } catch (_) {
+    shareData.text = text;
+  }
+
+  navigator.share(shareData);
 }
 </script>
 
@@ -36,12 +59,15 @@ function copyToClipboard() {
       <input :value="props.value" type="text" readonly />
     </div>
     <button :style="buttonStyle" @click="copyToClipboard()">
-      {{ $t("page.remotePlaySetup.copyLinkButton") }}
+      <i class="mi-copy"></i>
+    </button>
+    <button :style="buttonStyle" @click="share()" v-if="IS_SHARING_SUPPORTED">
+      <i class="mi-share"></i>
     </button>
   </div>
 </template>
 
-<style scoped style="scss">
+<style scoped lang="scss">
 .copy-input {
   display: inline-flex;
   justify-content: center;
@@ -68,7 +94,10 @@ input {
 }
 
 button:is(button, :hover, :active) {
-  border-radius: 0 4px 4px 0;
+  border-radius: 0;
+  &:last-child {
+    border-radius: 0 4px 4px 0;
+  }
 }
 
 button {
