@@ -227,6 +227,7 @@ p {
     border-style: solid;
     background-color: #fff;
     box-shadow: var(--c-card-drop-shadow);
+    image-rendering: pixelated;
   }
 
   img[src=""] {
