@@ -107,7 +107,7 @@
       "theme": {
         "section": "Theme",
         "light": "Light",
-        "darkAMOLED": "True black",
+        "trueBlack": "True black",
         "system": "Use system theme"
       },
       "lang": {
@@ -228,7 +228,7 @@
       "theme": {
         "section": "Motyw",
         "light": "Jasny",
-        "darkAMOLED": "Głęboka czerń",
+        "trueBlack": "Głęboka czerń",
         "system": "Użyj motywu systemowego"
       },
       "lang": {

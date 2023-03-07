@@ -148,7 +148,7 @@ $p2-svg: "data:image/svg+xml," +
   --c-p2-image: url("#{$p2-svg}");
 }
 
-// Set dark-AMOLED theme as default
+// Set true black theme as default
 :root {
   --c0: #{$black};
   --c0-text: #{$black-text-primary};

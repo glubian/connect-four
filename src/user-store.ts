@@ -8,7 +8,7 @@ export enum Lang {
 
 export enum Theme {
   Light = "light",
-  DarkAMOLED = "",
+  TrueBlack = "",
 }
 
 interface UserPreferences {
@@ -20,7 +20,7 @@ const DEFAULT_THEME = defaultTheme();
 
 function defaultTheme(): Theme {
   const pref = matchMedia("(prefers-color-scheme: dark)").matches;
-  return pref ? Theme.DarkAMOLED : Theme.Light;
+  return pref ? Theme.TrueBlack : Theme.Light;
 }
 
 const currentLang = computed(
