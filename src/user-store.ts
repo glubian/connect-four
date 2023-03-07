@@ -21,7 +21,7 @@ const DEFAULT_THEME = defaultTheme();
 
 function defaultTheme(): Theme {
   const pref = matchMedia("(prefers-color-scheme: dark)").matches;
-  return pref ? Theme.TrueBlack : Theme.Light;
+  return pref ? Theme.Dark : Theme.Light;
 }
 
 const currentLang = computed(
