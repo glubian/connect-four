@@ -81,9 +81,9 @@ function share() {
   padding: 0 8px;
   flex: 1;
   height: 40px;
-  background: var(--c-card);
+  background: var(--c-control);
   border-radius: 4px 0 0 4px;
-  box-shadow: var(--c-card-drop-shadow);
+  box-shadow: var(--c-control-drop-shadow);
   border: var(--c-button-border);
 }
 
