@@ -1,5 +1,11 @@
 @use "sass:color";
 
+@function solidify($color, $transparent-color) {
+  $alpha: color.alpha($transparent-color) * 100%;
+  $transparent-color: color.change($transparent-color, $alpha: 1);
+  @return mix($color, $transparent-color, $weight: 100% - $alpha);
+}
+
 $black: #000;
 
 $tb-gray200: #484848;
@@ -14,6 +20,10 @@ $black-text-primary: #FFFFFFD9;
 $black-text-secondary: #FFFFFFAB;
 $black-text-tertiary: #FFFFFF8A;
 $tb-gray-text-primary: #FFFFFFF0;
+
+$black-text-primary-solid: solidify($black, $black-text-primary);
+$black-text-secondary-solid: solidify($black, $black-text-secondary);
+$black-text-tertiary-solid: solidify($black, $black-text-tertiary);
 
 $dark-gray100: #868686;
 $dark-gray200: #6C6C6C;
@@ -30,6 +40,10 @@ $dark-gray900-text-secondary: #FFFFFF99;
 $dark-gray900-text-tertiary: #FFFFFF78;
 $dark-gray-text-primary: #FFFFFFE0;
 
+$dark-gray900-text-primary-solid: solidify($dark-gray900, $dark-gray900-text-primary);
+$dark-gray900-text-primary-solid: solidify($dark-gray900, $dark-gray900-text-secondary);
+$dark-gray900-text-primary-solid: solidify($dark-gray900, $dark-gray900-text-tertiary);
+
 $light-gray100: #FAFAFA;
 $light-gray200: #F0F0F0;
 $light-gray300: #E6E6E6;
@@ -44,6 +58,10 @@ $light-gray100-text-primary: #000000F5;
 $light-gray100-text-secondary: #0000007D;
 $light-gray100-text-tertiary: #00000061;
 $light-gray-text-primary: #000000F0;
+
+$light-gray100-text-primary-solid: solidify($light-gray100, $light-gray100-text-primary);
+$light-gray100-text-secondary-solid: solidify($light-gray100, $light-gray100-text-secondary);
+$light-gray100-text-tertiary-solid: solidify($light-gray100, $light-gray100-text-tertiary);
 
 $blue100: #D8E3FF;
 $blue200: #C1D3FF;
@@ -112,13 +130,6 @@ $text-on-light-gray4: rgba(0, 0, 0, 0.94);
 $text-on-light-gray5: rgba(0, 0, 0, 0.94);
 $text-on-light-gray6: rgba(0, 0, 0, 0.96);
 
-
-@function solidify($color, $transparent-color) {
-  $alpha: color.alpha($transparent-color) * 100%;
-  $transparent-color: color.change($transparent-color, $alpha: 1);
-  @return mix($color, $transparent-color, $weight: 100% - $alpha);
-}
-
 $text-on-red1: solidify($red1, $text-on-dark-gray1);
 $text-on-red2: solidify($red2, $text-on-dark-gray1);
 $text-on-red3: solidify($red3, $text-on-dark-gray1);
@@ -131,31 +142,31 @@ $text-on-blue3: solidify($blue3, $text-on-dark-gray1);
 $text-on-blue4: solidify($blue4, $text-on-dark-gray1);
 $text-on-blue5: solidify($blue5, $text-on-dark-gray1);
 
-$shadow-on-dark-gray1: rgba(0, 0, 0, 0.44);
-$shadow-on-light-gray4: rgba(0, 0, 0, 0.24);
-$shadow-on-light-gray6: rgba(0, 0, 0, 0.22);
+$shadow-on-tb-gray700: rgba(0, 0, 0, 0.44);
+$shadow-on-light-gray300: rgba(0, 0, 0, 0.24);
+$shadow-on-light-gray100: rgba(0, 0, 0, 0.22);
 
-$drop-shadow-on-dark-gray1: 4px 4px 0 solidify($dark-gray1, $shadow-on-dark-gray1);
-$drop-shadow-on-light-gray4: 4px 4px 0 solidify($light-gray4, $shadow-on-light-gray4);
-$drop-shadow-on-light-gray6: 4px 4px 0 solidify($light-gray6, $shadow-on-light-gray6);
+$drop-shadow-on-tb-gray700: 4px 4px 0 solidify($tb-gray700, $shadow-on-tb-gray700);
+$drop-shadow-on-light-gray300: 4px 4px 0 solidify($light-gray300, $shadow-on-light-gray300);
+$drop-shadow-on-light-gray100: 4px 4px 0 solidify($light-gray100, $shadow-on-light-gray100);
 
-$filter-hover-dark-gray1: rgba(0, 0, 0, 0.16);
-$filter-hover-dark-gray3: rgba(0, 0, 0, 0.18);
-$filter-hover-dark-gray4: rgba(0, 0, 0, 0.16);
-$filter-hover-dark-gray5: rgba(0, 0, 0, 0.18);
-$filter-hover-light-gray1: rgba(0, 0, 0, 0.04);
-$filter-hover-light-gray2: rgba(0, 0, 0, 0.04);
-$filter-hover-light-gray3: rgba(0, 0, 0, 0.04);
-$filter-hover-light-gray4: rgba(0, 0, 0, 0.04);
+$filter-hover-tb-gray700: rgba(0, 0, 0, 0.16);
+$filter-hover-tb-gray500: rgba(0, 0, 0, 0.18);
+$filter-hover-tb-gray400: rgba(0, 0, 0, 0.16);
+$filter-hover-tb-gray200: rgba(0, 0, 0, 0.18);
+$filter-hover-light-gray700: rgba(0, 0, 0, 0.04);
+$filter-hover-light-gray600: rgba(0, 0, 0, 0.04);
+$filter-hover-light-gray400: rgba(0, 0, 0, 0.04);
+$filter-hover-light-gray300: rgba(0, 0, 0, 0.04);
 
-$filter-active-dark-gray1: rgba(0, 0, 0, 0.32);
-$filter-active-dark-gray3: rgba(0, 0, 0, 0.26);
-$filter-active-dark-gray4: rgba(0, 0, 0, 0.32);
-$filter-active-dark-gray5: rgba(0, 0, 0, 0.26);
-$filter-active-light-gray1: rgba(0, 0, 0, 0.06);
-$filter-active-light-gray2: rgba(0, 0, 0, 0.06);
-$filter-active-light-gray3: rgba(0, 0, 0, 0.06);
-$filter-active-light-gray4: rgba(0, 0, 0, 0.06);
+$filter-active-tb-gray700: rgba(0, 0, 0, 0.32);
+$filter-active-tb-gray500: rgba(0, 0, 0, 0.26);
+$filter-active-tb-gray400: rgba(0, 0, 0, 0.32);
+$filter-active-tb-gray200: rgba(0, 0, 0, 0.26);
+$filter-active-light-gray700: rgba(0, 0, 0, 0.06);
+$filter-active-light-gray600: rgba(0, 0, 0, 0.06);
+$filter-active-light-gray400: rgba(0, 0, 0, 0.06);
+$filter-active-light-gray300: rgba(0, 0, 0, 0.06);
 
 $p1-svg: "data:image/svg+xml," +
   "<svg width='48' height='48' viewBox='0 0 48 48' fill='none'" +
@@ -211,178 +222,178 @@ $p2-button-svg: "data:image/svg+xml," +
 // Set dark-AMOLED theme as default
 :root {
   --c0: #{$black};
-  --c0-text: #{$text-on-black};
+  --c0-text: #{$black-text-primary};
   --c0-drop-shadow: transparent;
 
-  --c0-button: #{$dark-gray1};
-  --c0-button-border: 1px solid #{$dark-gray4};
+  --c0-button: #{$tb-gray700};
+  --c0-button-border: 1px solid #{$tb-gray400};
   --c0-button-text: var(--c0-text);
   --c0-button-box-shadow: none;
   --c0-button-transform: translate(0, 0);
 
-  --c0-button-hover: #{solidify($dark-gray1, $filter-hover-dark-gray1)};
-  --c0-button-hover-border: 1px solid #{solidify($dark-gray4, $filter-hover-dark-gray4)};
+  --c0-button-hover: #{solidify($tb-gray700, $filter-hover-tb-gray700)};
+  --c0-button-hover-border: 1px solid #{solidify($tb-gray400, $filter-hover-tb-gray400)};
   --c0-button-hover-text: var(--c0-text);
   --c0-button-hover-box-shadow: none;
   --c0-button-hover-transform: translate(0, 0);
 
-  --c0-button-active: #{solidify($dark-gray1, $filter-active-dark-gray1)};
-  --c0-button-active-border: 1px solid #{solidify($dark-gray4, $filter-active-dark-gray4)};
+  --c0-button-active: #{solidify($tb-gray700, $filter-active-tb-gray700)};
+  --c0-button-active-border: 1px solid #{solidify($tb-gray400, $filter-active-tb-gray400)};
   --c0-button-active-text: var(--c0-text);
   --c0-button-active-box-shadow: none;
   --c0-button-active-transform: translate(0, 0);
 
-  --c0-game-border: 2px solid #{$gray3};
-  --c0-p1: #{$blue5};
-  --c0-p2: #{$red5};
-  --c0-slot-none-border: 1px solid #{$gray2};
+  --c0-game-border: 2px solid #{$black-text-secondary-solid};
+  --c0-p1: #{$blue500};
+  --c0-p2: #{$red500};
+  --c0-slot-none-border: 1px solid #{$black-text-tertiary-solid};
   --c0-slot-none-background: var(--c0);
   --c0-slot-p1-border: 2px solid var(--c0-p1);
   --c0-slot-p1-background: var(--c0);
   --c0-slot-p2-border: 2px solid var(--c0-p2);
   --c0-slot-p2-background: var(--c0);
 
-  --c1: #{$dark-gray1};
-  --c1-text: #{$text-on-dark-gray1};
-  --c1-drop-shadow: #{$shadow-on-dark-gray1};
-  --c1-card: #{$dark-gray2};
-  --c1-card-text: #{$text-on-dark-gray2};
-  --c1-card-drop-shadow: #{$drop-shadow-on-dark-gray1};
+  --c1: #{$tb-gray700};
+  --c1-text: #{$tb-gray-text-primary};
+  --c1-drop-shadow: #{$shadow-on-tb-gray700};
+  --c1-card: #{$tb-gray600};
+  --c1-card-text: #{$tb-gray-text-primary};
+  --c1-card-drop-shadow: #{$drop-shadow-on-tb-gray700};
 
-  --c1-button: #{$dark-gray3};
-  --c1-button-border: 1px solid #{$dark-gray5};
+  --c1-button: #{$tb-gray500};
+  --c1-button-border: 1px solid #{$tb-gray200};
   --c1-button-text: var(--c1-text);
-  --c1-button-drop-shadow: #{$drop-shadow-on-dark-gray1};
+  --c1-button-drop-shadow: #{$drop-shadow-on-tb-gray700};
   --c1-button-transform: translate(0, 0);
 
-  --c1-button-hover: #{solidify($dark-gray3, $filter-hover-dark-gray3)};
-  --c1-button-hover-border: 1px solid #{solidify($dark-gray5, $filter-hover-dark-gray3)};
+  --c1-button-hover: #{solidify($tb-gray500, $filter-hover-tb-gray500)};
+  --c1-button-hover-border: 1px solid #{solidify($tb-gray200, $filter-hover-tb-gray500)};
   --c1-button-hover-text: var(--c1-text);
-  --c1-button-hover-drop-shadow: #{$drop-shadow-on-dark-gray1};
+  --c1-button-hover-drop-shadow: #{$drop-shadow-on-tb-gray700};
   --c1-button-hover-transform: translate(0, 0);
 
-  --c1-button-active: #{solidify($dark-gray3, $filter-active-dark-gray3)};
-  --c1-button-active-border: 1px solid #{solidify($dark-gray5, $filter-active-dark-gray5)};
+  --c1-button-active: #{solidify($tb-gray500, $filter-active-tb-gray500)};
+  --c1-button-active-border: 1px solid #{solidify($tb-gray200, $filter-active-tb-gray200)};
   --c1-button-active-text: var(--c1-text);
   --c1-button-active-drop-shadow: none;
   --c1-button-active-transform: translate(2px, 2px);
 
-  --c1-p1-button: #{$blue3};
+  --c1-p1-button: #{$blue700};
   --c1-p1-button-border: 1px solid var(--c1-p1-button);
-  --c1-p1-button-text: #{$text-on-blue3};
-  --c1-p2-button: #{$red3};
+  --c1-p1-button-text: #{$blue700-text-primary};
+  --c1-p2-button: #{$red700};
   --c1-p2-button-border: 1px solid var(--c1-p2-button);
-  --c1-p2-button-text: #{$text-on-red3};
+  --c1-p2-button-text: #{$red700-text-primary};
 
-  --c1-p1-button-hover: #{$blue2};
-  --c1-p1-button-hover-border: 1px solid var(--c1-p1-button-hover);
-  --c1-p1-button-hover-text: #{$text-on-blue2};
-  --c1-p2-button-hover: #{$red2};
-  --c1-p2-button-hover-border: 1px solid var(--c1-p2-button-hover);
-  --c1-p2-button-hover-text: #{$text-on-red2};
+  --c1-p1-button-hover: #{$blue700};
+  --c1-p1-button-hover-border: 1px solid var(--c1-p1-button);
+  --c1-p1-button-hover-text: #{$blue700-text-primary};
+  --c1-p2-button-hover: #{$red700};
+  --c1-p2-button-hover-border: 1px solid var(--c1-p2-button);
+  --c1-p2-button-hover-text: #{$red700-text-primary};
 
-  --c1-p1-button-active: #{$blue1};
-  --c1-p1-button-active-border: 1px solid var(--c1-p1-button-active);
-  --c1-p1-button-active-text: #{$text-on-blue1};
-  --c1-p2-button-active: #{$red1};
-  --c1-p2-button-active-border: 1px solid var(--c1-p2-button-active);
-  --c1-p2-button-active-text: #{$text-on-red1};
+  --c1-p1-button-active: #{$blue700};
+  --c1-p1-button-active-border: 1px solid var(--c1-p1-button);
+  --c1-p1-button-active-text: #{$blue700-text-primary};
+  --c1-p2-button-active: #{$red700};
+  --c1-p2-button-active-border: 1px solid var(--c1-p2-button);
+  --c1-p2-button-active-text: #{$red700-text-primary};
 
   --c-dialog-background: rgba(0, 0, 0, 0.4);
   --c-dialog-drop-shadow: none;
-  --c-context-menu-separator-color: #{$dark-gray3};
+  --c-context-menu-separator-color: #{$tb-gray400};
   --c-context-menu-separator: 1px solid var(--c-context-menu-separator-color);
   --c-context-menu-drop-shadow: none;
-  --c-context-menu-hover: #{$filter-active-dark-gray1};
-  --c-focus-visible-border-color: #{$light-gray3};
+  --c-context-menu-hover: #{$filter-active-tb-gray700};
+  --c-focus-visible-border-color: #{$tb-gray-text-primary}; // TODO: Change this so something else
 }
 
 .light {
-  --c0: #{$light-gray6};
-  --c0-text: #{$text-on-light-gray6};
-  --c0-drop-shadow: #{$shadow-on-light-gray6};
+  --c0: #{$light-gray100};
+  --c0-text: #{$light-gray100-text-primary};
+  --c0-drop-shadow: #{$shadow-on-light-gray100};
 
-  --c0-button: #{$light-gray4};
-  --c0-button-border: 1px solid #{$light-gray2};
-  --c0-button-text: #{$text-on-light-gray4};
-  --c0-button-drop-shadow: #{$drop-shadow-on-light-gray6};
+  --c0-button: #{$light-gray300};
+  --c0-button-border: 1px solid #{$light-gray600};
+  --c0-button-text: #{$light-gray-text-primary};
+  --c0-button-drop-shadow: #{$drop-shadow-on-light-gray100};
   --c0-button-transform: translate(0, 0);
 
-  --c0-button-hover: #{solidify($light-gray4, $filter-hover-light-gray4)};
-  --c0-button-hover-border: 1px solid #{solidify($light-gray2, $filter-hover-light-gray2)};
-  --c0-button-hover-text: #{$text-on-light-gray4};
-  --c0-button-hover-drop-shadow: #{$drop-shadow-on-light-gray6};
+  --c0-button-hover: #{solidify($light-gray300, $filter-hover-light-gray300)};
+  --c0-button-hover-border: 1px solid #{solidify($light-gray600, $filter-hover-light-gray600)};
+  --c0-button-hover-text: #{$light-gray-text-primary};
+  --c0-button-hover-drop-shadow: #{$drop-shadow-on-light-gray100};
   --c0-button-hover-transform: translate(0, 0);
 
-  --c0-button-active: #{solidify($light-gray4, $filter-active-light-gray4)};
-  --c0-button-active-border: 1px solid #{solidify($light-gray2, $filter-active-light-gray2)};
-  --c0-button-active-text: #{$text-on-light-gray4};
+  --c0-button-active: #{solidify($light-gray300, $filter-active-light-gray300)};
+  --c0-button-active-border: 1px solid #{solidify($light-gray600, $filter-active-light-gray600)};
+  --c0-button-active-text: #{$light-gray-text-primary};
   --c0-button-active-drop-shadow: none;
   --c0-button-active-transform: translate(2px, 2px);
 
-  --c0-game-border: 2px solid #{$gray1};
-  --c0-p1: #{$blue5};
-  --c0-p2: #{$red5};
-  --c0-slot-none-border: 1px solid #{$gray4};
-  --c0-slot-none-background: #{$light-gray5};
+  --c0-game-border: 2px solid #{$light-gray100-text-secondary-solid};
+  --c0-p1: #{$blue500};
+  --c0-p2: #{$red500};
+  --c0-slot-none-border: 1px solid #{$light-gray100-text-tertiary-solid};
+  --c0-slot-none-background: #{$light-gray200};
   --c0-slot-p1-border: 2px solid var(--c0-p1);
-  --c0-slot-p1-background: #{mix($light-gray6, $blue5, $weight: 80%)};
+  --c0-slot-p1-background: #{$blue100};
   --c0-slot-p2-border: 2px solid var(--c0-p2);
-  --c0-slot-p2-background: #{mix($light-gray6, $red5, $weight: 80%)};
+  --c0-slot-p2-background: #{$red100};
 
-  --c1: #{$light-gray4};
-  --c1-text: #{$text-on-light-gray4};
-  --c1-drop-shadow: #{$shadow-on-light-gray4};
-  --c1-card: #{$light-gray5};
-  --c1-card-text: #{$text-on-light-gray5};
-  --c1-card-drop-shadow: #{$drop-shadow-on-light-gray4};
+  --c1: #{$light-gray300};
+  --c1-text: #{$light-gray-text-primary};
+  --c1-drop-shadow: #{$shadow-on-light-gray300};
+  --c1-card: #{$light-gray200};
+  --c1-card-text: #{$light-gray-text-primary};
+  --c1-card-drop-shadow: #{$drop-shadow-on-light-gray300};
 
-  --c1-button: #{$light-gray3};
-  --c1-button-border: 1px solid #{$light-gray1};
-  --c1-button-text: #{$text-on-light-gray3};
-  --c1-button-drop-shadow: #{$drop-shadow-on-light-gray4};
+  --c1-button: #{$light-gray400};
+  --c1-button-border: 1px solid #{$light-gray700};
+  --c1-button-text: #{$light-gray-text-primary};
+  --c1-button-drop-shadow: #{$drop-shadow-on-light-gray300};
   --c1-button-transform: translate(0, 0);
 
-  --c1-button-hover: #{solidify($light-gray3, $filter-hover-light-gray3)};
-  --c1-button-hover-border: 1px solid #{solidify($light-gray1, $filter-hover-light-gray1)};
-  --c1-button-hover-text: #{$text-on-light-gray3};
-  --c1-button-hover-drop-shadow: #{$drop-shadow-on-light-gray4};
+  --c1-button-hover: #{solidify($light-gray400, $filter-hover-light-gray400)};
+  --c1-button-hover-border: 1px solid #{solidify($light-gray700, $filter-hover-light-gray700)};
+  --c1-button-hover-text: #{$light-gray-text-primary};
+  --c1-button-hover-drop-shadow: #{$drop-shadow-on-light-gray300};
   --c1-button-hover-transform: translate(0, 0);
 
-  --c1-button-active: #{solidify($light-gray3, $filter-active-light-gray3)};
-  --c1-button-active-border: 1px solid #{solidify($light-gray1, $filter-active-light-gray1)};
-  --c1-button-active-text: #{$text-on-light-gray3};
+  --c1-button-active: #{solidify($light-gray400, $filter-active-light-gray400)};
+  --c1-button-active-border: 1px solid #{solidify($light-gray700, $filter-active-light-gray700)};
+  --c1-button-active-text: #{$light-gray-text-primary};
   --c1-button-active-drop-shadow: none;
   --c1-button-active-transform: translate(2px, 2px);
 
-  --c1-p1-button: #{$blue5};
+  --c1-p1-button: #{$blue500};
   --c1-p1-button-border: 1px solid var(--c1-p1-button);
-  --c1-p1-button-text: #{$text-on-blue5};
-  --c1-p2-button: #{$red5};
+  --c1-p1-button-text: #{$blue500-text-primary};
+  --c1-p2-button: #{$red500};
   --c1-p2-button-border: 1px solid var(--c1-p2-button);
-  --c1-p2-button-text: #{$text-on-red5};
+  --c1-p2-button-text: #{$red500-text-primary};
 
-  --c1-p1-button-hover: #{$blue4};
-  --c1-p1-button-hover-border: 1px solid var(--c1-p1-button-hover);
-  --c1-p1-button-hover-text: #{$text-on-blue4};
-  --c1-p2-button-hover: #{$red4};
-  --c1-p2-button-hover-border: 1px solid var(--c1-p2-button-hover);
-  --c1-p2-button-hover-text: #{$text-on-red4};
+  --c1-p1-button-hover: #{$blue500};
+  --c1-p1-button-hover-border: 1px solid var(--c1-p1-button);
+  --c1-p1-button-hover-text: #{$blue500-text-primary};
+  --c1-p2-button-hover: #{$red500};
+  --c1-p2-button-hover-border: 1px solid var(--c1-p2-button);
+  --c1-p2-button-hover-text: #{$red500-text-primary};
 
-  --c1-p1-button-active: #{$blue3};
-  --c1-p1-button-active-border: 1px solid var(--c1-p1-button-active);
-  --c1-p1-button-active-text: #{$text-on-blue3};
-  --c1-p2-button-active: #{$red3};
-  --c1-p2-button-active-border: 1px solid var(--c1-p2-button-active);
-  --c1-p2-button-active-text: #{$text-on-red3};
+  --c1-p1-button-active: #{$blue500};
+  --c1-p1-button-active-border: 1px solid var(--c1-p1-button);
+  --c1-p1-button-active-text: #{$blue500-text-primary};
+  --c1-p2-button-active: #{$red500};
+  --c1-p2-button-active-border: 1px solid var(--c1-p2-button);
+  --c1-p2-button-active-text: #{$red500-text-primary};
 
   --c-dialog-background: rgba(255, 255, 255, 0.4);
   --c-dialog-drop-shadow: 16px 16px 0 rgba(0, 0, 0, 0.22);
-  --c-context-menu-separator-color: #{$light-gray2};
+  --c-context-menu-separator-color: #{$light-gray600};
   --c-context-menu-separator: 1px solid var(--c-context-menu-separator-color);
   --c-context-menu-drop-shadow: 8px 8px 0 rgba(0, 0, 0, 0.22);
-  --c-context-menu-hover: #{$filter-hover-light-gray4};
-  --c-focus-visible-border-color: #{$dark-gray3};
+  --c-context-menu-hover: #{$filter-hover-light-gray300};
+  --c-focus-visible-border-color: #{$light-gray-text-primary}; // TODO: Change this to something else
 }
 
 // CSS classes that define surface levels
