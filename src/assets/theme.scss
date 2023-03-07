@@ -219,6 +219,12 @@ $p2-svg: "data:image/svg+xml," +
   --c1-button-active-drop-shadow: none;
   --c1-button-active-transform: translate(2px, 2px);
 
+  --c1-control: #{$tb-gray600};
+  --c1-control-border: 1px solid #{$tb-gray300};
+  --c1-control-text: #{$tb-gray-text-primary};
+  --c1-control-drop-shadow: #{$drop-shadow-on-tb-gray700};
+  --c1-control-transform: translate(0, 0);
+
   --c1-p1-button: #{$blue700};
   --c1-p1-button-border: 1px solid #{$blue600};
   --c1-p1-button-text: #{$blue700-text-primary};
@@ -307,6 +313,12 @@ $p2-svg: "data:image/svg+xml," +
   --c1-button-active-drop-shadow: none;
   --c1-button-active-transform: translate(2px, 2px);
 
+  --c1-control: #{$dark-gray600};
+  --c1-control-border: 1px solid #{$dark-gray300};
+  --c1-control-text: #{$dark-gray-text-primary};
+  --c1-control-drop-shadow: #{$drop-shadow-on-dark-gray700};
+  --c1-control-transform: translate(0, 0);
+
   --c1-p1-button: #{$blue700};
   --c1-p1-button-border: 1px solid #{$blue600};
   --c1-p1-button-text: #{$blue700-text-primary};
@@ -394,6 +406,12 @@ $p2-svg: "data:image/svg+xml," +
   --c1-button-active-text: #{$light-gray-text-primary};
   --c1-button-active-drop-shadow: none;
   --c1-button-active-transform: translate(2px, 2px);
+
+  --c1-control: #{$light-gray200};
+  --c1-control-border: 1px solid #{$light-gray600};
+  --c1-control-text: #{$light-gray-text-primary};
+  --c1-control-drop-shadow: #{$drop-shadow-on-light-gray300};
+  --c1-control-transform: translate(0, 0);
 
   --c1-p1-button: #{$blue500};
   --c1-p1-button-border: 1px solid #{$blue600};
@@ -487,6 +505,12 @@ body {
   --c-button-active-text: var(--c1-button-active-text);
   --c-button-active-drop-shadow: var(--c1-button-active-drop-shadow);
   --c-button-active-transform: var(--c1-button-active-transform);
+
+  --c-control: var(--c1-control);
+  --c-control-border: var(--c1-control-border);
+  --c-control-text: var(--c1-control-text);
+  --c-control-drop-shadow: var(--c1-control-drop-shadow);
+  --c-control-transform: var(--c1-control-transform);
 
   --c-p1-button: var(--c1-p1-button);
   --c-p1-button-border: var(--c1-p1-button-border);
