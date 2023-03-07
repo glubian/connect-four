@@ -1,4 +1,4 @@
-import { reactive } from "vue";
+import { computed, reactive } from "vue";
 import { i18n } from "./i18n";
 
 export enum Lang {
@@ -11,29 +11,75 @@ export enum Theme {
   DarkAMOLED = "",
 }
 
-function setLang(lang: Lang) {
-  userStore.lang = lang;
-  i18n.global.locale.value = lang;
+interface UserPreferences {
+  lang?: Lang | null;
+  theme?: Theme | null;
 }
 
-function setTheme(theme: Theme) {
-  userStore.theme = theme;
-  updateTheme();
-}
+const DEFAULT_THEME = defaultTheme();
 
-function updateTheme() {
-  document.body.classList.toggle("light", userStore.theme === Theme.Light);
-}
-
-function preferredTheme(): Theme {
+function defaultTheme(): Theme {
   const pref = matchMedia("(prefers-color-scheme: dark)").matches;
   return pref ? Theme.DarkAMOLED : Theme.Light;
 }
 
+const currentLang = computed(
+  (): Lang => userStore.preferred.lang ?? Lang.English
+);
+
+const currentTheme = computed(
+  (): Theme => userStore.preferred.theme ?? DEFAULT_THEME
+);
+
+function setPreferredLang(lang: Lang | null) {
+  userStore.preferred.lang = lang;
+  applyLang();
+  savePreferences();
+}
+
+function applyLang() {
+  i18n.global.locale.value = userStore.current.lang;
+}
+
+function setPreferredTheme(theme: Theme | null) {
+  userStore.preferred.theme = theme;
+  applyTheme();
+  savePreferences();
+}
+
+function applyTheme() {
+  document.body.classList.toggle(
+    Theme.Light,
+    userStore.current.theme === Theme.Light
+  );
+}
+
+function loadPreferences() {
+  if (!document.cookie) {
+    return;
+  }
+
+  userStore.preferred = JSON.parse(document.cookie);
+  applyLang();
+  applyTheme();
+}
+
+function savePreferences() {
+  document.cookie = JSON.stringify(userStore.preferred, (_, v) => v ?? void 0);
+}
+
 /** Handles user preferences. */
 export const userStore = reactive({
-  lang: Lang.English,
-  theme: preferredTheme(),
-  setLang,
-  setTheme,
+  preferred: {
+    lang: null,
+    theme: null,
+  } as UserPreferences,
+  current: {
+    lang: currentLang,
+    theme: currentTheme,
+  } as const,
+  setPreferredLang,
+  setPreferredTheme,
 });
+
+loadPreferences();

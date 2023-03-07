@@ -107,10 +107,13 @@
       "theme": {
         "section": "Theme",
         "light": "Light",
-        "darkAMOLED": "Dark",
+        "darkAMOLED": "True black",
         "system": "Use system theme"
       },
-      "langSection": "Language",
+      "lang": {
+        "section": "Language",
+        "system": "Use system language"
+      },
       "fullScreen": {
         "enter": "Enter full screen mode",
         "exit": "Exit full screen mode"
@@ -225,10 +228,13 @@
       "theme": {
         "section": "Motyw",
         "light": "Jasny",
-        "darkAMOLED": "Ciemny",
+        "darkAMOLED": "Głęboka czerń",
         "system": "Użyj motywu systemowego"
       },
-      "langSection": "Język",
+      "lang": {
+        "section": "Język",
+        "system": "Użyj języka systemowego"
+      },
       "fullScreen": {
         "enter": "Włącz tryb pełnoekranowy",
         "exit": "Wyłącz tryb pełnoekranowy"

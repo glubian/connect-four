@@ -9,13 +9,13 @@ import AppSettingToggle from "./AppSettingToggle.vue";
 const emit = defineEmits<{ (ev: "hide"): void }>();
 const { t } = useI18n();
 
-function setTheme(t: Theme) {
-  userStore.setTheme(t);
+function setTheme(t: Theme | null) {
+  userStore.setPreferredTheme(t);
   emit("hide");
 }
 
-function setLang(l: Lang) {
-  userStore.setLang(l);
+function setLang(l: Lang | null) {
+  userStore.setPreferredLang(l);
   emit("hide");
 }
 
@@ -36,29 +36,39 @@ const fullscreenText = computed(() =>
         <span>{{ $t("settings.theme.section") }}</span>
       </div>
       <AppSettingToggle
-        :enabled="userStore.theme === Theme.Light"
+        :enabled="userStore.preferred.theme === Theme.Light"
         @click="setTheme(Theme.Light)"
         >{{ $t("settings.theme.light") }}</AppSettingToggle
       >
       <AppSettingToggle
-        :enabled="userStore.theme === Theme.DarkAMOLED"
+        :enabled="userStore.preferred.theme === Theme.DarkAMOLED"
         @click="setTheme(Theme.DarkAMOLED)"
         >{{ $t("settings.theme.darkAMOLED") }}</AppSettingToggle
+      >
+      <AppSettingToggle
+        :enabled="userStore.preferred.theme === null"
+        @click="setTheme(null)"
+        >{{ $t("settings.theme.system") }}</AppSettingToggle
       >
     </div>
     <div class="section">
       <div class="title">
-        <span>{{ $t("settings.langSection") }}</span>
+        <span>{{ $t("settings.lang.section") }}</span>
       </div>
       <AppSettingToggle
-        :enabled="userStore.lang === Lang.English"
+        :enabled="userStore.preferred.lang === Lang.English"
         @click="setLang(Lang.English)"
         >English</AppSettingToggle
       >
       <AppSettingToggle
-        :enabled="userStore.lang === Lang.Polish"
+        :enabled="userStore.preferred.lang === Lang.Polish"
         @click="setLang(Lang.Polish)"
         >Polski</AppSettingToggle
+      >
+      <AppSettingToggle
+        :enabled="userStore.preferred.lang === null"
+        @click="setLang(null)"
+        >{{ $t("settings.lang.system") }}</AppSettingToggle
       >
     </div>
     <div class="section">
