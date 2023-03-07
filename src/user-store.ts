@@ -8,6 +8,7 @@ export enum Lang {
 
 export enum Theme {
   Light = "light",
+  Dark = "dark",
   TrueBlack = "",
 }
 
@@ -48,6 +49,10 @@ function setPreferredTheme(theme: Theme | null) {
 }
 
 function applyTheme() {
+  document.body.classList.toggle(
+    Theme.Dark,
+    userStore.current.theme === Theme.Dark
+  );
   document.body.classList.toggle(
     Theme.Light,
     userStore.current.theme === Theme.Light

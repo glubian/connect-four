@@ -41,6 +41,11 @@ const fullscreenText = computed(() =>
         >{{ $t("settings.theme.light") }}</AppSettingToggle
       >
       <AppSettingToggle
+        :enabled="userStore.preferred.theme === Theme.Dark"
+        @click="setTheme(Theme.Dark)"
+        >{{ $t("settings.theme.dark") }}</AppSettingToggle
+      >
+      <AppSettingToggle
         :enabled="userStore.preferred.theme === Theme.TrueBlack"
         @click="setTheme(Theme.TrueBlack)"
         >{{ $t("settings.theme.trueBlack") }}</AppSettingToggle

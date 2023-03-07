@@ -107,6 +107,7 @@
       "theme": {
         "section": "Theme",
         "light": "Light",
+        "dark": "Dark",
         "trueBlack": "True black",
         "system": "Use system theme"
       },
@@ -228,6 +229,7 @@
       "theme": {
         "section": "Motyw",
         "light": "Jasny",
+        "dark": "Ciemny",
         "trueBlack": "Głęboka czerń",
         "system": "Użyj motywu systemowego"
       },
