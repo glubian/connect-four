@@ -340,7 +340,7 @@ $p2-svg: "data:image/svg+xml," +
   --c1-p2-button-active-border: 1px solid #{$red600};
   --c1-p2-button-active-text: #{$red700-text-primary};
 
-  --c-dialog-background: rgba(255, 255, 255, 0.4);
+  --c-dialog-background: rgba(0, 0, 0, 0.4); // TODO: Change this to something else
   --c-dialog-drop-shadow: 16px 16px 0 rgba(0, 0, 0, 0.22);
   --c-context-menu-separator-color: #{$dark-gray400};
   --c-context-menu-separator: 1px solid var(--c-context-menu-separator-color);
