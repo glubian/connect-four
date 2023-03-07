@@ -90,17 +90,25 @@ $red500-text-primary: #FFFFFFF5;
 $red700-text-primary: #FFFFFFF0;
 
 $shadow-on-tb-gray700: rgba(0, 0, 0, 0.44);
-$shadow-on-light-gray300: rgba(0, 0, 0, 0.24);
+$shadow-on-dark-gray700: rgba(0, 0, 0, 0.24);
+$shadow-on-dark-gray900: rgba(0, 0, 0, 0.22);
 $shadow-on-light-gray100: rgba(0, 0, 0, 0.22);
+$shadow-on-light-gray300: rgba(0, 0, 0, 0.24);
 
 $drop-shadow-on-tb-gray700: 4px 4px 0 solidify($tb-gray700, $shadow-on-tb-gray700);
-$drop-shadow-on-light-gray300: 4px 4px 0 solidify($light-gray300, $shadow-on-light-gray300);
+$drop-shadow-on-dark-gray900: 4px 4px 0 solidify($dark-gray900, $shadow-on-dark-gray900);
+$drop-shadow-on-dark-gray700: 4px 4px 0 solidify($dark-gray700, $shadow-on-dark-gray700);
 $drop-shadow-on-light-gray100: 4px 4px 0 solidify($light-gray100, $shadow-on-light-gray100);
+$drop-shadow-on-light-gray300: 4px 4px 0 solidify($light-gray300, $shadow-on-light-gray300);
 
 $filter-hover-tb-gray700: rgba(0, 0, 0, 0.16);
 $filter-hover-tb-gray500: rgba(0, 0, 0, 0.18);
 $filter-hover-tb-gray400: rgba(0, 0, 0, 0.16);
 $filter-hover-tb-gray200: rgba(0, 0, 0, 0.18);
+$filter-hover-dark-gray700: rgba(0, 0, 0, 0.16);
+$filter-hover-dark-gray500: rgba(0, 0, 0, 0.18);
+$filter-hover-dark-gray400: rgba(0, 0, 0, 0.16);
+$filter-hover-dark-gray200: rgba(0, 0, 0, 0.18);
 $filter-hover-light-gray700: rgba(0, 0, 0, 0.04);
 $filter-hover-light-gray600: rgba(0, 0, 0, 0.04);
 $filter-hover-light-gray400: rgba(0, 0, 0, 0.04);
@@ -110,6 +118,10 @@ $filter-active-tb-gray700: rgba(0, 0, 0, 0.32);
 $filter-active-tb-gray500: rgba(0, 0, 0, 0.26);
 $filter-active-tb-gray400: rgba(0, 0, 0, 0.32);
 $filter-active-tb-gray200: rgba(0, 0, 0, 0.26);
+$filter-active-dark-gray700: rgba(0, 0, 0, 0.32);
+$filter-active-dark-gray500: rgba(0, 0, 0, 0.26);
+$filter-active-dark-gray400: rgba(0, 0, 0, 0.32);
+$filter-active-dark-gray200: rgba(0, 0, 0, 0.26);
 $filter-active-light-gray700: rgba(0, 0, 0, 0.06);
 $filter-active-light-gray600: rgba(0, 0, 0, 0.06);
 $filter-active-light-gray400: rgba(0, 0, 0, 0.06);
@@ -235,6 +247,94 @@ $p2-svg: "data:image/svg+xml," +
   --c-context-menu-drop-shadow: none;
   --c-context-menu-hover: #{$filter-active-tb-gray700};
   --c-focus-visible-border-color: #{$tb-gray-text-primary}; // TODO: Change this so something else
+}
+
+.dark {
+  --c0: #{$dark-gray900};
+  --c0-text: #{$dark-gray900-text-primary};
+  --c0-drop-shadow: #{$shadow-on-dark-gray900};
+
+  --c0-button: #{$dark-gray700};
+  --c0-button-border: 1px solid #{$dark-gray400};
+  --c0-button-text: #{$dark-gray-text-primary};
+  --c0-button-drop-shadow: #{$drop-shadow-on-dark-gray900};
+  --c0-button-transform: translate(0, 0);
+
+  --c0-button-hover: #{solidify($dark-gray700, $filter-hover-dark-gray700)};
+  --c0-button-hover-border: 1px solid #{solidify($dark-gray400, $filter-hover-dark-gray400)};
+  --c0-button-hover-text: #{$dark-gray-text-primary};
+  --c0-button-hover-drop-shadow: #{$drop-shadow-on-dark-gray900};
+  --c0-button-hover-transform: translate(0, 0);
+
+  --c0-button-active: #{solidify($dark-gray700, $filter-active-dark-gray700)};
+  --c0-button-active-border: 1px solid #{solidify($dark-gray400, $filter-active-dark-gray400)};
+  --c0-button-active-text: #{$dark-gray-text-primary};
+  --c0-button-active-drop-shadow: none;
+  --c0-button-active-transform: translate(2px, 2px);
+
+  --c0-game-border: 2px solid #{$dark-gray900-text-secondary-solid};
+  --c0-p1: #{$blue500};
+  --c0-p2: #{$red500};
+  --c0-slot-none-border: 1px solid #{$dark-gray900-text-tertiary-solid};
+  --c0-slot-none-background: #{$dark-gray800};
+  --c0-slot-p1-border: 2px solid var(--c0-p1);
+  --c0-slot-p1-background: #{$blue900};
+  --c0-slot-p2-border: 2px solid var(--c0-p2);
+  --c0-slot-p2-background: #{$red900};
+
+  --c1: #{$dark-gray700};
+  --c1-text: #{$dark-gray-text-primary};
+  --c1-drop-shadow: #{$shadow-on-dark-gray700};
+  --c1-card: #{$dark-gray800};
+  --c1-card-text: #{$dark-gray-text-primary};
+  --c1-card-drop-shadow: #{$drop-shadow-on-dark-gray700};
+
+  --c1-button: #{$dark-gray500};
+  --c1-button-border: 1px solid #{$dark-gray200};
+  --c1-button-text: #{$dark-gray-text-primary};
+  --c1-button-drop-shadow: #{$drop-shadow-on-dark-gray700};
+  --c1-button-transform: translate(0, 0);
+
+  --c1-button-hover: #{solidify($dark-gray500, $filter-hover-dark-gray500)};
+  --c1-button-hover-border: 1px solid #{solidify($dark-gray200, $filter-hover-dark-gray200)};
+  --c1-button-hover-text: #{$dark-gray-text-primary};
+  --c1-button-hover-drop-shadow: #{$drop-shadow-on-dark-gray700};
+  --c1-button-hover-transform: translate(0, 0);
+
+  --c1-button-active: #{solidify($dark-gray500, $filter-active-dark-gray500)};
+  --c1-button-active-border: 1px solid #{solidify($dark-gray200, $filter-active-dark-gray200)};
+  --c1-button-active-text: #{$dark-gray-text-primary};
+  --c1-button-active-drop-shadow: none;
+  --c1-button-active-transform: translate(2px, 2px);
+
+  --c1-p1-button: #{$blue700};
+  --c1-p1-button-border: 1px solid #{$blue600};
+  --c1-p1-button-text: #{$blue700-text-primary};
+  --c1-p2-button: #{$red700};
+  --c1-p2-button-border: 1px solid #{$red600};
+  --c1-p2-button-text: #{$red700-text-primary};
+
+  --c1-p1-button-hover: #{$blue700};
+  --c1-p1-button-hover-border: 1px solid #{$blue600};
+  --c1-p1-button-hover-text: #{$blue700-text-primary};
+  --c1-p2-button-hover: #{$red700};
+  --c1-p2-button-hover-border: 1px solid #{$red600};
+  --c1-p2-button-hover-text: #{$red700-text-primary};
+
+  --c1-p1-button-active: #{$blue700};
+  --c1-p1-button-active-border: 1px solid #{$blue600};
+  --c1-p1-button-active-text: #{$blue700-text-primary};
+  --c1-p2-button-active: #{$red700};
+  --c1-p2-button-active-border: 1px solid #{$red600};
+  --c1-p2-button-active-text: #{$red700-text-primary};
+
+  --c-dialog-background: rgba(255, 255, 255, 0.4);
+  --c-dialog-drop-shadow: 16px 16px 0 rgba(0, 0, 0, 0.22);
+  --c-context-menu-separator-color: #{$dark-gray400};
+  --c-context-menu-separator: 1px solid var(--c-context-menu-separator-color);
+  --c-context-menu-drop-shadow: 8px 8px 0 rgba(0, 0, 0, 0.22);
+  --c-context-menu-hover: #{$filter-hover-dark-gray700};
+  --c-focus-visible-border-color: #{$dark-gray-text-primary}; // TODO: Change this to something else
 }
 
 .light {
