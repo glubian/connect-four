@@ -65,6 +65,8 @@ function loadPreferences() {
   }
 
   userStore.preferred = JSON.parse(document.cookie);
+  userStore.preferred.lang ??= null;
+  userStore.preferred.theme ??= null;
   applyLang();
   applyTheme();
 }
