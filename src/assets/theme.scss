@@ -137,22 +137,6 @@ $p2-svg: "data:image/svg+xml," +
   "    <line x1='19.6884' y1='42.3157' x2='42.3159' y2='19.6883' />" + "  </g>" +
   "</svg>";
 
-$p1-button-svg: "data:image/svg+xml," +
-  "<svg width='8' height='8' viewBox='0 0 8 8' fill='none'" +
-  "  xmlns='http://www.w3.org/2000/svg'>" +
-  "  <g opacity='0.42' transform='rotate(90 4 4)'>" +
-  "    <line x1='-4' y1='4' x2='4' y2='-4' stroke='black' />" +
-  "    <line x1='0' y1='8' x2='8' y2='0' stroke='black' />" +
-  "    <line x1='4' y1='12' x2='12' y2='4' stroke='black' />" + "  </g>" +
-  "</svg>";
-$p2-button-svg: "data:image/svg+xml," +
-  "<svg width='8' height='8' viewBox='0 0 8 8' fill='none'" +
-  "  xmlns='http://www.w3.org/2000/svg'>" + "  <g opacity='0.38'>" +
-  "    <line x1='-4' y1='4' x2='4' y2='-4' stroke='black' />" +
-  "    <line x1='0' y1='8' x2='8' y2='0' stroke='black' />" +
-  "    <line x1='4' y1='12' x2='12' y2='4' stroke='black' />" + "  </g>" +
-  "</svg>";
-
 // Naming scheme: --c[ELEVATION]-<NAME>
 // elevation starts at 0 and is omitted for colors that do not depend on it;
 // `c` stands for color
@@ -162,8 +146,6 @@ $p2-button-svg: "data:image/svg+xml," +
   // Player image backgrounds
   --c-p1-image: url("#{$p1-svg}");
   --c-p2-image: url("#{$p2-svg}");
-  --c-p1-button-image: url("#{$p1-button-svg}");
-  --c-p2-button-image: url("#{$p2-button-svg}");
 }
 
 // Set dark-AMOLED theme as default
@@ -226,24 +208,24 @@ $p2-button-svg: "data:image/svg+xml," +
   --c1-button-active-transform: translate(2px, 2px);
 
   --c1-p1-button: #{$blue700};
-  --c1-p1-button-border: 1px solid var(--c1-p1-button);
+  --c1-p1-button-border: 1px solid #{$blue600};
   --c1-p1-button-text: #{$blue700-text-primary};
   --c1-p2-button: #{$red700};
-  --c1-p2-button-border: 1px solid var(--c1-p2-button);
+  --c1-p2-button-border: 1px solid #{$red600};
   --c1-p2-button-text: #{$red700-text-primary};
 
   --c1-p1-button-hover: #{$blue700};
-  --c1-p1-button-hover-border: 1px solid var(--c1-p1-button);
+  --c1-p1-button-hover-border: 1px solid #{$blue600};
   --c1-p1-button-hover-text: #{$blue700-text-primary};
   --c1-p2-button-hover: #{$red700};
-  --c1-p2-button-hover-border: 1px solid var(--c1-p2-button);
+  --c1-p2-button-hover-border: 1px solid #{$red600};
   --c1-p2-button-hover-text: #{$red700-text-primary};
 
   --c1-p1-button-active: #{$blue700};
-  --c1-p1-button-active-border: 1px solid var(--c1-p1-button);
+  --c1-p1-button-active-border: 1px solid #{$blue600};
   --c1-p1-button-active-text: #{$blue700-text-primary};
   --c1-p2-button-active: #{$red700};
-  --c1-p2-button-active-border: 1px solid var(--c1-p2-button);
+  --c1-p2-button-active-border: 1px solid #{$red600};
   --c1-p2-button-active-text: #{$red700-text-primary};
 
   --c-dialog-background: rgba(0, 0, 0, 0.4);
@@ -314,24 +296,24 @@ $p2-button-svg: "data:image/svg+xml," +
   --c1-button-active-transform: translate(2px, 2px);
 
   --c1-p1-button: #{$blue500};
-  --c1-p1-button-border: 1px solid var(--c1-p1-button);
+  --c1-p1-button-border: 1px solid #{$blue600};
   --c1-p1-button-text: #{$blue500-text-primary};
   --c1-p2-button: #{$red500};
-  --c1-p2-button-border: 1px solid var(--c1-p2-button);
+  --c1-p2-button-border: 1px solid #{$red600};
   --c1-p2-button-text: #{$red500-text-primary};
 
   --c1-p1-button-hover: #{$blue500};
-  --c1-p1-button-hover-border: 1px solid var(--c1-p1-button);
+  --c1-p1-button-hover-border: 1px solid #{$blue600};
   --c1-p1-button-hover-text: #{$blue500-text-primary};
   --c1-p2-button-hover: #{$red500};
-  --c1-p2-button-hover-border: 1px solid var(--c1-p2-button);
+  --c1-p2-button-hover-border: 1px solid #{$red600};
   --c1-p2-button-hover-text: #{$red500-text-primary};
 
   --c1-p1-button-active: #{$blue500};
-  --c1-p1-button-active-border: 1px solid var(--c1-p1-button);
+  --c1-p1-button-active-border: 1px solid #{$blue600};
   --c1-p1-button-active-text: #{$blue500-text-primary};
   --c1-p2-button-active: #{$red500};
-  --c1-p2-button-active-border: 1px solid var(--c1-p2-button);
+  --c1-p2-button-active-border: 1px solid #{$red600};
   --c1-p2-button-active-text: #{$red500-text-primary};
 
   --c-dialog-background: rgba(255, 255, 255, 0.4);
