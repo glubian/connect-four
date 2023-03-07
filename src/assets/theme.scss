@@ -89,59 +89,6 @@ $red900: #430A17;
 $red500-text-primary: #FFFFFFF5;
 $red700-text-primary: #FFFFFFF0;
 
-$dark-gray1: #121212;
-$dark-gray2: #1a1a1a;
-$dark-gray3: #242424;
-$dark-gray4: #323232;
-$dark-gray5: #484848;
-
-$gray1: #808080;
-$gray2: #888;
-$gray4: #9c9c9c;
-$gray3: #aaa;
-
-$light-gray1: #bababa;
-$light-gray2: #c6c6c6;
-$light-gray3: #dcdcdc;
-$light-gray4: #e6e6e6;
-$light-gray5: #f1f1f1;
-$light-gray6: #fafafa;
-
-$red1: #9b2c47;
-$red2: #ae304e;
-$red3: #cd3559;
-$red4: #e13d64;
-$red5: #fa4772;
-
-$blue1: #2248a9;
-$blue2: #2f59c7;
-$blue3: #426ad2;
-$blue4: #557ee8;
-$blue5: #6690fd;
-
-$text-on-black: rgba(255, 255, 255, 0.84);
-
-$text-on-dark-gray1: rgba(255, 255, 255, 0.94);
-$text-on-dark-gray2: rgba(255, 255, 255, 0.94);
-
-$text-on-light-gray1: rgba(0, 0, 0, 0.94);
-$text-on-light-gray3: rgba(0, 0, 0, 0.94);
-$text-on-light-gray4: rgba(0, 0, 0, 0.94);
-$text-on-light-gray5: rgba(0, 0, 0, 0.94);
-$text-on-light-gray6: rgba(0, 0, 0, 0.96);
-
-$text-on-red1: solidify($red1, $text-on-dark-gray1);
-$text-on-red2: solidify($red2, $text-on-dark-gray1);
-$text-on-red3: solidify($red3, $text-on-dark-gray1);
-$text-on-red4: solidify($red4, $text-on-dark-gray1);
-$text-on-red5: solidify($red5, $text-on-dark-gray1);
-
-$text-on-blue1: solidify($blue1, $text-on-dark-gray1);
-$text-on-blue2: solidify($blue2, $text-on-dark-gray1);
-$text-on-blue3: solidify($blue3, $text-on-dark-gray1);
-$text-on-blue4: solidify($blue4, $text-on-dark-gray1);
-$text-on-blue5: solidify($blue5, $text-on-dark-gray1);
-
 $shadow-on-tb-gray700: rgba(0, 0, 0, 0.44);
 $shadow-on-light-gray300: rgba(0, 0, 0, 0.24);
 $shadow-on-light-gray100: rgba(0, 0, 0, 0.22);
