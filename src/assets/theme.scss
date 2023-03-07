@@ -41,8 +41,8 @@ $dark-gray900-text-tertiary: #FFFFFF78;
 $dark-gray-text-primary: #FFFFFFE0;
 
 $dark-gray900-text-primary-solid: solidify($dark-gray900, $dark-gray900-text-primary);
-$dark-gray900-text-primary-solid: solidify($dark-gray900, $dark-gray900-text-secondary);
-$dark-gray900-text-primary-solid: solidify($dark-gray900, $dark-gray900-text-tertiary);
+$dark-gray900-text-secondary-solid: solidify($dark-gray900, $dark-gray900-text-secondary);
+$dark-gray900-text-tertiary-solid: solidify($dark-gray900, $dark-gray900-text-tertiary);
 
 $light-gray100: #FAFAFA;
 $light-gray200: #F0F0F0;
