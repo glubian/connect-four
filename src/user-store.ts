@@ -1,4 +1,4 @@
-import { computed, reactive } from "vue";
+import { computed, reactive, watch } from "vue";
 import { i18n } from "./i18n";
 
 export enum Lang {
@@ -34,29 +34,18 @@ const currentTheme = computed(
 
 function setPreferredLang(lang: Lang | null) {
   userStore.preferred.lang = lang;
-  applyLang();
   savePreferences();
-}
-
-function applyLang() {
-  i18n.global.locale.value = userStore.current.lang;
 }
 
 function setPreferredTheme(theme: Theme | null) {
   userStore.preferred.theme = theme;
-  applyTheme();
   savePreferences();
 }
 
 function applyTheme() {
-  document.body.classList.toggle(
-    Theme.Dark,
-    userStore.current.theme === Theme.Dark
-  );
-  document.body.classList.toggle(
-    Theme.Light,
-    userStore.current.theme === Theme.Light
-  );
+  const { classList } = document.body;
+  classList.toggle(Theme.Dark, userStore.current.theme === Theme.Dark);
+  classList.toggle(Theme.Light, userStore.current.theme === Theme.Light);
 }
 
 function loadPreferences() {
@@ -67,8 +56,6 @@ function loadPreferences() {
   userStore.preferred = JSON.parse(document.cookie);
   userStore.preferred.lang ??= null;
   userStore.preferred.theme ??= null;
-  applyLang();
-  applyTheme();
 }
 
 function savePreferences() {
@@ -89,4 +76,6 @@ export const userStore = reactive({
   setPreferredTheme,
 });
 
+watch(currentLang, (lang) => (i18n.global.locale.value = lang));
+watch(currentTheme, applyTheme);
 loadPreferences();
