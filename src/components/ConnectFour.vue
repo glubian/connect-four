@@ -107,7 +107,7 @@ watch(gameUIStore, () => {
   }
 });
 
-watch(userStore, ({ theme }) => {
+watch(userStore, ({ current: { theme } }) => {
   if (displayedTheme !== theme) {
     clearDurations();
     displayedTheme = theme;
