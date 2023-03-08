@@ -53,11 +53,16 @@ function setPreferredTheme(theme: Theme | null) {
   savePreferences();
 }
 
-/** Updates CSS theme classes. */
-function applyTheme() {
+/** Changes display language. Should not be called directly. */
+function applyLang(lang: Lang) {
+  i18n.global.locale.value = lang;
+}
+
+/** Updates CSS theme classes. Should not be called directly. */
+function applyTheme(theme: Theme) {
   const { classList } = document.body;
-  classList.toggle(Theme.Dark, userStore.current.theme === Theme.Dark);
-  classList.toggle(Theme.Light, userStore.current.theme === Theme.Light);
+  classList.toggle(Theme.Dark, theme === Theme.Dark);
+  classList.toggle(Theme.Light, theme === Theme.Light);
 }
 
 /** Loads preferences from the cookie. */
@@ -90,6 +95,6 @@ export const userStore = reactive({
   setPreferredTheme,
 });
 
-watch(currentLang, (lang) => (i18n.global.locale.value = lang));
-watch(currentTheme, applyTheme);
+watch(currentLang, applyLang, { immediate: true });
+watch(currentTheme, applyTheme, { immediate: true });
 loadPreferences();
