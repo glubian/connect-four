@@ -69,12 +69,13 @@ function setPlayerCode(code: number | null) {
 
 /** Makes a move and ends turn. */
 function endTurn(col: number) {
-  if (store.lobby || game.value.state.result) {
+  const { state } = game.value;
+  if (store.lobby || state.result) {
     return;
   }
 
   if (store.isConnected) {
-    wsController.endTurn(col);
+    wsController.endTurn(state.turn, col);
   } else {
     game.value.endTurn(col);
     triggerRef(game);

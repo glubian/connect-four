@@ -95,6 +95,7 @@ interface LobbyPickPlayerMessage {
 
 interface GameEndTurnMessage {
   type: typeof GAME_END_TURN;
+  turn: number;
   col: number;
 }
 
@@ -237,13 +238,14 @@ export default class WebSocketController {
   }
 
   /** Sends `GameEndTurnMessage`. */
-  endTurn(col: number) {
+  endTurn(turn: number, col: number) {
     if (!(this.socket && this.inGame)) {
       return;
     }
 
     const msg: GameEndTurnMessage = {
       type: GAME_END_TURN,
+      turn,
       col,
     };
     this.socket.send(JSON.stringify(msg));
