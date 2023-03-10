@@ -75,7 +75,7 @@ interface GameRoleMessage {
 
 interface GameSyncMessage {
   type: typeof GAME_SYNC;
-  game: string;
+  game: RemoteGame;
   round: number;
 }
 
@@ -189,16 +189,10 @@ export default class WebSocketController {
       }
       case GAME_SYNC: {
         this.inGame = true;
-
-        let field, state, rules;
-        try {
-          const game = JSON.parse((msg as GameSyncMessage).game) as RemoteGame;
-          ({ field, state, rules } = game);
-        } catch (e) {
-          return;
-        }
-
-        const { round } = msg as GameSyncMessage;
+        const {
+          round,
+          game: { field, state, rules },
+        } = msg as GameSyncMessage;
         store.wsSyncGame(new Game(field, state, rules), round);
         return;
       }
