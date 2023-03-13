@@ -52,6 +52,13 @@ const LOBBY_CODE = "lobbyCode";
 const GAME_ROLE = "gameRole";
 const GAME_SYNC = "gameSync";
 
+type IncomingMessage =
+  | LobbyLinkMessage
+  | LobbySyncMessage
+  | LobbyCodeMessage
+  | GameRoleMessage
+  | GameSyncMessage;
+
 interface LobbyLinkMessage {
   type: typeof LOBBY_LINK;
   lobby: string;
@@ -150,7 +157,7 @@ export default class WebSocketController {
   };
 
   private onMessage = (ev: MessageEvent) => {
-    let msg;
+    let msg: IncomingMessage;
     try {
       msg = JSON.parse(ev.data);
     } catch (e) {
@@ -164,28 +171,25 @@ export default class WebSocketController {
     switch (msg.type) {
       case LOBBY_LINK: {
         if (store.lobby && store.lobby.isHost) {
-          const { lobby, qrCode } = msg as LobbyLinkMessage;
+          const { lobby, qrCode } = msg;
           store.wsLinkLobby(lobby, qrCode);
         }
         return;
       }
       case LOBBY_SYNC: {
         if (store.lobby && store.lobby.isHost) {
-          const { players } = msg as LobbySyncMessage;
-          store.wsSyncLobby(players);
+          store.wsSyncLobby(msg.players);
         }
         return;
       }
       case LOBBY_CODE: {
         if (store.lobby && !store.lobby.isHost) {
-          const { code } = msg as LobbyCodeMessage;
-          store.setPlayerCode(code);
+          store.setPlayerCode(msg.code);
         }
         return;
       }
       case GAME_ROLE: {
-        const { role } = msg as GameRoleMessage;
-        store.wsGameRole(role);
+        store.wsGameRole(msg.role);
         return;
       }
       case GAME_SYNC: {
@@ -193,7 +197,7 @@ export default class WebSocketController {
         const {
           round,
           game: { field, state, rules },
-        } = msg as GameSyncMessage;
+        } = msg;
         store.wsSyncGame(new Game(field, state, rules), round);
         return;
       }
