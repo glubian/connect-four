@@ -35,15 +35,6 @@ function defaultConfig(): GameConfig {
   return { allowDraws: true };
 }
 
-/** Creates `GameRules` with the other player starting the game. */
-function changeStartingPlayer(): GameRules {
-  const prevRules = game.value.rules;
-  return {
-    ...prevRules,
-    startingPlayer: otherPlayer(prevRules.startingPlayer),
-  };
-}
-
 const wsController = new WebSocketController();
 const game = shallowRef(Game.create(defaultRules()));
 let wasGameSynced = false;
