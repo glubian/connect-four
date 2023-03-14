@@ -14,6 +14,11 @@ interface RemoteGame {
   rules: GameRules;
 }
 
+/** A subset of `GameRules` used for starting a new game. */
+export interface GameConfig {
+  allowDraws: boolean;
+}
+
 export interface QR {
   img: string;
   width: number;
@@ -51,13 +56,15 @@ const LOBBY_SYNC = "lobbySync";
 const LOBBY_CODE = "lobbyCode";
 const GAME_ROLE = "gameRole";
 const GAME_SYNC = "gameSync";
+const GAME_PLAYER_SELECTION = "gamePlayerSelection";
 
 type IncomingMessage =
   | LobbyLinkMessage
   | LobbySyncMessage
   | LobbyCodeMessage
   | GameRoleMessage
-  | GameSyncMessage;
+  | GameSyncMessage
+  | GamePlayerSelectionMessage;
 
 interface LobbyLinkMessage {
   type: typeof LOBBY_LINK;
@@ -86,9 +93,16 @@ interface GameSyncMessage {
   round: number;
 }
 
+interface GamePlayerSelectionMessage {
+  type: typeof GAME_PLAYER_SELECTION;
+  p1Voted: boolean;
+  p2Voted: boolean;
+}
+
 // Outgoing messages
 
 const LOBBY_PICK_PLAYER = "lobbyPickPlayer";
+const GAME_PLAYER_SELECTION_VOTE = "gamePlayerSelectionVote";
 const GAME_END_TURN = "gameEndTurn";
 const GAME_RESTART = "gameRestart";
 
@@ -96,8 +110,14 @@ interface LobbyPickPlayerMessage {
   type: typeof LOBBY_PICK_PLAYER;
   code: number;
   role: Player;
-  game: RemoteGame;
+  game?: RemoteGame | null;
+  config: GameConfig;
   round: number;
+}
+
+interface GamePlayerSelectionVoteMessage {
+  type: typeof GAME_PLAYER_SELECTION_VOTE;
+  wantsToStart: boolean;
 }
 
 interface GameEndTurnMessage {
@@ -201,6 +221,11 @@ export default class WebSocketController {
         store.wsSyncGame(new Game(field, state, rules), round);
         return;
       }
+      case GAME_PLAYER_SELECTION: {
+        this.inGame = true;
+        const { p1Voted, p2Voted } = msg;
+        store.wsPlayerSelection(p1Voted, p2Voted);
+      }
     }
   };
 
@@ -225,7 +250,13 @@ export default class WebSocketController {
   };
 
   /** Sends `LobbyPickPlayerMessage`. */
-  pickPlayer(code: number, role: Player, game: Game, round: number) {
+  pickPlayer(
+    code: number,
+    role: Player,
+    game: Game,
+    config: GameConfig,
+    round: number
+  ) {
     if (!this.socket || this.inGame) {
       return;
     }
@@ -235,10 +266,24 @@ export default class WebSocketController {
       code,
       role,
       game,
+      config,
       round,
     };
     const textMsg = JSON.stringify(msg);
     this.socket.send(textMsg);
+  }
+
+  /** Sends `GamePlayerSelectionVoteMessage`. */
+  selectStartingPlayer(wantsToStart: boolean) {
+    if (!(this.socket && this.inGame)) {
+      return;
+    }
+
+    const msg: GamePlayerSelectionVoteMessage = {
+      type: GAME_PLAYER_SELECTION_VOTE,
+      wantsToStart,
+    };
+    this.socket.send(JSON.stringify(msg));
   }
 
   /** Sends `GameEndTurnMessage`. */

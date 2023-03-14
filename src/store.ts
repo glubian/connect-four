@@ -1,7 +1,7 @@
 import { computed, reactive, shallowRef, triggerRef, watch } from "vue";
 import { Game, otherPlayer, Player, type GameRules } from "./game";
 import { URL_LOBBY_PARAMETER } from "./urls";
-import type { DisconnectReason, QR } from "./ws";
+import type { DisconnectReason, GameConfig, QR } from "./ws";
 import WebSocketController from "./ws";
 
 interface Lobby {
@@ -17,11 +17,22 @@ interface JoiningLobby {
   code: number | null;
 }
 
+/** Represents whether and which player selection screen should be shown. */
+export enum PlayerSelection {
+  Hidden,
+  Voting,
+  Waiting,
+}
+
 function defaultRules(): GameRules {
   return {
     allowDraws: true,
     startingPlayer: Player.P1,
   };
+}
+
+function defaultConfig(): GameConfig {
+  return { allowDraws: true };
 }
 
 /** Creates `GameRules` with the other player starting the game. */
@@ -55,7 +66,7 @@ function connect(lobbyId?: string | null) {
 /** Accepts the player with specified code and assigns them a role. */
 function acceptPlayer(code: number, role: Player) {
   if (store.lobby && store.lobby.isHost) {
-    wsController.pickPlayer(code, role, game.value, store.round);
+    wsController.pickPlayer(code, role, game.value, store.config, store.round);
     store.remoteRole = otherPlayer(role);
   }
 }
@@ -70,7 +81,12 @@ function setPlayerCode(code: number | null) {
 /** Makes a move and ends turn. */
 function endTurn(col: number) {
   const { state } = game.value;
-  if (store.lobby || state.result) {
+
+  if (
+    store.playerSelection !== PlayerSelection.Hidden ||
+    store.lobby ||
+    state.result
+  ) {
     return;
   }
 
@@ -83,7 +99,7 @@ function endTurn(col: number) {
 }
 
 /** Restarts the game. */
-function restartGame(rules?: GameRules) {
+function restartGame(config?: GameConfig) {
   if (store.lobby) {
     return;
   }
@@ -91,8 +107,32 @@ function restartGame(rules?: GameRules) {
   if (store.isConnected) {
     wsController.restartGame();
   } else {
-    game.value = Game.create(rules ?? changeStartingPlayer());
+    store.playerSelection = PlayerSelection.Voting;
+    if (config) {
+      store.config = config;
+    }
+  }
+}
+
+/** Select starting player in a local game. */
+function selectStartingPlayer(player: Player): void;
+/** Indicate whether the player wants to start a remote game. */
+function selectStartingPlayer(wantsToStart: boolean): void;
+function selectStartingPlayer(playerOrPreference: Player | boolean) {
+  if (store.lobby || store.playerSelection === PlayerSelection.Hidden) {
+    return;
+  }
+
+  const isPreference = typeof playerOrPreference === "boolean";
+  if (isPreference && store.isConnected) {
+    wsController.selectStartingPlayer(playerOrPreference);
+  } else if (!(isPreference || store.isConnected)) {
+    game.value = Game.create({
+      startingPlayer: playerOrPreference,
+      ...store.config,
+    });
     store.round++;
+    store.playerSelection = PlayerSelection.Hidden;
   }
 }
 
@@ -131,12 +171,26 @@ function wsGameRole(role: Player) {
   store.remoteRole = role;
 }
 
+/** Updates player selection. */
+function wsPlayerSelection(p1Voted: boolean, p2Voted: boolean) {
+  wasGameSynced = true;
+  const { remoteRole } = store;
+  const waiting =
+    (remoteRole === Player.P1 && p1Voted) ||
+    (remoteRole === Player.P2 && p2Voted);
+  store.playerSelection = waiting
+    ? PlayerSelection.Waiting
+    : PlayerSelection.Voting;
+  store.lobby = null;
+}
+
 /** Updates `Game` and round. */
 function wsSyncGame(g: Game, round: number) {
   wasGameSynced = true;
   game.value = g;
   store.round = round;
   store.lobby = null;
+  store.playerSelection = PlayerSelection.Hidden;
 }
 
 /** Signals the connection was successfully opened. */
@@ -213,6 +267,9 @@ export const store = reactive({
   disconnectedByUser: false,
   round: 0,
 
+  playerSelection: PlayerSelection.Hidden,
+  config: defaultConfig(),
+
   getGame: function () {
     return game;
   },
@@ -221,6 +278,7 @@ export const store = reactive({
   connect,
   acceptPlayer,
   setPlayerCode,
+  selectStartingPlayer,
   endTurn,
   restartGame,
   disconnect,
@@ -231,6 +289,7 @@ export const store = reactive({
   wsSyncLobby,
   wsGameRole,
   wsSyncGame,
+  wsPlayerSelection,
   wsConnected,
   wsDisconnectReason,
   wsDisconnected,
