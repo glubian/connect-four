@@ -3,7 +3,7 @@ import { FIELD_SIZE, Player, type GameField } from "@/game";
 import { playerClass, type PlayerClass } from "@/game-ui";
 import { gameUIStore } from "@/game-ui-store";
 import { randomRange } from "@/math";
-import { store } from "@/store";
+import { PlayerSelection, store } from "@/store";
 import { Theme, userStore } from "@/user-store";
 import { computed, ref, shallowRef, triggerRef, watch } from "vue";
 import ConnectFourInput from "./ConnectFourInput.vue";
@@ -91,6 +91,7 @@ function clearDurations() {
 const isDisabled = computed(
   () =>
     !!gameUIStore.state.result ||
+    store.playerSelection !== PlayerSelection.Hidden ||
     (store.isConnected && gameUIStore.state.player !== store.remoteRole)
 );
 
