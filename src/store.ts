@@ -57,7 +57,9 @@ function connect(lobbyId?: string | null) {
 /** Accepts the player with specified code and assigns them a role. */
 function acceptPlayer(code: number, role: Player) {
   if (store.lobby && store.lobby.isHost) {
-    wsController.pickPlayer(code, role, game.value, store.config, store.round);
+    const isVoting = store.playerSelection === PlayerSelection.Voting;
+    const gameValue = isVoting ? null : game.value;
+    wsController.pickPlayer(code, role, gameValue, store.config, store.round);
     store.remoteRole = otherPlayer(role);
   }
 }

@@ -253,7 +253,7 @@ export default class WebSocketController {
   pickPlayer(
     code: number,
     role: Player,
-    game: Game,
+    game: Game | null,
     config: GameConfig,
     round: number
   ) {
