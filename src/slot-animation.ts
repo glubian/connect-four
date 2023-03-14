@@ -307,7 +307,6 @@ export function slotAnimation({
 
   /** Removes CSS classes and event listeners. */
   function destroy() {
-    el.style.opacity = "";
     el.classList.remove(ENTER_CLASS, LEAVE_CLASS);
     el.removeEventListener("animationend", removeAnimationClasses);
     el.removeEventListener("animationcancel", removeAnimationClasses);
