@@ -510,7 +510,7 @@ export function slotAnimation({
   function keyboardKeyDown(ev: KeyboardEvent) {
     const isLeft = KEYS_LEFT.includes(ev.key);
     const isRight = KEYS_RIGHT.includes(ev.key);
-    const isSubmit = KEYS_SUBMIT.includes(ev.key);
+    const isSubmit = !ev.repeat && KEYS_SUBMIT.includes(ev.key);
 
     updateFocus(isFocused, Device.Keyboard);
 
