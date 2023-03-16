@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Player } from "@/game";
+import { gameUIStore } from "@/game-ui-store";
 import {
   PanelLayout,
   PANEL_APPEAR_DURATION,
@@ -7,7 +9,7 @@ import {
   PANEL_MIN_WIDTH,
 } from "@/layout";
 import { layoutStore } from "@/layout-store";
-import { store } from "@/store";
+import { PlayerSelection, store } from "@/store";
 import { computed, onUnmounted, ref, watch, type Ref } from "vue";
 import AppDialog from "./AppDialog.vue";
 import AppPageHeader from "./AppPageHeader.vue";
@@ -41,6 +43,21 @@ const disconnectedDialogShown = computed({
   set(v: boolean) {
     if (!v) {
       store.dismissDisconnectReason();
+    }
+  },
+});
+
+const showPlayerSelectionDialog = computed({
+  get() {
+    return (
+      !store.isConnected &&
+      !disconnectedDialogShown.value &&
+      gameUIStore.playerSelection === PlayerSelection.Voting
+    );
+  },
+  set(v: boolean) {
+    if (!v) {
+      store.dismissPlayerSelection();
     }
   },
 });
@@ -137,6 +154,19 @@ function onSlideAnimationEvent() {
     >
       <button class="flat" @click="disconnectedDialogShown = false">
         {{ $t(`page.dialog.${store.disconnectedReason}.closeButton`) }}
+      </button>
+    </AppDialog>
+
+    <AppDialog
+      :message="$t('page.dialog.playerSelection.message')"
+      :dismissible="true"
+      v-model:shown="showPlayerSelectionDialog"
+    >
+      <button class="flat" @click="store.selectStartingPlayer(Player.P1)">
+        {{ $t("page.dialog.playerSelection.p1") }}
+      </button>
+      <button class="flat" @click="store.selectStartingPlayer(Player.P2)">
+        {{ $t("page.dialog.playerSelection.p2") }}
       </button>
     </AppDialog>
   </div>
