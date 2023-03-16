@@ -203,7 +203,7 @@ function wsDisconnected() {
   store.remoteRole = null;
 
   if (wasGameSynced) {
-    restartGame(defaultRules());
+    restartGame();
   }
 
   wasGameSynced = false;
