@@ -213,13 +213,14 @@ function wsDisconnectReason(reason: DisconnectReason) {
 
 /** Cleans up after the connection was closed. */
 function wsDisconnected() {
+  const { remoteRole } = store;
+
   store.isConnected = false;
   store.lobby = null;
   store.remoteRole = null;
 
   if (wasGameSynced) {
-    startLocalGame(store.remoteRole ?? Player.P1);
-    restartGame();
+    startLocalGame(remoteRole ?? Player.P1);
   }
 
   wasGameSynced = false;
