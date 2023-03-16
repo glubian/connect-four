@@ -14,6 +14,7 @@ import { computed, onUnmounted, ref, watch, type Ref } from "vue";
 import AppDialog from "./AppDialog.vue";
 import AppPageHeader from "./AppPageHeader.vue";
 import AppPageMainInGame from "./AppPageMainInGame.vue";
+import AppPageMainPlayerSelection from "./AppPageMainPlayerSelection.vue";
 
 const props = defineProps<{ isPanelShown?: boolean }>();
 
@@ -46,6 +47,13 @@ const disconnectedDialogShown = computed({
     }
   },
 });
+
+const showPlayerSelectionScreen = computed(
+  () =>
+    store.isConnected &&
+    !store.lobby &&
+    gameUIStore.playerSelection !== PlayerSelection.Hidden
+);
 
 const showPlayerSelectionDialog = computed({
   get() {
@@ -138,7 +146,13 @@ function onSlideAnimationEvent() {
     <AppPageHeader v-show="showHeaderAndFooter" />
 
     <main :style="mainStyle" ref="mainRef">
-      <AppPageMainInGame :is-panel-shown="isPanelShown" />
+      <AppPageMainPlayerSelection
+        v-if="showPlayerSelectionScreen"
+      ></AppPageMainPlayerSelection>
+      <AppPageMainInGame
+        :is-panel-shown="isPanelShown"
+        v-else
+      ></AppPageMainInGame>
     </main>
 
     <footer class="small" v-show="showHeaderAndFooter">
