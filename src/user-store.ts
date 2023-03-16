@@ -63,6 +63,9 @@ function applyTheme(theme: Theme) {
   const { classList } = document.body;
   classList.toggle(Theme.Dark, theme === Theme.Dark);
   classList.toggle(Theme.Light, theme === Theme.Light);
+  for (const animation of document.getAnimations()) {
+    animation.finish();
+  }
 }
 
 /** Loads preferences from the cookie. */
