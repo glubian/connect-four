@@ -146,13 +146,15 @@ function onSlideAnimationEvent() {
     <AppPageHeader v-show="showHeaderAndFooter" />
 
     <main :style="mainStyle" ref="mainRef">
-      <AppPageMainPlayerSelection
-        v-if="showPlayerSelectionScreen"
-      ></AppPageMainPlayerSelection>
-      <AppPageMainInGame
-        :is-panel-shown="isPanelShown"
-        v-else
-      ></AppPageMainInGame>
+      <Transition name="main">
+        <AppPageMainPlayerSelection
+          v-if="showPlayerSelectionScreen"
+        ></AppPageMainPlayerSelection>
+        <AppPageMainInGame
+          :is-panel-shown="isPanelShown"
+          v-else
+        ></AppPageMainInGame>
+      </Transition>
     </main>
 
     <footer class="small" v-show="showHeaderAndFooter">
@@ -204,8 +206,22 @@ main {
 }
 
 main > * {
+  position: absolute;
   width: 100%;
   height: 100%;
+}
+
+.main-enter-active,
+.main-leave-active {
+  transform: translateY(0);
+  transition-property: opacity;
+  transition-duration: 200ms;
+  transition-timing-function: ease-in-out;
+}
+
+.main-enter-from,
+.main-leave-to {
+  opacity: 0;
 }
 
 footer {
