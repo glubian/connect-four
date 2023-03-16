@@ -221,6 +221,7 @@ function wsDisconnected() {
 
   if (wasGameSynced) {
     startLocalGame(remoteRole ?? Player.P1);
+    dismissPlayerSelection();
   }
 
   wasGameSynced = false;
