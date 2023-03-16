@@ -36,10 +36,6 @@ const layout = computed(() => layoutStore.panelLayout);
 
   background-color: var(--c-dialog-background);
   transition: background-color 200ms ease-in-out;
-
-  .layout-desktop & {
-    background-color: transparent;
-  }
 }
 
 .panel {
