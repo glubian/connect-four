@@ -1,7 +1,7 @@
 import { reactive, watch } from "vue";
-import { FIELD_SIZE, GameState, otherPlayer } from "./game";
 import type { GameResult, GameRules, Player } from "./game";
-import { store } from "./store";
+import { FIELD_SIZE, GameState, otherPlayer } from "./game";
+import { PlayerSelection, store } from "./store";
 
 const gameRef = store.getGame();
 let isAnimating = false;
@@ -93,6 +93,9 @@ function sync() {
   gameUIStore.rules = { ...gameRef.value.rules };
   gameUIStore.lastMove = getLastMove();
   gameUIStore.round = store.round;
+
+  // Allow player selection to be hidden, since all changes are committed.
+  gameUIStore.playerSelection = store.playerSelection;
 }
 
 /** Updates the coordinates of the most recent move made by a local player. */
@@ -143,6 +146,14 @@ export const gameUIStore = reactive({
   playerMove: null as [number, number] | null,
   round: 0,
 
+  /**
+   * Indicates whether the player selection screen should be shown.
+   *
+   * Delays showing the game screen until after the changes in `store` have
+   * propagated to `gameUIStore` to prevent content flash.
+   */
+  playerSelection: store.playerSelection,
+
   hasSpaceAt,
   getY,
 
@@ -152,8 +163,13 @@ export const gameUIStore = reactive({
 });
 
 watch(gameRef, sync);
-watch(store, ({ round }) => {
+watch(store, ({ round, playerSelection, isConnected }) => {
   if (round !== gameUIStore.round) {
     sync();
+  }
+
+  // Update instantly only when player selection should be shown.
+  if (!isConnected || playerSelection !== PlayerSelection.Hidden) {
+    gameUIStore.playerSelection = playerSelection;
   }
 });

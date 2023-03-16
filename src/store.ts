@@ -275,6 +275,12 @@ export const store = reactive({
   disconnectedByUser: false,
   round: 0,
 
+  /**
+   * Indicates whether the player selection screen should be shown.
+   * Does not wait for `gameUIStore` properties to update.
+   *
+   * For most cases, use `playerSelection` in `gameUIStore` instead.
+   */
   playerSelection: PlayerSelection.Hidden,
   config: defaultConfig(),
 
