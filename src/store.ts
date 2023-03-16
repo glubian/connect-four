@@ -196,6 +196,7 @@ function wsSyncGame(g: Game, round: number) {
   wasGameSynced = true;
   game.value = g;
   store.round = round;
+  store.remoteRound = round;
   store.lobby = null;
   store.playerSelection = PlayerSelection.Hidden;
 }
@@ -273,7 +274,10 @@ export const store = reactive({
   remoteRole: null as Player | null,
   disconnectedReason: null as DisconnectReason | null,
   disconnectedByUser: false,
+  /** Current round number. */
   round: 0,
+  /** Number of the last round received from the server. */
+  remoteRound: 0,
 
   /**
    * Indicates whether the player selection screen should be shown.
