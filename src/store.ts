@@ -40,6 +40,14 @@ const wsController = new WebSocketController();
 const game = shallowRef(Game.create(defaultRules()));
 let wasGameSynced = false;
 
+function startLocalGame(startingPlayer: Player) {
+  game.value = Game.create({
+    startingPlayer,
+    ...store.config,
+  });
+  store.round++;
+}
+
 // Mutations that can be invoked by the UI
 
 /**
@@ -121,11 +129,7 @@ function selectStartingPlayer(playerOrPreference: Player | boolean) {
   if (isPreference && store.isConnected) {
     wsController.selectStartingPlayer(playerOrPreference);
   } else if (!(isPreference || store.isConnected)) {
-    game.value = Game.create({
-      startingPlayer: playerOrPreference,
-      ...store.config,
-    });
-    store.round++;
+    startLocalGame(playerOrPreference);
     store.playerSelection = PlayerSelection.Hidden;
   }
 }
