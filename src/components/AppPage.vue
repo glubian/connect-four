@@ -135,7 +135,7 @@ function onSlideAnimationEvent() {
       :dismissible="true"
       v-model:shown="disconnectedDialogShown"
     >
-      <button class="flat" @click="store.dismissDisconnectReason()">
+      <button class="flat" @click="disconnectedDialogShown = false">
         {{ $t(`page.dialog.${store.disconnectedReason}.closeButton`) }}
       </button>
     </AppDialog>
