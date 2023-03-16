@@ -217,6 +217,7 @@ function wsDisconnected() {
   store.remoteRole = null;
 
   if (wasGameSynced) {
+    startLocalGame(store.remoteRole ?? Player.P1);
     restartGame();
   }
 
