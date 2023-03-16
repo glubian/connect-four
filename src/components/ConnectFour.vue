@@ -4,7 +4,6 @@ import { playerClass, type PlayerClass } from "@/game-ui";
 import { gameUIStore } from "@/game-ui-store";
 import { randomRange } from "@/math";
 import { PlayerSelection, store } from "@/store";
-import { Theme, userStore } from "@/user-store";
 import { computed, ref, shallowRef, triggerRef, watch } from "vue";
 import ConnectFourInput from "./ConnectFourInput.vue";
 import ConnectFourResult from "./ConnectFourResult.vue";
@@ -24,7 +23,6 @@ interface Slot {
 const rootClassListRef = ref({ animate: false, focus: false });
 const slotsRef = shallowRef(createSlotArray(gameUIStore.field));
 let displayedRound = 0;
-let displayedTheme: Theme | null = null;
 
 function slotFromValue(value: Player | null): Slot {
   return {
@@ -83,11 +81,6 @@ function randomDurations() {
   triggerRef(slotsRef);
 }
 
-function clearDurations() {
-  slotsRef.value.forEach((col) => col.forEach((s) => (s.style = {})));
-  triggerRef(slotsRef);
-}
-
 const isDisabled = computed(
   () =>
     !!gameUIStore.state.result ||
@@ -105,13 +98,6 @@ watch(gameUIStore, () => {
   if (displayedRound !== gameUIStore.round) {
     randomDurations();
     displayedRound = gameUIStore.round;
-  }
-});
-
-watch(userStore, ({ current: { theme } }) => {
-  if (displayedTheme !== theme) {
-    clearDurations();
-    displayedTheme = theme;
   }
 });
 </script>
