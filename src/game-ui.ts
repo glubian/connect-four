@@ -1,4 +1,4 @@
-import { FIELD_SIZE, GameWinner, Player } from "./game";
+import { FIELD_SIZE, Player } from "./game";
 
 export const BORDER_WIDTH = 2; // px
 export const PADDING = 8; // px
