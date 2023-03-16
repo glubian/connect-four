@@ -129,6 +129,15 @@ function selectStartingPlayer(playerOrPreference: Player | boolean) {
   }
 }
 
+/** Dismisses player selection dialog in a local game. */
+function dismissPlayerSelection() {
+  if (store.isConnected) {
+    return;
+  }
+
+  store.playerSelection = PlayerSelection.Hidden;
+}
+
 /** Disconnects from the server. */
 function disconnect() {
   if (store.isConnected) {
@@ -272,6 +281,7 @@ export const store = reactive({
   acceptPlayer,
   setPlayerCode,
   selectStartingPlayer,
+  dismissPlayerSelection,
   endTurn,
   restartGame,
   disconnect,
