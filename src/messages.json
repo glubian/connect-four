@@ -9,7 +9,18 @@
       "rematchButton": "Rematch",
       "createLobbyButton": "Join on another device",
       "disconnectButton": "Disconnect",
+      "playerSelection": {
+        "message": "Who is starting the next game?",
+        "me": "I want to start",
+        "dunno": "You decide",
+        "waiting": "Waiting for your opponent..."
+      },
       "dialog": {
+        "playerSelection": {
+          "message": "Who is starting the next game?",
+          "p1": "Blue",
+          "p2": "Red"
+        },
         "disconnect": {
           "areYouSure": "Are you sure?",
           "closeButton": "Close",
@@ -131,7 +142,18 @@
       "rematchButton": "Zagraj ponownie",
       "createLobbyButton": "Dołącz na innym urządzeniu",
       "disconnectButton": "Rozłącz",
+      "playerSelection": {
+        "message": "Kto zaczyna następną grę?",
+        "me": "Ja chcę zacząć",
+        "dunno": "Zdecyduj za mnie",
+        "waiting": "Oczekiwanie na przeciwnika..."
+      },
       "dialog": {
+        "playerSelection": {
+          "message": "Kto zaczyna następną grę?",
+          "p1": "Niebieski",
+          "p2": "Czerwony"
+        },
         "disconnect": {
           "areYouSure": "Czy na pewno chcesz się rozłączyć?",
           "closeButton": "Anuluj",
