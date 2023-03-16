@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { GameWinner, Player } from "@/game";
-import { gameUIStore } from "@/game-ui-store";
-import { store } from "@/store";
 import {
   PanelLayout,
   PANEL_APPEAR_DURATION,
@@ -10,11 +7,11 @@ import {
   PANEL_MIN_WIDTH,
 } from "@/layout";
 import { layoutStore } from "@/layout-store";
+import { store } from "@/store";
 import { computed, onUnmounted, ref, watch, type Ref } from "vue";
-import { useI18n } from "vue-i18n";
 import AppDialog from "./AppDialog.vue";
 import AppPageHeader from "./AppPageHeader.vue";
-import ConnectFour from "./ConnectFour.vue";
+import AppPageMainInGame from "./AppPageMainInGame.vue";
 
 const props = defineProps<{ isPanelShown?: boolean }>();
 
@@ -31,13 +28,7 @@ const SLIDE_TO =
   "), 0)";
 const SLIDE_TO_MOBILE = "translate(0, -64px)";
 
-const { t } = useI18n();
-
 const showHeaderAndFooter = ref(true);
-
-const showPausedControls = computed(
-  () => layoutStore.panelLayout === PanelLayout.Desktop
-);
 
 const mainStyle = computed(() => ({
   transform: props.isPanelShown ? slideTo() : SLIDE_FROM,
@@ -53,39 +44,6 @@ const disconnectedDialogShown = computed({
     }
   },
 });
-
-const statusMessage = computed(() => {
-  const { result } = gameUIStore.state;
-  if (props.isPanelShown) {
-    return t("page.statusIndicator.paused");
-  }
-
-  if (result) {
-    const { winner } = result;
-    if (store.isConnected && winner !== GameWinner.Draw) {
-      if ((winner as unknown as Player) === store.remoteRole) {
-        return t("page.statusIndicator.victory");
-      } else {
-        return t("page.statusIndicator.defeat");
-      }
-    }
-
-    switch (winner) {
-      case GameWinner.P1:
-        return t("page.statusIndicator.p1Won");
-      case GameWinner.P2:
-        return t("page.statusIndicator.p2Won");
-      case GameWinner.Draw:
-        return t("page.statusIndicator.draw");
-    }
-  }
-
-  return "";
-});
-
-const statusMessageSlideUp = computed(() =>
-  !props.isPanelShown && gameUIStore.state.result ? "slide-up" : ""
-);
 
 // panel animation
 
@@ -163,40 +121,7 @@ function onSlideAnimationEvent() {
     <AppPageHeader v-show="showHeaderAndFooter" />
 
     <main :style="mainStyle" ref="mainRef">
-      <div class="top">
-        <Transition>
-          <h1
-            v-if="statusMessage && (!store.lobby || showPausedControls)"
-            class="game-state large"
-            :class="[layoutStore.panelLayout, statusMessageSlideUp]"
-          >
-            {{ statusMessage }}
-          </h1>
-        </Transition>
-      </div>
-      <ConnectFour />
-      <div class="bottom">
-        <Transition>
-          <button
-            @click="store.disconnect()"
-            v-if="store.lobby && showPausedControls"
-          >
-            {{ $t("page.resumeButton") }}
-          </button>
-          <div v-else-if="store.isUntouched && !store.lobby">
-            <div>{{ $t("page.welcome.startPlayingLocally") }}</div>
-            <button @click="store.connect()">
-              {{ $t("page.welcome.createLobbyButton") }}
-            </button>
-          </div>
-          <button
-            v-else-if="gameUIStore.state.result && !store.lobby"
-            @click="store.restartGame()"
-          >
-            {{ $t("page.rematchButton") }}
-          </button>
-        </Transition>
-      </div>
+      <AppPageMainInGame :is-panel-shown="isPanelShown" />
     </main>
 
     <footer class="small" v-show="showHeaderAndFooter">
@@ -227,6 +152,18 @@ function onSlideAnimationEvent() {
   flex: 1;
 }
 
+main {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+main > * {
+  width: 100%;
+  height: 100%;
+}
+
 footer {
   display: flex;
   align-items: center;
@@ -241,97 +178,5 @@ footer {
   }
 
   transition: opacity 180ms ease-in-out;
-}
-
-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-
-  z-index: 50;
-}
-
-.top {
-  display: flex;
-  justify-content: end;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
-
-  h1 {
-    margin-bottom: 40px;
-  }
-}
-
-.game-state {
-  text-align: center;
-  opacity: 1;
-  transform: translateY(0);
-
-  &.v-enter-active {
-    transition-property: opacity, transform;
-    transition-duration: 360ms;
-    transition-timing-function: ease-out;
-  }
-
-  &.v-leave-active {
-    transition-property: opacity;
-    transition-duration: 120ms;
-    transition-timing-function: ease-in;
-  }
-
-  &:is(.v-enter-from, .v-leave-to) {
-    opacity: 0;
-  }
-
-  &.slide-up.v-enter-from {
-    transform: translateY(32px);
-  }
-}
-
-.bottom {
-  display: flex;
-  justify-content: start;
-  flex-direction: column;
-  align-items: center;
-
-  position: relative;
-  width: 100%;
-  flex: 1;
-
-  div {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 16px;
-  }
-
-  & > * {
-    position: absolute;
-    margin-top: 40px;
-  }
-
-  & > .v-enter-active {
-    transition: opacity 120ms ease-in;
-  }
-
-  & > .v-leave-active {
-    transition: opacity 120ms ease-out;
-  }
-
-  & > :is(.v-enter-from, .v-leave-to) {
-    opacity: 0;
-  }
-}
-
-@media (min-width: layout.$panel-layout-tablet) {
-  .top h1 {
-    margin-bottom: 48px;
-  }
-
-  .bottom > * {
-    margin-top: 48px;
-  }
 }
 </style>
