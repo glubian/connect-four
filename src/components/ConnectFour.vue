@@ -84,7 +84,7 @@ function randomDurations() {
 const isDisabled = computed(
   () =>
     !!gameUIStore.state.result ||
-    store.playerSelection !== PlayerSelection.Hidden ||
+    gameUIStore.playerSelection !== PlayerSelection.Hidden ||
     (store.isConnected && gameUIStore.state.player !== store.remoteRole)
 );
 
