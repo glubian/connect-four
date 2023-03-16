@@ -25,9 +25,10 @@ export enum PlayerSelection {
 }
 
 function defaultRules(): GameRules {
+  const { allowDraws } = defaultConfig();
   return {
-    allowDraws: true,
     startingPlayer: Player.P1,
+    allowDraws,
   };
 }
 
