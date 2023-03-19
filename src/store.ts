@@ -173,9 +173,29 @@ function wsSyncLobby(playerCodes: number[]) {
   }
 }
 
-/** Updates remote `Game` role. */
-function wsGameRole(role: Player) {
+/** Sets remote `Game` role. */
+function wsSetRemoteRole(role: Player) {
   store.remoteRole = role;
+}
+
+/** Sets game config, */
+function wsSetConfig(config: GameConfig) {
+  store.config = config;
+}
+
+/** Sets delay. */
+function wsSetDelay(timestamp: string) {
+  let dt: Date;
+  try {
+    dt = new Date(timestamp);
+  } catch (e) {
+    // TODO: Remove before committing.
+    console.error("Failed to parse timestamp");
+    return;
+  }
+
+  console.log({ timestamp, dt });
+  store.delay = Date.now() - dt.getTime();
 }
 
 /** Updates player selection. */
@@ -290,6 +310,12 @@ export const store = reactive({
   playerSelection: PlayerSelection.Hidden,
   config: defaultConfig(),
 
+  /**
+   * The amount of time it takes to deliver the message to the server
+   * in milliseconds.
+   */
+  delay: 0, // ms
+
   getGame: function () {
     return game;
   },
@@ -308,7 +334,9 @@ export const store = reactive({
   // These mutations should only be invoked by the `wsController`
   wsLinkLobby,
   wsSyncLobby,
-  wsGameRole,
+  wsSetRemoteRole,
+  wsSetConfig,
+  wsSetDelay,
   wsSyncGame,
   wsPlayerSelection,
   wsConnected,

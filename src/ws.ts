@@ -54,7 +54,7 @@ export enum ClientDisconnectReason {
 const LOBBY_LINK = "lobbyLink";
 const LOBBY_SYNC = "lobbySync";
 const LOBBY_CODE = "lobbyCode";
-const GAME_ROLE = "gameRole";
+const GAME_SETUP = "gameSetup";
 const GAME_SYNC = "gameSync";
 const GAME_PLAYER_SELECTION = "gamePlayerSelection";
 
@@ -62,7 +62,7 @@ type IncomingMessage =
   | LobbyLinkMessage
   | LobbySyncMessage
   | LobbyCodeMessage
-  | GameRoleMessage
+  | GameSetupMessage
   | GameSyncMessage
   | GamePlayerSelectionMessage;
 
@@ -82,9 +82,11 @@ interface LobbyCodeMessage {
   code: number;
 }
 
-interface GameRoleMessage {
-  type: typeof GAME_ROLE;
-  role: Player;
+interface GameSetupMessage {
+  type: typeof GAME_SETUP;
+  role?: Player | null;
+  config?: GameConfig | null;
+  timestamp?: string | null;
 }
 
 interface GameSyncMessage {
@@ -208,8 +210,17 @@ export default class WebSocketController {
         }
         return;
       }
-      case GAME_ROLE: {
-        store.wsGameRole(msg.role);
+      case GAME_SETUP: {
+        const { role, config, timestamp } = msg;
+        if (typeof role === "number") {
+          store.wsSetRemoteRole(role);
+        }
+        if (config) {
+          store.wsSetConfig(config);
+        }
+        if (timestamp) {
+          store.wsSetDelay(timestamp);
+        }
         return;
       }
       case GAME_SYNC: {
