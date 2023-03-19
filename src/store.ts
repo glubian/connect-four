@@ -185,17 +185,8 @@ function wsSetConfig(config: GameConfig) {
 
 /** Sets delay. */
 function wsSetDelay(timestamp: string) {
-  let dt: Date;
-  try {
-    dt = new Date(timestamp);
-  } catch (e) {
-    // TODO: Remove before committing.
-    console.error("Failed to parse timestamp");
-    return;
-  }
-
-  console.log({ timestamp, dt });
-  store.delay = Date.now() - dt.getTime();
+  const delay = Date.now() - new Date(timestamp).getTime();
+  store.delay = Number.isNaN(delay) ? 0 : delay;
 }
 
 /** Updates player selection. */
