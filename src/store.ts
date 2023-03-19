@@ -107,7 +107,7 @@ function restartGame(config?: GameConfig) {
   }
 
   if (store.isConnected) {
-    wsController.restartGame();
+    wsController.restartGame(config);
   } else {
     store.playerSelection = PlayerSelection.Voting;
     if (config) {

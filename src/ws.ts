@@ -128,7 +128,7 @@ interface GameEndTurnMessage {
   col: number;
 }
 
-interface GameRestartMessage {
+interface GameRestartMessage extends Partial<GameConfig> {
   type: typeof GAME_RESTART;
 }
 
@@ -312,12 +312,14 @@ export default class WebSocketController {
   }
 
   /** Sends `GameRestartMessage`. */
-  restartGame() {
+  restartGame(config?: GameConfig) {
     if (!(this.socket && this.inGame)) {
       return;
     }
 
-    const msg: GameRestartMessage = { type: GAME_RESTART };
+    const msg: GameRestartMessage = config
+      ? { type: GAME_RESTART, ...config }
+      : { type: GAME_RESTART };
     this.socket.send(JSON.stringify(msg));
   }
 }
