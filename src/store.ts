@@ -24,6 +24,25 @@ export enum PlayerSelection {
   Waiting,
 }
 
+/**
+ * Stores restart requests for both players, using `Player`
+ * representation as index.
+ */
+type RestartRequests = [RestartRequest | null, RestartRequest | null];
+
+/**
+ * Restart request made when the game cannot be restarted without asking
+ * the permission of the opponent first.
+ */
+interface RestartRequest {
+  /** Changes to the configuration, if any. */
+  config?: GameConfig | null;
+  /** Expiry handle. */
+  handle: ReturnType<typeof setTimeout>;
+  /** Expiry date. */
+  timeout: Date;
+}
+
 function defaultRules(): GameRules {
   const { allowDraws } = defaultConfig();
   return {
@@ -113,6 +132,20 @@ function restartGame(config?: GameConfig) {
     if (config) {
       store.config = config;
     }
+  }
+}
+
+/** Sends a response to opponent's restart request, if one was made. */
+function respondToRestartRequest(accepted: boolean) {
+  const { remoteRole, restartRequests } = store;
+  if (remoteRole === null) {
+    return;
+  }
+
+  const opponent = otherPlayer(remoteRole);
+  const req = restartRequests[opponent];
+  if (req) {
+    wsController.respondToRestartRequest(accepted);
   }
 }
 
@@ -238,6 +271,27 @@ function wsDisconnected() {
   wasGameSynced = false;
 }
 
+/** Details of the received restart request. */
+interface IncomingRestartRequest {
+  /** Changed configuration, if any. */
+  config?: GameConfig | null;
+  /** Expiry date. */
+  timeout: Date;
+}
+
+/** Stores the restart request made by the given player. */
+function wsRestartRequest(player: Player, req: IncomingRestartRequest | null) {
+  clearRestartRequest(player);
+  if (req) {
+    const { config, timeout } = req;
+    const handle = setTimeout(
+      () => clearRestartRequest(player),
+      timeout.getTime()
+    );
+    store.restartRequests[player] = { config, handle, timeout };
+  }
+}
+
 // Internal functions
 
 /** Creates a new lobby object. */
@@ -279,6 +333,15 @@ function updateUntouched() {
   });
 }
 
+/** Clears restart request made by the given player. */
+function clearRestartRequest(player: Player) {
+  const req = store.restartRequests[player];
+  if (req) {
+    clearTimeout(req.handle);
+  }
+  store.restartRequests[player] = null;
+}
+
 /** Handles the game state. */
 export const store = reactive({
   lobby: null as Lobby | JoiningLobby | null,
@@ -291,6 +354,7 @@ export const store = reactive({
   round: 0,
   /** Number of the last round received from the server. */
   remoteRound: 0,
+  restartRequests: [null, null] as RestartRequests,
 
   /**
    * Indicates whether the player selection screen should be shown.
@@ -319,6 +383,7 @@ export const store = reactive({
   dismissPlayerSelection,
   endTurn,
   restartGame,
+  respondToRestartRequest,
   disconnect,
   dismissDisconnectReason,
 
@@ -330,6 +395,7 @@ export const store = reactive({
   wsSetDelay,
   wsSyncGame,
   wsPlayerSelection,
+  wsRestartRequest,
   wsConnected,
   wsDisconnectReason,
   wsDisconnected,

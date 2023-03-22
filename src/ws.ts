@@ -57,6 +57,7 @@ const LOBBY_CODE = "lobbyCode";
 const GAME_SETUP = "gameSetup";
 const GAME_SYNC = "gameSync";
 const GAME_PLAYER_SELECTION = "gamePlayerSelection";
+const GAME_RESTART_REQUEST = "gameRestartRequest";
 
 type IncomingMessage =
   | LobbyLinkMessage
@@ -64,7 +65,8 @@ type IncomingMessage =
   | LobbyCodeMessage
   | GameSetupMessage
   | GameSyncMessage
-  | GamePlayerSelectionMessage;
+  | GamePlayerSelectionMessage
+  | GameRestartRequestMessage;
 
 interface LobbyLinkMessage {
   type: typeof LOBBY_LINK;
@@ -101,12 +103,22 @@ interface GamePlayerSelectionMessage {
   p2Voted: boolean;
 }
 
+interface GameRestartRequestMessage {
+  type: typeof GAME_RESTART_REQUEST;
+  player: Player;
+  req?: {
+    config?: GameConfig | null;
+    timeout: string;
+  } | null;
+}
+
 // Outgoing messages
 
 const LOBBY_PICK_PLAYER = "lobbyPickPlayer";
 const GAME_PLAYER_SELECTION_VOTE = "gamePlayerSelectionVote";
 const GAME_END_TURN = "gameEndTurn";
 const GAME_RESTART = "gameRestart";
+const GAME_RESTART_RESPONSE = "gameRestartResponse";
 
 interface LobbyPickPlayerMessage {
   type: typeof LOBBY_PICK_PLAYER;
@@ -130,6 +142,11 @@ interface GameEndTurnMessage {
 
 interface GameRestartMessage extends Partial<GameConfig> {
   type: typeof GAME_RESTART;
+}
+
+interface GameRestartResponseMessage {
+  type: typeof GAME_RESTART_RESPONSE;
+  accepted: boolean;
 }
 
 /** Manages communication with the server. */
@@ -236,6 +253,19 @@ export default class WebSocketController {
         this.inGame = true;
         const { p1Voted, p2Voted } = msg;
         store.wsPlayerSelection(p1Voted, p2Voted);
+        return;
+      }
+      case GAME_RESTART_REQUEST: {
+        this.inGame = true;
+        const { player, req } = msg;
+        if (req) {
+          const { config } = req;
+          const timeout = new Date(req.timeout);
+          store.wsRestartRequest(player, { config, timeout });
+        } else {
+          store.wsRestartRequest(player, null);
+        }
+        return;
       }
     }
   };
@@ -320,6 +350,19 @@ export default class WebSocketController {
     const msg: GameRestartMessage = config
       ? { type: GAME_RESTART, ...config }
       : { type: GAME_RESTART };
+    this.socket.send(JSON.stringify(msg));
+  }
+
+  /** Sends `GameRestartResponseMessage`. */
+  respondToRestartRequest(accepted: boolean) {
+    if (!(this.socket && this.inGame)) {
+      return;
+    }
+
+    const msg: GameRestartResponseMessage = {
+      type: GAME_RESTART_RESPONSE,
+      accepted,
+    };
     this.socket.send(JSON.stringify(msg));
   }
 }
