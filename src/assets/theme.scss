@@ -111,7 +111,7 @@ $filter-hover-dark-gray400: rgba(0, 0, 0, 0.16);
 $filter-hover-dark-gray200: rgba(0, 0, 0, 0.18);
 $filter-hover-light-gray700: rgba(0, 0, 0, 0.04);
 $filter-hover-light-gray600: rgba(0, 0, 0, 0.04);
-$filter-hover-light-gray400: rgba(0, 0, 0, 0.04);
+$filter-hover-light-gray500: rgba(0, 0, 0, 0.04);
 $filter-hover-light-gray300: rgba(0, 0, 0, 0.04);
 
 $filter-active-tb-gray700: rgba(0, 0, 0, 0.32);
@@ -124,7 +124,7 @@ $filter-active-dark-gray400: rgba(0, 0, 0, 0.32);
 $filter-active-dark-gray200: rgba(0, 0, 0, 0.26);
 $filter-active-light-gray700: rgba(0, 0, 0, 0.06);
 $filter-active-light-gray600: rgba(0, 0, 0, 0.06);
-$filter-active-light-gray400: rgba(0, 0, 0, 0.06);
+$filter-active-light-gray500: rgba(0, 0, 0, 0.06);
 $filter-active-light-gray300: rgba(0, 0, 0, 0.06);
 
 $p1-svg: "data:image/svg+xml," +
@@ -341,7 +341,7 @@ $p2-svg: "data:image/svg+xml," +
   --c1-p2-button-active-text: #{$red700-text-primary};
 
   --c-dialog-background: rgba(0, 0, 0, 0.4); // TODO: Change this to something else
-  --c-dialog-drop-shadow: 16px 16px 0 rgba(0, 0, 0, 0.22);
+  --c-dialog-drop-shadow: 8px 8px 0 rgba(0, 0, 0, 0.22);
   --c-context-menu-separator-color: #{$dark-gray400};
   --c-context-menu-separator: 1px solid var(--c-context-menu-separator-color);
   --c-context-menu-drop-shadow: 8px 8px 0 rgba(0, 0, 0, 0.22);
@@ -389,19 +389,19 @@ $p2-svg: "data:image/svg+xml," +
   --c1-card-text: #{$light-gray-text-primary};
   --c1-card-drop-shadow: #{$drop-shadow-on-light-gray300};
 
-  --c1-button: #{$light-gray400};
+  --c1-button: #{$light-gray500};
   --c1-button-border: 1px solid #{$light-gray700};
   --c1-button-text: #{$light-gray-text-primary};
   --c1-button-drop-shadow: #{$drop-shadow-on-light-gray300};
   --c1-button-transform: translate(0, 0);
 
-  --c1-button-hover: #{solidify($light-gray400, $filter-hover-light-gray400)};
+  --c1-button-hover: #{solidify($light-gray500, $filter-hover-light-gray500)};
   --c1-button-hover-border: 1px solid #{solidify($light-gray700, $filter-hover-light-gray700)};
   --c1-button-hover-text: #{$light-gray-text-primary};
   --c1-button-hover-drop-shadow: #{$drop-shadow-on-light-gray300};
   --c1-button-hover-transform: translate(0, 0);
 
-  --c1-button-active: #{solidify($light-gray400, $filter-active-light-gray400)};
+  --c1-button-active: #{solidify($light-gray500, $filter-active-light-gray500)};
   --c1-button-active-border: 1px solid #{solidify($light-gray700, $filter-active-light-gray700)};
   --c1-button-active-text: #{$light-gray-text-primary};
   --c1-button-active-drop-shadow: none;
