@@ -248,7 +248,6 @@ function wsSyncGame(g: Game, round: number) {
 /** Signals the connection was successfully opened. */
 function wsConnected() {
   store.isConnected = true;
-  store.isUntouched = false;
 }
 
 /** Sets the reason for closing the connection. */
@@ -258,11 +257,15 @@ function wsDisconnectReason(reason: DisconnectReason) {
 
 /** Cleans up after the connection was closed. */
 function wsDisconnected() {
-  const { remoteRole } = store;
+  const { remoteRole, lobby } = store;
 
   store.isConnected = false;
   store.lobby = null;
   store.remoteRole = null;
+
+  if (lobby && !lobby.isHost) {
+    store.isUntouched = true;
+  }
 
   if (wasGameSynced) {
     startLocalGame(remoteRole ?? Player.P1);
@@ -322,6 +325,7 @@ function tryToJoin() {
   const url = new URL(document.location.toString());
   const lobbyId = url.searchParams.get(URL_LOBBY_PARAMETER);
   if (lobbyId) {
+    store.isUntouched = false;
     connect(lobbyId);
   }
 }
