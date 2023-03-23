@@ -144,6 +144,9 @@
         "enter": "Enter full screen mode",
         "exit": "Exit full screen mode"
       }
+    },
+    "unit": {
+      "seconds": "0 seconds | 1 second | {n} seconds"
     }
   },
   "pl": {
@@ -291,6 +294,9 @@
         "enter": "Włącz tryb pełnoekranowy",
         "exit": "Wyłącz tryb pełnoekranowy"
       }
+    },
+    "unit": {
+      "seconds": "{n} sekunda | {n} sekundy | {n} sekund"
     }
   }
 }
