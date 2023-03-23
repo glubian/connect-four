@@ -17,7 +17,7 @@
       },
       "dialog": {
         "playerSelection": {
-          "message": "Who is starting the next game?",
+          "title": "Who is starting the next game?",
           "p1": "Blue",
           "p2": "Red"
         },
@@ -164,7 +164,7 @@
       },
       "dialog": {
         "playerSelection": {
-          "message": "Kto zaczyna następną grę?",
+          "title": "Kto zaczyna następną grę?",
           "p1": "Niebieski",
           "p2": "Czerwony"
         },
