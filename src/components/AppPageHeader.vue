@@ -7,8 +7,8 @@ import AppSettings from "./AppSettings.vue";
 const settingsButtonRef: Ref<HTMLButtonElement | null> = ref(null);
 const settingsShown = ref(false);
 const settingsPosition = ref({
-  "--context-menu-right": "16px",
-  "--context-menu-top": "8px",
+  "--popover-right": "16px",
+  "--popover-top": "8px",
 });
 
 const createLobbyButton = computed(
@@ -22,7 +22,7 @@ function openSettings() {
   const settingsButtonEl = settingsButtonRef.value;
   if (settingsButtonEl) {
     const { right } = settingsButtonEl.getBoundingClientRect();
-    settingsPosition.value["--context-menu-right"] =
+    settingsPosition.value["--popover-right"] =
       window.innerWidth - right + 4 + "px";
   }
 
@@ -42,7 +42,7 @@ function disconnect() {
     </button>
     <AppSettings
       v-model:shown="settingsShown"
-      :context-menu-position="settingsPosition"
+      :popover-position="settingsPosition"
       @hide="settingsShown = false"
     />
 
