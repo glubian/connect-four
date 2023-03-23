@@ -248,6 +248,7 @@ function wsSyncGame(g: Game, round: number) {
 /** Signals the connection was successfully opened. */
 function wsConnected() {
   store.isConnected = true;
+  store.isUntouched = false;
 }
 
 /** Sets the reason for closing the connection. */
