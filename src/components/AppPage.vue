@@ -164,7 +164,8 @@ function onSlideAnimationEvent() {
     </footer>
 
     <AppDialog
-      :message="$t(`page.dialog.${store.disconnectedReason}.message`)"
+      :title="$t(`page.dialog.${store.disconnectedReason}.title`)"
+      :description="$t(`page.dialog.${store.disconnectedReason}.description`)"
       :dismissible="true"
       v-model:shown="disconnectedDialogShown"
     >
@@ -174,7 +175,7 @@ function onSlideAnimationEvent() {
     </AppDialog>
 
     <AppDialog
-      :message="$t('page.dialog.playerSelection.message')"
+      :title="$t('page.dialog.playerSelection.title')"
       :dismissible="true"
       v-model:shown="showPlayerSelectionDialog"
     >

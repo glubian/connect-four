@@ -3,7 +3,8 @@ import { FocusTrap } from "focus-trap-vue";
 import { computed, ref, type Ref } from "vue";
 
 const props = defineProps({
-  message: String,
+  title: String,
+  description: String,
   shown: Boolean,
   dismissible: {
     type: Boolean,
@@ -36,7 +37,8 @@ function dismiss(ev: MouseEvent) {
     <div class="background" @click="dismiss" v-if="shown" ref="backgroundRef">
       <FocusTrap v-model:active="focusTrapModel" ref="focusTrapRef">
         <div class="dialog c1">
-          <div class="message">{{ message }}</div>
+          <div class="title dialog-title">{{ title }}</div>
+          <div class="description" v-if="description">{{ description }}</div>
           <div class="actions"><slot></slot></div>
         </div>
       </FocusTrap>
@@ -63,23 +65,39 @@ function dismiss(ev: MouseEvent) {
 
 .dialog {
   margin: 16px;
-  padding: 24px 16px 16px 16px;
+  padding: 32px 24px 16px 24px;
 
+  min-width: 0;
   width: 100%;
-  max-width: 360px;
+  max-width: 344px;
+  border-radius: 4px;
 
   background: var(--c1);
   box-shadow: var(--c-dialog-drop-shadow);
 }
 
-.message {
-  padding-bottom: 16px;
+.title {
+  margin-right: 48px;
+  /* This is purely to fix layout on small displays. */
+  white-space: nowrap;
+}
+
+.description {
+  margin-top: 16px;
 }
 
 .actions {
   display: flex;
-  width: 100%;
-  gap: 8px;
   justify-content: flex-end;
+
+  box-sizing: border-box;
+  width: 100%;
+  padding-left: 40px;
+  margin-top: 32px;
+  gap: 8px;
+}
+
+.description + .actions {
+  margin-top: 24px;
 }
 </style>

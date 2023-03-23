@@ -27,59 +27,73 @@
           "disconnectButton": "Disconnect"
         },
         "serverMaxLobbies": {
-          "message": "Server is currently full. Try again later.",
+          "title": "Could not connect",
+          "description": "Server is currently full. Try again later.",
           "closeButton": "Close"
         },
         "inviteInvalid": {
-          "message": "Failed to join. Your invite is invalid.",
+          "title": "Could not join",
+          "description": "Your invite is invalid.",
           "closeButton": "Close"
         },
         "lobbyJoinError": {
-          "message": "Server encountered an error while adding you to the lobby. Try again later.",
+          "title": "Failed to join",
+          "description": "Server encountered an error while adding you to the lobby. Try again later.",
           "closeButton": "Close"
         },
         "lobbyFull": {
-          "message": "The lobby you are trying to join is full.",
+          "title": "Could not join",
+          "description": "The lobby you are trying to join is full.",
           "closeButton": "Close"
         },
         "lobbyClosed": {
-          "message": "The lobby was closed.",
+          "title": "Could not join",
+          "description": "The lobby was closed.",
           "closeButton": "Close"
         },
         "gameStarted": {
-          "message": "Your code did not match.",
+          "title": "Could not join",
+          "description": "Your code did not match.",
           "closeButton": "Close"
         },
         "gameEnded": {
-          "message": "Your opponent has left the game.",
+          "title": "Player left",
+          "description": "Your opponent has left the game.",
           "closeButton": "Close"
         },
         "lobbyOverloaded": {
-          "message": "The lobby you are trying to join is overloaded.",
+          "title": "Failed to join",
+          "description": "The lobby is overloaded.",
           "closeButton": "Close"
         },
         "serverOverloaded": {
-          "message": "Server is overloaded. Try again later.",
+          "title": "Failed to connect",
+          "description": "Server is overloaded. Try again later.",
           "closeButton": "Close"
         },
         "shuttingDown": {
-          "message": "Server is shutting down for maintenance. Try again in a few minutes.",
+          "title": "Failed to connect",
+          "description": "Server is shutting down for maintenance. Try again in a few minutes.",
           "closeButton": "Close"
         },
         "couldNotConnect": {
-          "message": "Failed to connect to the server.",
+          "title": "Failed to connect",
+          "description": "Unexpected error occurred.",
           "closeButton": "Close"
         },
         "connectionError": {
-          "message": "Unexpected connection error. Server might have shut down.",
+          "title": "Connection error",
+          "description": "Unexpected connection error. Server might have shut down.",
           "closeButton": "Close"
         },
         "connectionClosed": {
-          "message": "Connection closed unexpectedly. Server might be offline.",
+          "title": "Connection error",
+          "description": "Connection closed unexpectedly. Server might be offline.",
           "closeButton": "Close"
         },
         "offline": {
-          "message": "You are offline.",
+          "title": "No internet connection",
+          "description": "Check your internet settings.",
           "closeButton": "Close"
         }
       },
@@ -160,59 +174,73 @@
           "disconnectButton": "Rozłącz"
         },
         "serverMaxLobbies": {
-          "message": "Serwer jest pełny. Spróbuj później.",
+          "title": "Nie udało się połączyć",
+          "description": "Serwer jest pełny. Spróbuj później.",
           "closeButton": "Zamknij"
         },
         "inviteInvalid": {
-          "message": "Nie udało się dołączyć. Twój link jest błędny.",
+          "title": "Nie udało się dołączyć",
+          "description": "Twój link jest błędny.",
           "closeButton": "Zamknij"
         },
         "lobbyJoinError": {
-          "message": "Serwer napotkał błąd podczas dołączania do gry. Spróbuj później.",
+          "title": "Błąd podczas dołączania",
+          "description": "Serwer napotkał błąd podczas dołączania do gry. Spróbuj później.",
           "closeButton": "Zamknij"
         },
         "lobbyFull": {
-          "message": "Brak miejsc.",
+          "title": "Nie udało się dołączyć",
+          "description": "Brak miejsc.",
           "closeButton": "Zamknij"
         },
         "lobbyClosed": {
-          "message": "Gra odwołana.",
+          "title": "Nie udało się dołączyć",
+          "description": "Gra odwołana.",
           "closeButton": "Zamknij"
         },
         "gameStarted": {
-          "message": "Twój kod nie pasował.",
+          "title": "Nie udało się dołączyć",
+          "description": "Twój kod nie pasował.",
           "closeButton": "Zamknij"
         },
         "gameEnded": {
-          "message": "Przeciwnik opuścił grę.",
+          "title": "Gra przerwana",
+          "description": "Przeciwnik opuścił grę.",
           "closeButton": "Zamknij"
         },
         "lobbyOverloaded": {
-          "message": "Jest zbyt wielu chętnych do gry. Spróbuj później.",
+          "title": "Błąd podczas dołączania",
+          "description": "Jest zbyt wielu chętnych do gry. Spróbuj później.",
           "closeButton": "Zamknij"
         },
         "serverOverloaded": {
-          "message": "Serwer jest przeciążony. Spróbuj później.",
+          "title": "Błąd podczas łączenia",
+          "description": "Serwer jest przeciążony. Spróbuj później.",
           "closeButton": "Zamknij"
         },
         "shuttingDown": {
-          "message": "Serwer zatrzymuje się w celu konserwacji. Spróbuj za kilka minut.",
+          "title": "Błąd podczas łączenia",
+          "description": "Serwer zatrzymuje się w celu konserwacji. Spróbuj za kilka minut.",
           "closeButton": "Zamknij"
         },
         "couldNotConnect": {
-          "message": "Nie udało się połączyć z serwerem.",
+          "title": "Błąd podczas łączenia",
+          "description": "Nie udało się połączyć z serwerem.",
           "closeButton": "Zamknij"
         },
         "connectionError": {
-          "message": "Nieoczekiwany błąd połączenia. Serwer mógł zostać wyłączony.",
+          "title": "Błąd połączenia",
+          "description": "Nieoczekiwany błąd połączenia.",
           "closeButton": "Zamknij"
         },
         "connectionClosed": {
-          "message": "Połączenie nieoczekiwanie zamknięte. Serwer może być wyłączony.",
+          "title": "Błąd połączenia",
+          "description": "Połączenie nieoczekiwanie zamknięte. Serwer może być wyłączony.",
           "closeButton": "Zamknij"
         },
         "offline": {
-          "message": "Brak połączenia z internetem.",
+          "title": "Brak połączenia",
+          "description": "Nie można się połączyć z internetem. Sprawdź konfigurację łącza.",
           "closeButton": "Zamknij"
         }
       },

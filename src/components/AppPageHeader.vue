@@ -54,7 +54,7 @@ function disconnect() {
       {{ $t("page.disconnectButton") }}
     </button>
     <AppDialog
-      :message="$t('page.dialog.disconnect.areYouSure')"
+      :title="$t('page.dialog.disconnect.areYouSure')"
       v-model:shown="disconnectDialogShown"
     >
       <button class="flat" @click="disconnect()">
