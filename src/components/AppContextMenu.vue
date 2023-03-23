@@ -91,20 +91,11 @@ $appear-duration: 200ms;
 
     width: 100%;
     border-radius: 16px 16px 0 0;
-    padding-bottom: 8px;
+    padding: 4px 0 8px 0;
 
     box-shadow: none;
 
     transform: translateY(0);
-
-    &:first-child::before {
-      content: "";
-      box-sizing: border-box;
-      width: 64px;
-      height: 4px;
-      margin: 6px auto;
-      background-color: var(--c-context-menu-separator-color);
-    }
   }
 
   .close-dialog {
