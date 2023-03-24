@@ -105,6 +105,9 @@ const showStatusMessage = computed(
   justify-content: center;
   flex: 1;
 
+  width: 100%;
+  overflow-x: hidden;
+
   z-index: 50;
 }
 
