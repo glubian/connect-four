@@ -1,5 +1,5 @@
 import { reactive } from "vue";
-import { panelLayout } from "./layout";
+import { panelLayout, popoverAppearance } from "./layout";
 
 function setFullscreen(isFullscreen: boolean) {
   if (isFullscreen) {
@@ -20,6 +20,7 @@ function updateFullscreen() {
 /** Contains values related to UI layout. */
 export const layoutStore = reactive({
   panelLayout: panelLayout(innerWidth),
+  popoverAppearance: popoverAppearance(innerWidth),
   innerWidth,
   innerHeight,
   isFullscreen: isFullscreen(),
@@ -33,4 +34,5 @@ window.addEventListener("resize", () => {
   layoutStore.innerWidth = window.innerWidth;
   layoutStore.innerHeight = window.innerHeight;
   layoutStore.panelLayout = panelLayout(innerWidth);
+  layoutStore.popoverAppearance = popoverAppearance(innerWidth);
 });
