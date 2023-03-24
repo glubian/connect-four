@@ -6,10 +6,8 @@ import AppSettings from "./AppSettings.vue";
 
 const settingsButtonRef: Ref<HTMLButtonElement | null> = ref(null);
 const settingsShown = ref(false);
-const settingsPosition = ref({
-  "--popover-right": "16px",
-  "--popover-top": "8px",
-});
+const SETTINGS_TOP = 8; // px
+const settingsRight = ref(16); // px
 
 const createLobbyButton = computed(
   () => !store.isUntouched && store.remoteRole === null
@@ -22,8 +20,7 @@ function openSettings() {
   const settingsButtonEl = settingsButtonRef.value;
   if (settingsButtonEl) {
     const { right } = settingsButtonEl.getBoundingClientRect();
-    settingsPosition.value["--popover-right"] =
-      window.innerWidth - right + 4 + "px";
+    settingsRight.value = window.innerWidth - right + 4;
   }
 
   settingsShown.value = true;
@@ -41,8 +38,9 @@ function disconnect() {
       <i class="mi-settings"></i>
     </button>
     <AppSettings
+      :top="SETTINGS_TOP"
+      :right="settingsRight"
       v-model:shown="settingsShown"
-      :popover-position="settingsPosition"
       @hide="settingsShown = false"
     />
 
