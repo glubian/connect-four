@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, type Ref } from "vue";
+import { computed, ref, watch, type Ref } from "vue";
 
 const props = defineProps({
   shown: Boolean,
@@ -7,6 +7,9 @@ const props = defineProps({
 });
 const emit = defineEmits(["update:shown"]);
 
+const POPOVER_HEIGHT = "--popover-height";
+
+const popoverRef: Ref<HTMLDivElement | null> = ref(null);
 const closePopoverRef: Ref<HTMLDivElement | null> = ref(null);
 
 const focusTrapModel = computed({
@@ -18,12 +21,27 @@ const focusTrapModel = computed({
   },
 });
 
+function updateHeight(el: HTMLDivElement) {
+  el.style.setProperty(POPOVER_HEIGHT, el.offsetHeight + "px");
+}
+
 function closePopover(this: HTMLDivElement, ev: MouseEvent) {
   const closePopoverEl = closePopoverRef.value;
   if (ev.target === closePopoverEl) {
+    const popoverEl = popoverRef.value;
+    if (popoverEl) {
+      updateHeight(popoverEl);
+    }
+
     focusTrapModel.value = false;
   }
 }
+
+watch(popoverRef, (el) => {
+  if (el) {
+    updateHeight(el);
+  }
+});
 </script>
 <template>
   <Teleport to="body">
@@ -35,8 +53,10 @@ function closePopover(this: HTMLDivElement, ev: MouseEvent) {
         class="close-popover"
       >
         <FocusTrap v-model:active="focusTrapModel">
-          <div class="popover c1" :style="popoverPosition">
+          <div>
+            <div class="popover c1" :style="popoverPosition" ref="popoverRef">
             <slot></slot>
+            </div>
           </div>
         </FocusTrap>
       </div>
