@@ -4,17 +4,12 @@ import { computed, ref, type Ref } from "vue";
 import AppDialog from "./AppDialog.vue";
 import AppSettings from "./AppSettings.vue";
 
+// settings
+
 const settingsButtonRef: Ref<HTMLButtonElement | null> = ref(null);
 const settingsShown = ref(false);
 const SETTINGS_TOP = 8; // px
 const settingsRight = ref(16); // px
-
-const createLobbyButton = computed(
-  () => !store.isUntouched && store.remoteRole === null
-);
-
-const disconnectButton = computed(() => store.isConnected && !store.lobby);
-const disconnectDialogShown = ref(false);
 
 function openSettings() {
   const settingsButtonEl = settingsButtonRef.value;
@@ -25,6 +20,17 @@ function openSettings() {
 
   settingsShown.value = true;
 }
+
+// create lobby button
+
+const createLobbyButton = computed(
+  () => !store.isUntouched && store.remoteRole === null
+);
+
+// disconnect buttons
+
+const disconnectButton = computed(() => store.isConnected && !store.lobby);
+const disconnectDialogShown = ref(false);
 
 function disconnect() {
   disconnectDialogShown.value = false;
