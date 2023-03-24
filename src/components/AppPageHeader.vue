@@ -34,9 +34,41 @@ function disconnect() {
 
 <template>
   <header>
-    <button class="icon" @click="openSettings" ref="settingsButtonRef">
-      <i class="mi-settings"></i>
-    </button>
+    <div class="mobile">
+      <!-- 
+        References are not necessary, since popovers do not depend on 
+        the position of the button on mobile.
+      -->
+      <button class="icon" @click="openSettings">
+        <i class="mi-settings"></i>
+      </button>
+
+      <button class="icon" @click="store.connect()" v-if="createLobbyButton">
+        <i class="mi-log-in"></i>
+      </button>
+
+      <button
+        class="icon"
+        @click="disconnectDialogShown = true"
+        v-if="disconnectButton"
+      >
+        <i class="mi-log-out"></i>
+      </button>
+    </div>
+    <div class="desktop">
+      <!-- The reference is here to position the popover. -->
+      <button class="icon" @click="openSettings" ref="settingsButtonRef">
+        <i class="mi-settings"></i>
+      </button>
+      <button @click="store.connect()" v-if="createLobbyButton">
+        {{ $t("page.createLobbyButton") }}
+      </button>
+
+      <button @click="disconnectDialogShown = true" v-if="disconnectButton">
+        {{ $t("page.disconnectButton") }}
+      </button>
+    </div>
+
     <AppSettings
       :top="SETTINGS_TOP"
       :right="settingsRight"
@@ -44,13 +76,6 @@ function disconnect() {
       @hide="settingsShown = false"
     />
 
-    <button @click="store.connect()" v-if="createLobbyButton">
-      {{ $t("page.createLobbyButton") }}
-    </button>
-
-    <button @click="disconnectDialogShown = true" v-if="disconnectButton">
-      {{ $t("page.disconnectButton") }}
-    </button>
     <AppDialog
       :title="$t('page.dialog.disconnect.areYouSure')"
       v-model:shown="disconnectDialogShown"
@@ -66,16 +91,41 @@ function disconnect() {
 </template>
 
 <style scoped lang="scss">
-header {
-  display: flex;
+@use "@/layout.scss";
+
+.desktop,
+.mobile {
   align-items: center;
   justify-content: right;
 
   min-height: 56px;
-  padding: 0 16px;
   gap: 8px;
 
   transition: opacity 180ms ease-in-out;
+}
+
+.mobile {
+  display: flex;
+  padding: 0 8px;
+}
+
+.desktop {
+  display: none;
+  padding: 0 16px;
+}
+
+@media (min-width: layout.$popover-appearance-desktop) {
+  .desktop {
+    display: flex;
+  }
+
+  .mobile {
+    display: none;
+  }
+}
+
+.align-left {
+  margin-right: auto;
 }
 
 a {
