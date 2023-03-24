@@ -1,8 +1,53 @@
 <script setup lang="ts">
+import { PopoverAppearance } from "@/layout";
+import { layoutStore } from "@/layout-store";
 import { store } from "@/store";
 import { computed, ref, type Ref } from "vue";
+import { useI18n } from "vue-i18n";
 import AppDialog from "./AppDialog.vue";
 import AppSettings from "./AppSettings.vue";
+import ChangeRulesPopover from "./ChangeRulesPopover.vue";
+
+const gameRef = store.getGame();
+const { t } = useI18n();
+
+// change rules popover
+
+const restartLabel = computed(() => {
+  const { state } = gameRef.value;
+  return !!state.turn && !state.result;
+});
+
+const changeRulesPopover = ref(false);
+const CHANGE_RULES_TOP = 8; // px
+const changeRulesRight = computed(() => {
+  const el = changeRulesButtonRef.value;
+  if (!el) {
+    return 16; // px
+  }
+  const { right } = el.getBoundingClientRect();
+  return layoutStore.innerWidth - right + 2;
+});
+
+function openChangeRulesPopover() {
+  changeRulesPopover.value = true;
+}
+
+// create rules button
+
+const changeRulesButtonRef: Ref<HTMLButtonElement | null> = ref(null);
+const changeRulesButtonStyle = computed(() => ({
+  opacity:
+    changeRulesPopover.value &&
+    layoutStore.popoverAppearance === PopoverAppearance.Desktop
+      ? "0"
+      : "",
+}));
+const changeRulesButtonLabel = computed(() => {
+  return restartLabel.value
+    ? t("page.restartButton")
+    : t("page.changeRulesButton");
+});
 
 // settings
 
@@ -44,8 +89,16 @@ function disconnect() {
     <div class="mobile">
       <!-- 
         References are not necessary, since popovers do not depend on 
-        the position of the button on mobile.
+        the position of the button on mobile. 
       -->
+      <button
+        class="icon align-left"
+        :style="changeRulesButtonStyle"
+        @click="openChangeRulesPopover"
+      >
+        <i class="mi-filter"></i>
+      </button>
+
       <button class="icon" @click="openSettings">
         <i class="mi-settings"></i>
       </button>
@@ -63,10 +116,19 @@ function disconnect() {
       </button>
     </div>
     <div class="desktop">
-      <!-- The reference is here to position the popover. -->
+      <!-- The references are needed to position popovers properly. -->
       <button class="icon" @click="openSettings" ref="settingsButtonRef">
         <i class="mi-settings"></i>
       </button>
+
+      <button
+        :style="changeRulesButtonStyle"
+        @click="openChangeRulesPopover"
+        ref="changeRulesButtonRef"
+      >
+        {{ changeRulesButtonLabel }}
+      </button>
+
       <button @click="store.connect()" v-if="createLobbyButton">
         {{ $t("page.createLobbyButton") }}
       </button>
@@ -81,6 +143,13 @@ function disconnect() {
       :right="settingsRight"
       v-model:shown="settingsShown"
       @hide="settingsShown = false"
+    />
+
+    <ChangeRulesPopover
+      :top="CHANGE_RULES_TOP"
+      :right="changeRulesRight"
+      :restart-label="restartLabel"
+      v-model:shown="changeRulesPopover"
     />
 
     <AppDialog
