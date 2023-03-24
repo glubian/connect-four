@@ -55,7 +55,7 @@ watch(popoverRef, (el) => {
         <FocusTrap v-model:active="focusTrapModel">
           <div>
             <div class="popover c1" :style="popoverPosition" ref="popoverRef">
-            <slot></slot>
+              <slot></slot>
             </div>
           </div>
         </FocusTrap>
@@ -64,7 +64,8 @@ watch(popoverRef, (el) => {
   </Teleport>
 </template>
 <style lang="scss" scoped>
-$desktop-popover-min-width: 580px;
+@use "@/layout.scss" as l;
+
 $appear-duration: 200ms;
 
 .popover {
@@ -94,7 +95,7 @@ $appear-duration: 200ms;
   overflow-y: hidden;
 }
 
-@media (max-width: $desktop-popover-min-width) {
+@media (max-width: l.$popover-appearance-desktop) {
   .popover {
     top: initial;
     right: initial;

@@ -8,3 +8,5 @@ $panel-min-width: 512px;
 $panel-max-width: 800px;
 $panel-layout-tablet: $panel-min-width + $snapping;
 $panel-layout-desktop: g.$field-size-ui + 2 * $padding + $panel-min-width;
+
+$popover-appearance-desktop: 580px;
