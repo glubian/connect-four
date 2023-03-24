@@ -9,15 +9,16 @@ import AppSettings from "./AppSettings.vue";
 const settingsButtonRef: Ref<HTMLButtonElement | null> = ref(null);
 const settingsShown = ref(false);
 const SETTINGS_TOP = 8; // px
-const settingsRight = ref(16); // px
+const settingsRight = computed(() => {
+  const el = settingsButtonRef.value;
+  if (!el) {
+    return 16; // px
+  }
+  const { right } = el.getBoundingClientRect();
+  return window.innerWidth - right + 4;
+});
 
 function openSettings() {
-  const settingsButtonEl = settingsButtonRef.value;
-  if (settingsButtonEl) {
-    const { right } = settingsButtonEl.getBoundingClientRect();
-    settingsRight.value = window.innerWidth - right + 4;
-  }
-
   settingsShown.value = true;
 }
 
