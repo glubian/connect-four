@@ -27,9 +27,6 @@ const isShown = computed({
 </template>
 
 <style scoped lang="scss">
-$desktop-context-menu-min-width: 580px;
-$appear-duration: 200ms;
-
 .context-menu {
   display: flex;
   align-items: stretch;
