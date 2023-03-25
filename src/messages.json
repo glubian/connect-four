@@ -9,11 +9,34 @@
       "rematchButton": "Rematch",
       "createLobbyButton": "Join on another device",
       "disconnectButton": "Disconnect",
+      "changeRulesButton": "Change rules",
+      "restartButton": "Restart",
       "playerSelection": {
         "message": "Who is starting the next game?",
         "me": "I want to start",
         "dunno": "You decide",
         "waiting": "Waiting for your opponent..."
+      },
+      "changeRules": {
+        "title": "Start a new game",
+        "section": {
+          "timer": {
+            "label": "Timer",
+            "timePerTurn": "Time per turn",
+            "passRemaining": "Pass remaining time onto the next turn",
+            "atMost": "At most"
+          },
+          "objectives": {
+            "label": "Objectives",
+            "allowDraws": "Player who is not starting can draw the game"
+          }
+        },
+        "action": {
+          "reset": "Reset",
+          "cancel": "Cancel",
+          "start": "Start",
+          "restart": "Restart to apply"
+        }
       },
       "dialog": {
         "playerSelection": {
@@ -159,11 +182,34 @@
       "rematchButton": "Zagraj ponownie",
       "createLobbyButton": "Dołącz na innym urządzeniu",
       "disconnectButton": "Rozłącz",
+      "changeRulesButton": "Zmień zasady",
+      "restartButton": "Zrestartuj",
       "playerSelection": {
         "message": "Kto zaczyna następną grę?",
         "me": "Ja chcę zacząć",
         "dunno": "Zdecyduj za mnie",
         "waiting": "Oczekiwanie na przeciwnika..."
+      },
+      "changeRules": {
+        "title": "Rozpocznij nową grę",
+        "section": {
+          "timer": {
+            "label": "Limit czasu",
+            "timePerTurn": "Czas na turę",
+            "passRemaining": "Przenieś pozostały czas do następnej tury",
+            "atMost": "Maksymalnie"
+          },
+          "objectives": {
+            "label": "Cele gry",
+            "allowDraws": "Gracz, który nie rozpoczyna, może zremisować grę"
+          }
+        },
+        "action": {
+          "reset": "Zresetuj",
+          "cancel": "Anuluj",
+          "start": "Rozpocznij",
+          "restart": "Zrestartuj i zastosuj"
+        }
       },
       "dialog": {
         "playerSelection": {
