@@ -51,7 +51,7 @@ function start() {
       </div>
 
       <div class="section-label">
-        <i class="mi-circle"></i>
+        <div class="icon objectives"></div>
         <span>{{ $t("page.changeRules.section.objectives.label") }}</span>
       </div>
       <div class="section">
