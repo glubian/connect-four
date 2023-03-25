@@ -47,19 +47,19 @@ button.icon {
   width: 40px;
   font-size: 24px;
 
-  background: transparent;
+  background-color: transparent;
   border: transparent;
   box-shadow: none;
 }
 
 .card {
-  background: var(--c-card);
+  background-color: var(--c-card);
   color: var(--c-card-text);
   box-shadow: var(--c-card-drop-shadow);
 }
 
 button {
-  background: var(--c-button);
+  background-color: var(--c-button);
   color: var(--c-button-text);
   border: var(--c-button-border);
   box-shadow: var(--c-button-drop-shadow);
@@ -71,7 +71,7 @@ button {
   }
 
   &:hover {
-    background: var(--c-button-hover);
+    background-color: var(--c-button-hover);
     color: var(--c-button-hover-text);
     border: var(--c-button-hover-border);
     box-shadow: var(--c-button-hover-drop-shadow);
@@ -79,7 +79,7 @@ button {
   }
 
   &:active {
-    background: var(--c-button-active);
+    background-color: var(--c-button-active);
     color: var(--c-button-active-text);
     border: var(--c-button-active-border);
     box-shadow: var(--c-button-active-drop-shadow);
@@ -88,43 +88,43 @@ button {
 }
 
 button.p1 {
-  background: var(--c-p1-button);
+  background-color: var(--c-p1-button);
   color: var(--c-p1-button-text);
   border: var(--c-p1-button-border);
 
   &:hover {
-    background: var(--c-p1-button-hover);
+    background-color: var(--c-p1-button-hover);
     color: var(--c-p1-button-hover-text);
     border: var(--c-p1-button-hover-border);
   }
 
   &:active {
-    background: var(--c-p1-button-active);
+    background-color: var(--c-p1-button-active);
     color: var(--c-p1-button-active-text);
     border: var(--c-p1-button-active-border);
   }
 }
 
 button.p2 {
-  background: var(--c-p2-button);
+  background-color: var(--c-p2-button);
   color: var(--c-p2-button-text);
   border: var(--c-p2-button-border);
 
   &:hover {
-    background: var(--c-p2-button-hover);
+    background-color: var(--c-p2-button-hover);
     color: var(--c-p2-button-hover-text);
     border: var(--c-p2-button-hover-border);
   }
 
   &:active {
-    background: var(--c-p2-button-active);
+    background-color: var(--c-p2-button-active);
     color: var(--c-p2-button-active-text);
     border: var(--c-p2-button-active-border);
   }
 }
 
 button.icon {
-  background: transparent;
+  background-color: transparent;
   color: var(--c-button-text);
   border: none;
 
