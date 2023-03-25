@@ -9,6 +9,7 @@ const props = defineProps({
   left: Number, // px
   right: Number, // px
   bottom: Number, // px
+  flat: Boolean,
 });
 const emit = defineEmits(["update:shown"]);
 
@@ -41,6 +42,7 @@ const popoverLeft = computed(() => {
   const pos = typeof right === "number" ? space - right - size : left ?? 0;
   return adjustPosition(pos, size, space);
 });
+const popoverClass = computed(() => (props.flat ? "flat" : ""));
 const popoverStyle = computed(() => ({
   [POPOVER_TOP]: popoverTop.value + "px",
   [POPOVER_LEFT]: popoverLeft.value + "px",
@@ -103,7 +105,12 @@ watch(popoverRef, (el) => {
       >
         <FocusTrap v-model:active="focusTrapModel">
           <div>
-            <div class="popover c1" :style="popoverStyle" ref="popoverRef">
+            <div
+              class="popover c1"
+              :class="popoverClass"
+              :style="popoverStyle"
+              ref="popoverRef"
+            >
               <slot></slot>
             </div>
           </div>
@@ -129,6 +136,10 @@ $appear-duration: 200ms;
   box-shadow: var(--c-context-menu-drop-shadow);
 
   z-index: 100;
+
+  &.flat {
+    box-shadow: none;
+  }
 }
 
 .close-popover {
