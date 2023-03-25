@@ -59,6 +59,22 @@ button.icon {
   box-shadow: var(--c-card-drop-shadow);
 }
 
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 24px;
+  height: 24px;
+
+  background-position: center;
+  background-repeat: no-repeat;
+
+  &.objectives {
+    background-image: url(icons.$objectives);
+  }
+}
+
 input[type="checkbox"] {
   box-sizing: border-box;
   border-radius: 4px;
