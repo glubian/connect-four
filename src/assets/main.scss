@@ -70,6 +70,9 @@ button.icon {
   background-position: center;
   background-repeat: no-repeat;
 
+  filter: var(--c-icon-filter);
+  opacity: var(--c-icon-opacity);
+
   &.objectives {
     background-image: url(icons.$objectives);
   }

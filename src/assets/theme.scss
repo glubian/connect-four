@@ -6,6 +6,11 @@
   @return mix($color, $transparent-color, $weight: 100% - $alpha);
 }
 
+// Fixes conflict with built-in sass color functions.
+@function CSSInvert($value) {
+  @return #{ "invert(" + $value + ")" };
+}
+
 $black: #000;
 
 $tb-gray200: #484848;
@@ -206,6 +211,8 @@ $p2-svg: "data:image/svg+xml," +
 
   --c1: #{$tb-gray700};
   --c1-text: #{$tb-gray-text-primary};
+  --c1-icon-filter: none;
+  --c1-icon-opacity: #{opacity($tb-gray-text-primary)};
   --c1-drop-shadow: #{$shadow-on-tb-gray700};
   --c1-card: #{$tb-gray600};
   --c1-card-text: #{$tb-gray-text-primary};
@@ -315,6 +322,8 @@ $p2-svg: "data:image/svg+xml," +
 
   --c1: #{$dark-gray700};
   --c1-text: #{$dark-gray-text-primary};
+  --c1-icon-filter: none;
+  --c1-icon-opacity: #{opacity($dark-gray-text-primary)};
   --c1-drop-shadow: #{$shadow-on-dark-gray700};
   --c1-card: #{$dark-gray600};
   --c1-card-text: #{$dark-gray-text-primary};
@@ -424,6 +433,8 @@ $p2-svg: "data:image/svg+xml," +
 
   --c1: #{$light-gray300};
   --c1-text: #{$light-gray-text-primary};
+  --c1-icon-filter: #{CSSInvert(1)};
+  --c1-icon-opacity: #{opacity($light-gray-text-primary)};
   --c1-drop-shadow: #{$shadow-on-light-gray300};
   --c1-card: #{$light-gray200};
   --c1-card-text: #{$light-gray-text-primary};
@@ -538,6 +549,8 @@ body {
 .c1 {
   --c: var(--c1);
   --c-text: var(--c1-text);
+  --c-icon-filter: var(--c1-icon-filter);
+  --c-icon-opacity: var(--c1-icon-opacity);
   --c-drop-shadow: var(--c1-drop-shadow);
   --c-card: var(--c1-card);
   --c-card-text: var(--c1-card-text);
