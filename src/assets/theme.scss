@@ -270,6 +270,9 @@ $p2-svg: "data:image/svg+xml," +
 
   --c-dialog-background: rgba(0, 0, 0, 0.4);
   --c-dialog-drop-shadow: none;
+  --c-context-menu: #{$tb-gray500};
+  --c-context-menu-text: #{$tb-gray-text-primary};
+  --c-context-menu-border: 1px solid #{$tb-gray200};
   --c-context-menu-separator-color: #{$tb-gray400};
   --c-context-menu-separator: 1px solid var(--c-context-menu-separator-color);
   --c-context-menu-drop-shadow: none;
@@ -376,6 +379,9 @@ $p2-svg: "data:image/svg+xml," +
 
   --c-dialog-background: rgba(0, 0, 0, 0.4); // TODO: Change this to something else
   --c-dialog-drop-shadow: 8px 8px 0 rgba(0, 0, 0, 0.22);
+  --c-context-menu: #{$dark-gray400};
+  --c-context-menu-text: #{$dark-gray-text-primary};
+  --c-context-menu-border: 1px solid #{$dark-gray100};
   --c-context-menu-separator-color: #{$dark-gray400};
   --c-context-menu-separator: 1px solid var(--c-context-menu-separator-color);
   --c-context-menu-drop-shadow: 8px 8px 0 rgba(0, 0, 0, 0.22);
@@ -482,6 +488,9 @@ $p2-svg: "data:image/svg+xml," +
 
   --c-dialog-background: rgba(255, 255, 255, 0.4);
   --c-dialog-drop-shadow: 8px 8px 0 rgba(0, 0, 0, 0.22);
+  --c-context-menu: #{$light-gray100};
+  --c-context-menu-text: #{$light-gray100-text-primary};
+  --c-context-menu-border: 1px solid #{$light-gray700};
   --c-context-menu-separator-color: #{$light-gray600};
   --c-context-menu-separator: 1px solid var(--c-context-menu-separator-color);
   --c-context-menu-drop-shadow: 8px 8px 0 rgba(0, 0, 0, 0.22);
