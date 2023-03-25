@@ -29,7 +29,7 @@ function start() {
 
 <template>
   <AppPopover v-model:shown="isShown">
-    <div class="change-rules-popover">
+    <form class="change-rules-popover" @submit="$event.preventDefault()">
       <div class="dialog-title">{{ $t("page.changeRules.title") }}</div>
 
       <div class="section-label">
@@ -74,7 +74,7 @@ function start() {
           {{ $t(`page.changeRules.action.${restartLabel ? "re" : ""}start`) }}
         </button>
       </div>
-    </div>
+    </form>
   </AppPopover>
 </template>
 
