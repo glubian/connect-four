@@ -96,8 +96,7 @@ input[type="checkbox"] {
   }
 }
 
-button,
-input[type="checkbox"] {
+button {
   background-color: var(--c-button);
   color: var(--c-button-text);
   border: var(--c-button-border);
@@ -182,6 +181,35 @@ button.icon {
       border: 1px solid var(--c-focus-visible-border-color);
       border-radius: 4px;
     }
+  }
+}
+
+input[type="checkbox"] {
+  background-color: var(--c-control);
+  color: var(--c-control-text);
+  border: var(--c-control-border);
+  box-shadow: var(--c-control-drop-shadow);
+  transform: var(--c-control-transform);
+
+  &:focus-visible:is(&, .p1, p2, .icon, .flat):is(&, :hover, :active) {
+    outline: none;
+    border-color: var(--c-focus-visible-border-color);
+  }
+
+  &:hover {
+    background-color: var(--c-control-hover);
+    color: var(--c-control-hover-text);
+    border: var(--c-control-hover-border);
+    box-shadow: var(--c-control-hover-drop-shadow);
+    transform: var(--c-control-hover-transform);
+  }
+
+  &:active {
+    background-color: var(--c-control-active);
+    color: var(--c-control-active-text);
+    border: var(--c-control-active-border);
+    box-shadow: var(--c-control-active-drop-shadow);
+    transform: var(--c-control-active-transform);
   }
 }
 

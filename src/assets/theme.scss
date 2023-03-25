@@ -102,30 +102,40 @@ $drop-shadow-on-light-gray100: 4px 4px 0 solidify($light-gray100, $shadow-on-lig
 $drop-shadow-on-light-gray300: 4px 4px 0 solidify($light-gray300, $shadow-on-light-gray300);
 
 $filter-hover-tb-gray700: rgba(0, 0, 0, 0.16);
+$filter-hover-tb-gray600: rgba(0, 0, 0, 0.16);
 $filter-hover-tb-gray500: rgba(0, 0, 0, 0.18);
 $filter-hover-tb-gray400: rgba(0, 0, 0, 0.16);
+$filter-hover-tb-gray300: rgba(0, 0, 0, 0.16);
 $filter-hover-tb-gray200: rgba(0, 0, 0, 0.18);
 $filter-hover-dark-gray700: rgba(0, 0, 0, 0.16);
+$filter-hover-dark-gray600: rgba(0, 0, 0, 0.16);
 $filter-hover-dark-gray500: rgba(0, 0, 0, 0.18);
 $filter-hover-dark-gray400: rgba(0, 0, 0, 0.16);
+$filter-hover-dark-gray300: rgba(0, 0, 0, 0.16);
 $filter-hover-dark-gray200: rgba(0, 0, 0, 0.18);
 $filter-hover-light-gray700: rgba(0, 0, 0, 0.04);
 $filter-hover-light-gray600: rgba(0, 0, 0, 0.04);
 $filter-hover-light-gray500: rgba(0, 0, 0, 0.04);
 $filter-hover-light-gray300: rgba(0, 0, 0, 0.04);
+$filter-hover-light-gray200: rgba(0, 0, 0, 0.04);
 
 $filter-active-tb-gray700: rgba(0, 0, 0, 0.32);
+$filter-active-tb-gray600: rgba(0, 0, 0, 0.32);
 $filter-active-tb-gray500: rgba(0, 0, 0, 0.26);
 $filter-active-tb-gray400: rgba(0, 0, 0, 0.32);
+$filter-active-tb-gray300: rgba(0, 0, 0, 0.32);
 $filter-active-tb-gray200: rgba(0, 0, 0, 0.26);
 $filter-active-dark-gray700: rgba(0, 0, 0, 0.32);
+$filter-active-dark-gray600: rgba(0, 0, 0, 0.32);
 $filter-active-dark-gray500: rgba(0, 0, 0, 0.26);
 $filter-active-dark-gray400: rgba(0, 0, 0, 0.32);
+$filter-active-dark-gray300: rgba(0, 0, 0, 0.32);
 $filter-active-dark-gray200: rgba(0, 0, 0, 0.26);
 $filter-active-light-gray700: rgba(0, 0, 0, 0.06);
 $filter-active-light-gray600: rgba(0, 0, 0, 0.06);
 $filter-active-light-gray500: rgba(0, 0, 0, 0.06);
 $filter-active-light-gray300: rgba(0, 0, 0, 0.06);
+$filter-active-light-gray200: rgba(0, 0, 0, 0.06);
 
 $p1-svg: "data:image/svg+xml," +
   "<svg width='48' height='48' viewBox='0 0 48 48' fill='none'" +
@@ -208,7 +218,7 @@ $p2-svg: "data:image/svg+xml," +
   --c1-button-transform: translate(0, 0);
 
   --c1-button-hover: #{solidify($tb-gray500, $filter-hover-tb-gray500)};
-  --c1-button-hover-border: 1px solid #{solidify($tb-gray200, $filter-hover-tb-gray500)};
+  --c1-button-hover-border: 1px solid #{solidify($tb-gray200, $filter-hover-tb-gray200)};
   --c1-button-hover-text: var(--c1-text);
   --c1-button-hover-drop-shadow: #{$drop-shadow-on-tb-gray700};
   --c1-button-hover-transform: translate(0, 0);
@@ -224,6 +234,18 @@ $p2-svg: "data:image/svg+xml," +
   --c1-control-text: #{$tb-gray-text-primary};
   --c1-control-drop-shadow: #{$drop-shadow-on-tb-gray700};
   --c1-control-transform: translate(0, 0);
+
+  --c1-control-hover: #{solidify($tb-gray600, $filter-hover-tb-gray600)};
+  --c1-control-hover-border: 1px solid #{solidify($tb-gray300, $filter-hover-tb-gray300)};
+  --c1-control-hover-text: var(--c1-text);
+  --c1-control-hover-drop-shadow: #{$drop-shadow-on-tb-gray700};
+  --c1-control-hover-transform: translate(0, 0);
+
+  --c1-control-active: #{solidify($tb-gray600, $filter-active-tb-gray600)};
+  --c1-control-active-border: 1px solid #{solidify($tb-gray300, $filter-active-tb-gray300)};
+  --c1-control-active-text: var(--c1-text);
+  --c1-control-active-drop-shadow: none;
+  --c1-control-active-transform: translate(2px, 2px);
 
   --c1-p1-button: #{$blue700};
   --c1-p1-button-border: 1px solid #{$blue600};
@@ -319,6 +341,18 @@ $p2-svg: "data:image/svg+xml," +
   --c1-control-drop-shadow: #{$drop-shadow-on-dark-gray700};
   --c1-control-transform: translate(0, 0);
 
+  --c1-control-hover: #{solidify($dark-gray600, $filter-hover-dark-gray600)};
+  --c1-control-hover-border: 1px solid #{solidify($dark-gray300, $filter-hover-dark-gray300)};
+  --c1-control-hover-text: #{$dark-gray-text-primary};
+  --c1-control-hover-drop-shadow: #{$drop-shadow-on-dark-gray700};
+  --c1-control-hover-transform: translate(0, 0);
+
+  --c1-control-active: #{solidify($dark-gray600, $filter-active-dark-gray600)};
+  --c1-control-active-border: 1px solid #{solidify($dark-gray300, $filter-active-dark-gray300)};
+  --c1-control-active-text: #{$dark-gray-text-primary};
+  --c1-control-active-drop-shadow: none;
+  --c1-control-active-transform: translate(2px, 2px);
+
   --c1-p1-button: #{$blue700};
   --c1-p1-button-border: 1px solid #{$blue600};
   --c1-p1-button-text: #{$blue700-text-primary};
@@ -412,6 +446,18 @@ $p2-svg: "data:image/svg+xml," +
   --c1-control-text: #{$light-gray-text-primary};
   --c1-control-drop-shadow: #{$drop-shadow-on-light-gray300};
   --c1-control-transform: translate(0, 0);
+
+  --c1-control-hover: #{solidify($light-gray200, $filter-hover-light-gray200)};
+  --c1-control-hover-border: 1px solid #{solidify($light-gray600, $filter-hover-light-gray600)};
+  --c1-control-hover-text: #{$light-gray-text-primary};
+  --c1-control-hover-drop-shadow: #{$drop-shadow-on-light-gray300};
+  --c1-control-hover-transform: translate(0, 0);
+
+  --c1-control-active: #{solidify($light-gray200, $filter-active-light-gray200)};
+  --c1-control-active-border: 1px solid #{solidify($light-gray600, $filter-active-light-gray600)};
+  --c1-control-active-text: #{$light-gray-text-primary};
+  --c1-control-active-drop-shadow: none;
+  --c1-control-active-transform: translate(2px, 2px);
 
   --c1-p1-button: #{$blue500};
   --c1-p1-button-border: 1px solid #{$blue600};
@@ -511,6 +557,18 @@ body {
   --c-control-text: var(--c1-control-text);
   --c-control-drop-shadow: var(--c1-control-drop-shadow);
   --c-control-transform: var(--c1-control-transform);
+
+  --c-control-hover: var(--c1-control-hover);
+  --c-control-hover-border: var(--c1-control-hover-border);
+  --c-control-hover-text: var(--c1-control-hover-text);
+  --c-control-hover-drop-shadow: var(--c1-control-hover-drop-shadow);
+  --c-control-hover-transform: var(--c1-control-hover-transform);
+
+  --c-control-active: var(--c1-control-active);
+  --c-control-active-border: var(--c1-control-active-border);
+  --c-control-active-text: var(--c1-control-active-text);
+  --c-control-active-drop-shadow: var(--c1-control-active-drop-shadow);
+  --c-control-active-transform: var(--c1-control-active-transform);
 
   --c-p1-button: var(--c1-p1-button);
   --c-p1-button-border: var(--c1-p1-button-border);
