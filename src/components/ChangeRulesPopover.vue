@@ -41,8 +41,11 @@ function start() {
           <span>{{ $t("page.changeRules.section.timer.timePerTurn") }}</span>
           <button class="flat">{{ $t("unit.seconds", 20) }}</button>
         </div>
-        <div class="setting">
-          <span>{{ $t("page.changeRules.section.timer.passRemaining") }}</span>
+        <div class="setting checkbox">
+          <input type="checkbox" id="passRemaining" class="flat" />
+          <label for="passRemaining">{{
+            $t("page.changeRules.section.timer.passRemaining")
+          }}</label>
         </div>
         <div class="setting">
           <span>{{ $t("page.changeRules.section.timer.atMost") }}</span>
@@ -55,10 +58,11 @@ function start() {
         <span>{{ $t("page.changeRules.section.objectives.label") }}</span>
       </div>
       <div class="section">
-        <div class="setting">
-          <span>{{
+        <div class="setting checkbox">
+          <input type="checkbox" id="allowDraws" class="flat" />
+          <label for="allowDraws">{{
             $t("page.changeRules.section.objectives.allowDraws")
-          }}</span>
+          }}</label>
         </div>
       </div>
 
@@ -80,6 +84,8 @@ function start() {
 
 <style scoped lang="scss">
 @use "@/layout.scss";
+
+$height: 40px;
 
 .change-rules-popover {
   box-sizing: border-box;
@@ -108,6 +114,7 @@ function start() {
 
 .setting {
   min-height: 40px;
+  margin-top: 8px;
   margin-bottom: 16px;
 
   & > button {
@@ -123,6 +130,22 @@ function start() {
     margin-top: calc(((40px - 1rem) / 2) - 1px);
     vertical-align: top;
   }
+}
+
+.setting.checkbox {
+  display: flex;
+}
+
+input[type="checkbox"] {
+  margin-left: 0;
+}
+
+label {
+  display: inline-block;
+  flex: 1;
+  margin-top: calc((($height - 1rem) / 2) - 1px);
+  margin-left: 16px;
+  vertical-align: top;
 }
 
 .actions {
