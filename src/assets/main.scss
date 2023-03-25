@@ -1,7 +1,8 @@
 @use "sass:math";
 @use "./theme";
 @use "./typography";
-@use "mono-icons/iconfont/icons.css";
+@use "/gen/dist/icons.scss";
+@use "mono-icons/iconfont/icons.css" as mono-icons;
 
 html,
 body,
@@ -58,7 +59,29 @@ button.icon {
   box-shadow: var(--c-card-drop-shadow);
 }
 
-button {
+input[type="checkbox"] {
+  box-sizing: border-box;
+  border-radius: 4px;
+  width: 24px;
+  height: 24px;
+  margin: 8px;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  transition-property: transform, box-shadow;
+  transition-duration: 48ms;
+  transition-timing-function: ease-in-out;
+
+  &:checked {
+    background-image: url(icons.$fat-check);
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+
+button,
+input[type="checkbox"] {
   background-color: var(--c-button);
   color: var(--c-button-text);
   border: var(--c-button-border);
@@ -146,7 +169,8 @@ button.icon {
   }
 }
 
-button:is(.p1, .p2, .icon, .flat):is(button, :hover, :active) {
+button:is(.p1, .p2, .icon, .flat):is(button, :hover, :active),
+input[type="checkbox"].flat:is(input[type="checkbox"], :hover, :active) {
   box-shadow: none;
   transform: none;
 }
