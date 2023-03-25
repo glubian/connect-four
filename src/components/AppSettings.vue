@@ -3,7 +3,6 @@ import { layoutStore } from "@/layout-store";
 import { Lang, Theme, userStore } from "@/user-store";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import AppContextMenu from "./AppContextMenu.vue";
 import AppSettingToggle from "./AppSettingToggle.vue";
 
 const emit = defineEmits<{ (ev: "hide"): void }>();
@@ -30,7 +29,7 @@ const fullscreenText = computed(() =>
 </script>
 
 <template>
-  <AppContextMenu>
+  <div class="context-menu" style="min-width: 260px">
     <div class="section">
       <div class="title">
         <span>{{ $t("settings.theme.section") }}</span>
@@ -81,5 +80,5 @@ const fullscreenText = computed(() =>
         {{ fullscreenText }}
       </button>
     </div>
-  </AppContextMenu>
+  </div>
 </template>

@@ -5,6 +5,7 @@ import { store } from "@/store";
 import { computed, ref, type Ref } from "vue";
 import { useI18n } from "vue-i18n";
 import AppDialog from "./AppDialog.vue";
+import AppPopover from "./AppPopover.vue";
 import AppSettings from "./AppSettings.vue";
 import ChangeRulesPopover from "./ChangeRulesPopover.vue";
 
@@ -138,12 +139,13 @@ function disconnect() {
       </button>
     </div>
 
-    <AppSettings
+    <AppPopover
       :top="SETTINGS_TOP"
       :right="settingsRight"
       v-model:shown="settingsShown"
-      @hide="settingsShown = false"
-    />
+    >
+      <AppSettings @hide="settingsShown = false" />
+    </AppPopover>
 
     <ChangeRulesPopover
       :top="CHANGE_RULES_TOP"
