@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { store } from "@/store";
-import { computed, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import AppPopover from "./AppPopover.vue";
 import DropDown from "./DropDown.vue";
@@ -15,6 +15,9 @@ const isShown = computed({
     return props.shown;
   },
   set(v) {
+    if (v) {
+      reset();
+    }
     emit("update:shown", v);
   },
 });
@@ -37,7 +40,9 @@ const atMostList = computed(() => ({
 
 const allowDraws = ref(false);
 
-function reset() {}
+function reset() {
+  allowDraws.value = store.config.allowDraws;
+}
 
 function cancel() {
   isShown.value = false;
@@ -47,8 +52,6 @@ function start() {
   isShown.value = false;
   store.restartGame({ allowDraws: allowDraws.value });
 }
-
-onMounted(() => void (allowDraws.value = store.config.allowDraws));
 </script>
 
 <template>
