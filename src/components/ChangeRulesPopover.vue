@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { store } from "@/store";
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import AppPopover from "./AppPopover.vue";
 import DropDown from "./DropDown.vue";
@@ -35,6 +35,8 @@ const atMostList = computed(() => ({
   120: t("unit.seconds", 120),
 }));
 
+const allowDraws = ref(false);
+
 function reset() {}
 
 function cancel() {
@@ -43,8 +45,10 @@ function cancel() {
 
 function start() {
   isShown.value = false;
-  store.restartGame();
+  store.restartGame({ allowDraws: allowDraws.value });
 }
+
+onMounted(() => void (allowDraws.value = store.config.allowDraws));
 </script>
 
 <template>
@@ -79,7 +83,12 @@ function start() {
       </div>
       <div class="section">
         <div class="setting checkbox">
-          <input type="checkbox" id="allowDraws" class="flat" />
+          <input
+            type="checkbox"
+            id="allowDraws"
+            class="flat"
+            v-model="allowDraws"
+          />
           <label for="allowDraws">{{
             $t("page.changeRules.section.objectives.allowDraws")
           }}</label>
