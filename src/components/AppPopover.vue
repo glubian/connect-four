@@ -11,12 +11,15 @@ const props = defineProps({
   bottom: Number, // px
   flat: Boolean,
   background: String, // "shown" | "auto" | "hidden" | "disabled", default is "auto"
+  layout: String, // "mobile" | "auto" | "desktop", default is "auto"
 });
 const emit = defineEmits(["update:shown"]);
 
 const PROP_BG_SHOWN = "shown";
 const PROP_BG_HIDDEN = "hidden";
 const PROP_BG_DISABLED = "disabled";
+const PROP_LAYOUT_DESKTOP = "desktop";
+const PROP_LAYOUT_MOBILE = "mobile";
 
 const POPOVER_HEIGHT = "--popover-height";
 const POPOVER_TOP = "--popover-top";
@@ -26,6 +29,8 @@ const FLAT_CLASS = "flat";
 const SHOW_BG_CLASS = "show-bg";
 const HIDE_BG_CLASS = "hide-bg";
 const DISABLE_BG_CLASS = "disable-bg";
+const POPOVER_DESKTOP_CLASS = "popover-desktop";
+const POPOVER_MOBILE_CLASS = "popover-mobile";
 
 const popoverRef: Ref<HTMLDivElement | null> = ref(null);
 const { offsetWidth: popoverWidth, offsetHeight: popoverHeight } =
@@ -52,21 +57,21 @@ const popoverLeft = computed(() => {
   const pos = typeof right === "number" ? space - right - size : left ?? 0;
   return adjustPosition(pos, size, space);
 });
-const popoverClass = computed(() => ({
-  [FLAT_CLASS]: props.flat,
-  [SHOW_BG_CLASS]: props.background === PROP_BG_SHOWN,
-  [HIDE_BG_CLASS]: props.background === PROP_BG_HIDDEN,
-  [DISABLE_BG_CLASS]: props.background === PROP_BG_DISABLED,
-}));
-const popoverStyle = computed(() => ({
-  [POPOVER_TOP]: popoverTop.value + "px",
-  [POPOVER_LEFT]: popoverLeft.value + "px",
-}));
 
 const closePopoverClass = computed(() => ({
   [SHOW_BG_CLASS]: props.background === PROP_BG_SHOWN,
   [HIDE_BG_CLASS]: props.background === PROP_BG_HIDDEN,
   [DISABLE_BG_CLASS]: props.background === PROP_BG_DISABLED,
+}));
+const popoverClass = computed(() => ({
+  [FLAT_CLASS]: props.flat,
+  [POPOVER_DESKTOP_CLASS]: props.layout === PROP_LAYOUT_DESKTOP,
+  [POPOVER_MOBILE_CLASS]: props.layout === PROP_LAYOUT_MOBILE,
+  ...closePopoverClass.value,
+}));
+const popoverStyle = computed(() => ({
+  [POPOVER_TOP]: popoverTop.value + "px",
+  [POPOVER_LEFT]: popoverLeft.value + "px",
 }));
 
 /**
@@ -163,23 +168,27 @@ $appear-duration: 200ms;
   overflow-y: hidden;
 }
 
+@mixin mobile-layout {
+  top: auto;
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
+  border-radius: 16px 16px 0 0;
+  padding: 4px 0 8px 0;
+
+  box-shadow: none;
+
+  transform: translateY(0);
+}
+
 @media (max-width: l.$popover-appearance-desktop) {
-  .popover {
-    top: auto;
-    bottom: 0;
-    left: 0;
-
-    width: 100%;
-    border-radius: 16px 16px 0 0;
-    padding: 4px 0 8px 0;
-
-    box-shadow: none;
-
-    transform: translateY(0);
+  .popover:not(.popover-mobile, .popover-desktop) {
+    @include mobile-layout;
   }
 
   // animations are disabled if any of the background modifiers are used
-  .close-popover:not(.show-bg, .hide-bg, .disable-bg) {
+  .close-popover:not(.show-bg, .hide-bg, .disable-bg, .popover-desktop) {
     background-color: var(--c-dialog-background);
 
     &:is(.appear-enter-from, .appear-leave-to) {
@@ -203,6 +212,10 @@ $appear-duration: 200ms;
       }
     }
   }
+}
+
+.popover.popover-mobile {
+  @include mobile-layout;
 }
 
 .close-popover.show-bg {
