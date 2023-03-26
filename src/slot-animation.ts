@@ -128,7 +128,7 @@ class LockAnimation {
     const t = 1 - clamp(millisecondsElapsed / SLIDE_DURATION, 0, 1);
     this.lastTargetX = lerp(lastTx, tx, t);
     this.targetX = col * CONT_SIZE;
-    this.ts1 = performance.now() + SLIDE_DURATION;
+    this.ts1 = ts + SLIDE_DURATION;
   }
 
   complete() {
