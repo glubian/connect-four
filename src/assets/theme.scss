@@ -257,7 +257,7 @@ $p2-svg: "data:image/svg+xml," +
   --c1-p1: #{$blue500};
   --c1-p1-bar: #{$blue900};
   --c1-p2: #{$red500};
-  --c1-p2-bar: #{red900};
+  --c1-p2-bar: #{$red900};
 
   --c1-p1-button: #{$blue700};
   --c1-p1-button-border: 1px solid #{$blue600};
@@ -373,7 +373,7 @@ $p2-svg: "data:image/svg+xml," +
   --c1-p1: #{$blue500};
   --c1-p1-bar: #{$blue800};
   --c1-p2: #{$red500};
-  --c1-p2-bar: #{red800};
+  --c1-p2-bar: #{$red800};
 
   --c1-p1-button: #{$blue700};
   --c1-p1-button-border: 1px solid #{$blue600};
