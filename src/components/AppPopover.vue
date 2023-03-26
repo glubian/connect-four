@@ -10,12 +10,15 @@ const props = defineProps({
   right: Number, // px
   bottom: Number, // px
   flat: Boolean,
+  small: Boolean,
 });
 const emit = defineEmits(["update:shown"]);
 
 const POPOVER_HEIGHT = "--popover-height";
 const POPOVER_TOP = "--popover-top";
 const POPOVER_LEFT = "--popover-left";
+const FLAT_CLASS = "flat";
+const SMALL_CLASS = "small";
 
 const popoverRef: Ref<HTMLDivElement | null> = ref(null);
 const { offsetWidth: popoverWidth, offsetHeight: popoverHeight } =
@@ -42,11 +45,16 @@ const popoverLeft = computed(() => {
   const pos = typeof right === "number" ? space - right - size : left ?? 0;
   return adjustPosition(pos, size, space);
 });
-const popoverClass = computed(() => (props.flat ? "flat" : ""));
+const popoverClass = computed(() => ({
+  [FLAT_CLASS]: props.flat,
+  [SMALL_CLASS]: props.small,
+}));
 const popoverStyle = computed(() => ({
   [POPOVER_TOP]: popoverTop.value + "px",
   [POPOVER_LEFT]: popoverLeft.value + "px",
 }));
+
+const closePopoverClass = computed(() => ({ [SMALL_CLASS]: props.small }));
 
 /**
  * Adjusts position to fit the element on screen.
@@ -98,10 +106,11 @@ watch(popoverRef, (el) => {
   <Teleport to="body">
     <Transition name="appear">
       <div
-        v-if="shown"
-        @click="closePopover"
-        ref="closePopoverRef"
         class="close-popover"
+        :class="closePopoverClass"
+        @click="closePopover"
+        v-if="shown"
+        ref="closePopoverRef"
       >
         <FocusTrap v-model:active="focusTrapModel">
           <div>
@@ -154,7 +163,7 @@ $appear-duration: 200ms;
 }
 
 @media (max-width: l.$popover-appearance-desktop) {
-  .popover {
+  .popover:not(.small) {
     top: auto;
     bottom: 0;
     left: 0;
@@ -168,25 +177,25 @@ $appear-duration: 200ms;
     transform: translateY(0);
   }
 
-  .close-popover {
+  .close-popover:not(.small) {
     background-color: var(--c-dialog-background);
   }
 
-  .close-popover:is(.appear-enter-from, .appear-leave-to) {
+  .close-popover:not(.small):is(.appear-enter-from, .appear-leave-to) {
     background-color: transparent;
     .popover {
       transform: translateY(var(--popover-height, 100vh));
     }
   }
 
-  .close-popover.appear-enter-active {
+  .close-popover:not(.small).appear-enter-active {
     transition: background-color $appear-duration ease-out;
     .popover {
       transition: transform $appear-duration ease-out;
     }
   }
 
-  .close-popover.appear-leave-active {
+  .close-popover:not(.small).appear-leave-active {
     transition: background-color $appear-duration ease-in;
     .popover {
       transition: transform $appear-duration ease-in;
