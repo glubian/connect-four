@@ -22,6 +22,7 @@
         "section": {
           "timer": {
             "label": "Timer",
+            "unlimited": "Unlimited",
             "timePerTurn": "Time per turn",
             "passRemaining": "Pass remaining time onto the next turn",
             "atMost": "At most"
@@ -195,6 +196,7 @@
         "section": {
           "timer": {
             "label": "Limit czasu",
+            "unlimited": "Brak limitu",
             "timePerTurn": "Czas na turę",
             "passRemaining": "Przenieś pozostały czas do następnej tury",
             "atMost": "Maksymalnie"
