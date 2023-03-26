@@ -10,15 +10,22 @@ const props = defineProps({
   right: Number, // px
   bottom: Number, // px
   flat: Boolean,
-  small: Boolean,
+  background: String, // "shown" | "auto" | "hidden" | "disabled", default is "auto"
 });
 const emit = defineEmits(["update:shown"]);
+
+const PROP_BG_SHOWN = "shown";
+const PROP_BG_HIDDEN = "hidden";
+const PROP_BG_DISABLED = "disabled";
 
 const POPOVER_HEIGHT = "--popover-height";
 const POPOVER_TOP = "--popover-top";
 const POPOVER_LEFT = "--popover-left";
+
 const FLAT_CLASS = "flat";
-const SMALL_CLASS = "small";
+const SHOW_BG_CLASS = "show-bg";
+const HIDE_BG_CLASS = "hide-bg";
+const DISABLE_BG_CLASS = "disable-bg";
 
 const popoverRef: Ref<HTMLDivElement | null> = ref(null);
 const { offsetWidth: popoverWidth, offsetHeight: popoverHeight } =
@@ -47,14 +54,20 @@ const popoverLeft = computed(() => {
 });
 const popoverClass = computed(() => ({
   [FLAT_CLASS]: props.flat,
-  [SMALL_CLASS]: props.small,
+  [SHOW_BG_CLASS]: props.background === PROP_BG_SHOWN,
+  [HIDE_BG_CLASS]: props.background === PROP_BG_HIDDEN,
+  [DISABLE_BG_CLASS]: props.background === PROP_BG_DISABLED,
 }));
 const popoverStyle = computed(() => ({
   [POPOVER_TOP]: popoverTop.value + "px",
   [POPOVER_LEFT]: popoverLeft.value + "px",
 }));
 
-const closePopoverClass = computed(() => ({ [SMALL_CLASS]: props.small }));
+const closePopoverClass = computed(() => ({
+  [SHOW_BG_CLASS]: props.background === PROP_BG_SHOWN,
+  [HIDE_BG_CLASS]: props.background === PROP_BG_HIDDEN,
+  [DISABLE_BG_CLASS]: props.background === PROP_BG_DISABLED,
+}));
 
 /**
  * Adjusts position to fit the element on screen.
@@ -151,7 +164,7 @@ $appear-duration: 200ms;
 }
 
 @media (max-width: l.$popover-appearance-desktop) {
-  .popover:not(.small) {
+  .popover {
     top: auto;
     bottom: 0;
     left: 0;
@@ -165,29 +178,42 @@ $appear-duration: 200ms;
     transform: translateY(0);
   }
 
-  .close-popover:not(.small) {
+  // animations are disabled if any of the background modifiers are used
+  .close-popover:not(.show-bg, .hide-bg, .disable-bg) {
     background-color: var(--c-dialog-background);
-  }
 
-  .close-popover:not(.small):is(.appear-enter-from, .appear-leave-to) {
-    background-color: transparent;
-    .popover {
-      transform: translateY(var(--popover-height, 100vh));
+    &:is(.appear-enter-from, .appear-leave-to) {
+      background-color: transparent;
+      .popover {
+        transform: translateY(var(--popover-height, 100vh));
+      }
+    }
+
+    &.appear-enter-active {
+      transition: background-color $appear-duration ease-out;
+      .popover {
+        transition: transform $appear-duration ease-out;
+      }
+    }
+
+    &.appear-leave-active {
+      transition: background-color $appear-duration ease-in;
+      .popover {
+        transition: transform $appear-duration ease-in;
+      }
     }
   }
+}
 
-  .close-popover:not(.small).appear-enter-active {
-    transition: background-color $appear-duration ease-out;
-    .popover {
-      transition: transform $appear-duration ease-out;
-    }
-  }
+.close-popover.show-bg {
+  background-color: var(--c-dialog-background);
+}
 
-  .close-popover:not(.small).appear-leave-active {
-    transition: background-color $appear-duration ease-in;
-    .popover {
-      transition: transform $appear-duration ease-in;
-    }
-  }
+.popover.disable-bg {
+  visibility: visible;
+}
+
+.close-popover.disable-bg {
+  visibility: hidden;
 }
 </style>

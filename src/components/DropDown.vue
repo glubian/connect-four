@@ -55,7 +55,7 @@ watch(layoutStore, close);
     :top="buttonTop"
     :left="buttonLeft"
     flat
-    small
+    background="hidden"
     v-model:shown="isOpen"
   >
     <div class="context-menu">
