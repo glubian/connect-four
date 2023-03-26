@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { store } from "@/store";
-import { computed } from "vue";
+import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import AppPopover from "./AppPopover.vue";
+import DropDown from "./DropDown.vue";
 
 const props = defineProps<{ shown?: boolean; restartLabel?: boolean }>();
 const emit = defineEmits<{ (ev: "update:shown", v: boolean): void }>();
+
+const { t } = useI18n();
 
 const isShown = computed({
   get() {
@@ -14,6 +18,22 @@ const isShown = computed({
     emit("update:shown", v);
   },
 });
+
+const timePerTurn = ref(20);
+const timePerTurnList = computed(() => ({
+  12: t("unit.seconds", 12),
+  20: t("unit.seconds", 20),
+  32: t("unit.seconds", 32),
+  48: t("unit.seconds", 48),
+  60: t("unit.seconds", 60),
+}));
+
+const atMost = ref(40);
+const atMostList = computed(() => ({
+  40: t("unit.seconds", 40),
+  80: t("unit.seconds", 80),
+  120: t("unit.seconds", 120),
+}));
 
 function reset() {}
 
@@ -39,7 +59,7 @@ function start() {
       <div class="section">
         <div class="setting">
           <span>{{ $t("page.changeRules.section.timer.timePerTurn") }}</span>
-          <button class="flat">{{ $t("unit.seconds", 20) }}</button>
+          <DropDown :values="timePerTurnList" v-model:selected="timePerTurn" />
         </div>
         <div class="setting checkbox">
           <input type="checkbox" id="passRemaining" class="flat" />
@@ -49,7 +69,7 @@ function start() {
         </div>
         <div class="setting">
           <span>{{ $t("page.changeRules.section.timer.atMost") }}</span>
-          <button class="flat">{{ $t("unit.seconds", 60) }}</button>
+          <DropDown :values="atMostList" v-model:selected="atMost" />
         </div>
       </div>
 
@@ -117,8 +137,8 @@ $height: 40px;
   margin-top: 8px;
   margin-bottom: 16px;
 
-  & > button {
-    margin-left: 16px;
+  & > span:not(:last-child) {
+    margin-right: 16px;
   }
 
   & > span:first-child {
