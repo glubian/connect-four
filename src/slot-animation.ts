@@ -166,21 +166,25 @@ class InertiaVector {
 
 /** Animates the slot falling into place. */
 class GravityAnimation {
+  private offsetY = 0; // px, Y offset
   private targetY = 0; // px, target Y coordinate
   private ts0 = 0; // timestamp, animation started
   private ts1 = 0; // timestamp, animation end
   private t1 = 0; // s, timeline end
 
-  fall(y: number | null) {
-    if (y === null) {
+  fall(y: null): void;
+  fall(y: number, offsetY: number): void;
+  fall(y: number | null, offsetY?: number) {
+    if (y === null || typeof offsetY !== "number") {
       this.complete();
       return;
     }
 
-    const targetY = (y + 1) * CONT_SIZE + BORDER_WIDTH;
+    const targetY = (y + 1) * CONT_SIZE + BORDER_WIDTH - offsetY;
     const ts0 = performance.now();
     const ts1 = ts0 + sqrt(targetY / FALL_ACCELERATION) * 1000;
 
+    this.offsetY = offsetY;
     this.targetY = targetY;
     this.ts0 = ts0;
     this.ts1 = ts1;
@@ -188,12 +192,13 @@ class GravityAnimation {
   }
 
   getY(ts = performance.now()) {
-    const { ts0, t1 } = this;
+    const { ts0, t1, offsetY } = this;
     const t = clamp((ts - ts0) / 1000, 0, t1);
-    return FALL_ACCELERATION * t * t;
+    return offsetY + FALL_ACCELERATION * t * t;
   }
 
   complete() {
+    this.offsetY = 0;
     this.targetY = 0;
     this.ts0 = 0;
     this.ts1 = 0;
@@ -386,6 +391,7 @@ export function slotAnimation({
     prevMode = mode;
     mode = newMode;
 
+    const v = vector;
     const a = animation;
 
     setVisible(mode !== Mode.Off && mode !== Mode.Inert);
@@ -414,7 +420,7 @@ export function slotAnimation({
       gameUIStore.startAnimation();
       gameUIStore.playerMoved(col, y);
       store.endTurn(col);
-      a.gravity.fall(y);
+      a.gravity.fall(y, v.nudge.y);
     }
   }
 
