@@ -67,14 +67,14 @@ function start() {
       </div>
 
       <div class="actions">
-        <button class="flat action-reset" @click="reset">
+        <button class="flat action-reset" type="button" @click="reset">
           {{ $t("page.changeRules.action.reset") }}
         </button>
         <div class="space"></div>
-        <button class="flat" @click="cancel">
+        <button class="flat" type="button" @click="cancel">
           {{ $t("page.changeRules.action.cancel") }}
         </button>
-        <button class="flat" @click="start">
+        <button class="flat" type="button" @click="start">
           {{ $t(`page.changeRules.action.${restartLabel ? "re" : ""}start`) }}
         </button>
       </div>
