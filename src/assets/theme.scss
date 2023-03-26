@@ -179,6 +179,8 @@ $p2-svg: "data:image/svg+xml," +
 :root {
   --c0: #{$black};
   --c0-text: #{$black-text-primary};
+  --c0-text-secondary: #{$black-text-secondary};
+  --c0-text-tertiary: #{$black-text-tertiary};
   --c0-drop-shadow: transparent;
 
   --c0-button: #{$tb-gray700};
@@ -295,6 +297,8 @@ $p2-svg: "data:image/svg+xml," +
 .dark {
   --c0: #{$dark-gray900};
   --c0-text: #{$dark-gray900-text-primary};
+  --c0-text-secondary: #{$dark-gray900-text-secondary};
+  --c0-text-tertiary: #{$dark-gray900-text-tertiary};
   --c0-drop-shadow: #{$shadow-on-dark-gray900};
 
   --c0-button: #{$dark-gray700};
@@ -411,6 +415,8 @@ $p2-svg: "data:image/svg+xml," +
 .light {
   --c0: #{$light-gray100};
   --c0-text: #{$light-gray100-text-primary};
+  --c0-text-secondary: #{$light-gray100-text-secondary};
+  --c0-text-tertiary: #{$light-gray100-text-tertiary};
   --c0-drop-shadow: #{$shadow-on-light-gray100};
 
   --c0-button: #{$light-gray300};
@@ -530,6 +536,8 @@ $p2-svg: "data:image/svg+xml," +
 body {
   --c: var(--c0);
   --c-text: var(--c0-text);
+  --c-text-secondary: var(--c0-text-secondary);
+  --c-text-tertiary: var(--c0-text-tertiary);
   --c-drop-shadow: var(--c0-drop-shadow);
 
   --c-button: var(--c0-button);
