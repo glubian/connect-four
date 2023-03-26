@@ -239,6 +239,19 @@ input[type="checkbox"].flat:is(input[type="checkbox"], :hover, :active) {
   transform: none;
 }
 
+.popover {
+  border-radius: 4px;
+  background: var(--c);
+  color: var(--c-text);
+  box-shadow: var(--c-context-menu-drop-shadow);
+
+  z-index: 100;
+
+  &.flat {
+    box-shadow: none;
+  }
+}
+
 .context-menu :is(button, button:hover, button:active) {
   display: flex;
   align-items: center;
