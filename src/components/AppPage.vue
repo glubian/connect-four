@@ -166,7 +166,7 @@ function onSlideAnimationEvent() {
     <AppDialog
       :title="$t(`page.dialog.${store.disconnectedReason}.title`)"
       :description="$t(`page.dialog.${store.disconnectedReason}.description`)"
-      :dismissible="true"
+      dismissible
       v-model:shown="disconnectedDialogShown"
     >
       <button class="flat" @click="disconnectedDialogShown = false">
@@ -176,7 +176,7 @@ function onSlideAnimationEvent() {
 
     <AppDialog
       :title="$t('page.dialog.playerSelection.title')"
-      :dismissible="true"
+      dismissible
       v-model:shown="showPlayerSelectionDialog"
     >
       <button class="flat" @click="store.selectStartingPlayer(Player.P1)">
