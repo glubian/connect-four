@@ -12,6 +12,7 @@ const props = defineProps({
   flat: Boolean,
   background: String, // "shown" | "auto" | "hidden" | "disabled", default is "auto"
   layout: String, // "mobile" | "auto" | "desktop", default is "auto"
+  disableFocusTrap: Boolean,
 });
 const emit = defineEmits(["update:shown"]);
 
@@ -91,7 +92,7 @@ function adjustPosition(pos: number, size: number, space: number): number {
 
 const focusTrapModel = computed({
   get() {
-    return props.shown;
+    return !props.disableFocusTrap && props.shown;
   },
   set(v) {
     emit("update:shown", v);
