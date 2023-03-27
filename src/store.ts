@@ -59,6 +59,15 @@ const wsController = new WebSocketController();
 const game = shallowRef(Game.create(defaultRules()));
 let wasGameSynced = false;
 
+/**
+ * Pending config changes in a local game, if any.
+ *
+ * After the user makes changes to the config, they are temporarily stored
+ * here. Config is then applied if the user starts the game, or discarded if
+ * they dismiss player selection dialog.
+ */
+let localConfig: GameConfig | null = null;
+
 function startLocalGame(startingPlayer: Player) {
   game.value = Game.create({
     startingPlayer,
@@ -129,9 +138,7 @@ function restartGame(config?: GameConfig) {
     wsController.restartGame(config);
   } else {
     store.playerSelection = PlayerSelection.Voting;
-    if (config) {
-      store.config = config;
-    }
+    localConfig = config ?? null;
   }
 }
 
@@ -162,6 +169,10 @@ function selectStartingPlayer(playerOrPreference: Player | boolean) {
   if (isPreference && store.isConnected) {
     wsController.selectStartingPlayer(playerOrPreference);
   } else if (!(isPreference || store.isConnected)) {
+    if (localConfig) {
+      store.config = localConfig;
+    }
+    localConfig = null;
     startLocalGame(playerOrPreference);
     store.playerSelection = PlayerSelection.Hidden;
   }
