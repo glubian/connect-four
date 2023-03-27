@@ -7,7 +7,7 @@ import { useI18n } from "vue-i18n";
 import AppDialog from "./AppDialog.vue";
 import AppPopover from "./AppPopover.vue";
 import AppSettings from "./AppSettings.vue";
-import ChangeRulesPopover from "./ChangeRulesPopover.vue";
+import NewGame from "./NewGame.vue";
 
 const gameRef = store.getGame();
 const { t } = useI18n();
@@ -152,7 +152,7 @@ function disconnect() {
       :right="changeRulesRight"
       v-model:shown="changeRulesPopover"
     >
-      <ChangeRulesPopover
+      <NewGame
         :restart-label="restartLabel"
         @hide="changeRulesPopover = false"
       />
