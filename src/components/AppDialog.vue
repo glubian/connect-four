@@ -6,10 +6,7 @@ const props = defineProps({
   title: String,
   description: String,
   shown: Boolean,
-  dismissible: {
-    type: Boolean,
-    required: false,
-  },
+  dismissible: Boolean,
 });
 const emit = defineEmits(["update:shown"]);
 
