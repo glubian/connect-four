@@ -274,6 +274,9 @@ function wsDisconnected() {
   store.lobby = null;
   store.remoteRole = null;
 
+  clearRestartRequest(Player.P1);
+  clearRestartRequest(Player.P2);
+
   if (lobby && !lobby.isHost) {
     store.isUntouched = true;
   }
