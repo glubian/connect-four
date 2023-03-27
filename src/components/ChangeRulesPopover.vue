@@ -2,25 +2,12 @@
 import { store } from "@/store";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import AppPopover from "./AppPopover.vue";
 import DropDown from "./DropDown.vue";
 
-const props = defineProps<{ shown?: boolean; restartLabel?: boolean }>();
-const emit = defineEmits<{ (ev: "update:shown", v: boolean): void }>();
+const props = defineProps<{ restartLabel?: boolean }>();
+const emit = defineEmits<{ (ev: "hide"): void }>();
 
 const { t } = useI18n();
-
-const isShown = computed({
-  get() {
-    return props.shown;
-  },
-  set(v) {
-    if (v) {
-      reset();
-    }
-    emit("update:shown", v);
-  },
-});
 
 const timePerTurn = ref(20);
 const timePerTurnList = computed(() => ({
@@ -45,73 +32,71 @@ function reset() {
 }
 
 function cancel() {
-  isShown.value = false;
+  emit("hide");
 }
 
 function start() {
-  isShown.value = false;
   store.restartGame({ allowDraws: allowDraws.value });
+  emit("hide");
 }
 </script>
 
 <template>
-  <AppPopover v-model:shown="isShown">
-    <form class="change-rules-popover" @submit="$event.preventDefault()">
-      <div class="dialog-title">{{ $t("page.changeRules.title") }}</div>
+  <form class="change-rules-popover" @submit="$event.preventDefault()">
+    <div class="dialog-title">{{ $t("page.changeRules.title") }}</div>
 
-      <div class="section-label">
-        <i class="mi-clock"></i>
-        <span>{{ $t("page.changeRules.section.timer.label") }}</span>
+    <div class="section-label">
+      <i class="mi-clock"></i>
+      <span>{{ $t("page.changeRules.section.timer.label") }}</span>
+    </div>
+    <div class="section">
+      <div class="setting">
+        <span>{{ $t("page.changeRules.section.timer.timePerTurn") }}</span>
+        <DropDown :values="timePerTurnList" v-model:selected="timePerTurn" />
       </div>
-      <div class="section">
-        <div class="setting">
-          <span>{{ $t("page.changeRules.section.timer.timePerTurn") }}</span>
-          <DropDown :values="timePerTurnList" v-model:selected="timePerTurn" />
-        </div>
-        <div class="setting checkbox">
-          <input type="checkbox" id="passRemaining" class="flat" />
-          <label for="passRemaining">{{
-            $t("page.changeRules.section.timer.passRemaining")
-          }}</label>
-        </div>
-        <div class="setting">
-          <span>{{ $t("page.changeRules.section.timer.atMost") }}</span>
-          <DropDown :values="atMostList" v-model:selected="atMost" />
-        </div>
+      <div class="setting checkbox">
+        <input type="checkbox" id="passRemaining" class="flat" />
+        <label for="passRemaining">{{
+          $t("page.changeRules.section.timer.passRemaining")
+        }}</label>
       </div>
+      <div class="setting">
+        <span>{{ $t("page.changeRules.section.timer.atMost") }}</span>
+        <DropDown :values="atMostList" v-model:selected="atMost" />
+      </div>
+    </div>
 
-      <div class="section-label">
-        <div class="icon objectives"></div>
-        <span>{{ $t("page.changeRules.section.objectives.label") }}</span>
+    <div class="section-label">
+      <div class="icon objectives"></div>
+      <span>{{ $t("page.changeRules.section.objectives.label") }}</span>
+    </div>
+    <div class="section">
+      <div class="setting checkbox">
+        <input
+          type="checkbox"
+          id="allowDraws"
+          class="flat"
+          v-model="allowDraws"
+        />
+        <label for="allowDraws">{{
+          $t("page.changeRules.section.objectives.allowDraws")
+        }}</label>
       </div>
-      <div class="section">
-        <div class="setting checkbox">
-          <input
-            type="checkbox"
-            id="allowDraws"
-            class="flat"
-            v-model="allowDraws"
-          />
-          <label for="allowDraws">{{
-            $t("page.changeRules.section.objectives.allowDraws")
-          }}</label>
-        </div>
-      </div>
+    </div>
 
-      <div class="actions">
-        <button class="flat action-reset" type="button" @click="reset">
-          {{ $t("page.changeRules.action.reset") }}
-        </button>
-        <div class="space"></div>
-        <button class="flat" type="button" @click="cancel">
-          {{ $t("page.changeRules.action.cancel") }}
-        </button>
-        <button class="flat" type="button" @click="start">
-          {{ $t(`page.changeRules.action.${restartLabel ? "re" : ""}start`) }}
-        </button>
-      </div>
-    </form>
-  </AppPopover>
+    <div class="actions">
+      <button class="flat action-reset" type="button" @click="reset">
+        {{ $t("page.changeRules.action.reset") }}
+      </button>
+      <div class="space"></div>
+      <button class="flat" type="button" @click="cancel">
+        {{ $t("page.changeRules.action.cancel") }}
+      </button>
+      <button class="flat" type="button" @click="start">
+        {{ $t(`page.changeRules.action.${restartLabel ? "re" : ""}start`) }}
+      </button>
+    </div>
+  </form>
 </template>
 
 <style scoped lang="scss">

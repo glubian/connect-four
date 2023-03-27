@@ -147,12 +147,16 @@ function disconnect() {
       <AppSettings @hide="settingsShown = false" />
     </AppPopover>
 
-    <ChangeRulesPopover
+    <AppPopover
       :top="CHANGE_RULES_TOP"
       :right="changeRulesRight"
-      :restart-label="restartLabel"
       v-model:shown="changeRulesPopover"
-    />
+    >
+      <ChangeRulesPopover
+        :restart-label="restartLabel"
+        @hide="changeRulesPopover = false"
+      />
+    </AppPopover>
 
     <AppDialog
       :title="$t('page.dialog.disconnect.areYouSure')"
