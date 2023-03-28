@@ -39,8 +39,10 @@ interface RestartRequest {
   config?: GameConfig | null;
   /** Expiry handle. */
   handle: ReturnType<typeof setTimeout>;
+  /** Time received. */
+  received: number;
   /** Expiry date. */
-  timeout: Date;
+  timeout: number;
 }
 
 function defaultRules(): GameRules {
@@ -301,12 +303,14 @@ interface IncomingRestartRequest {
 function wsRestartRequest(player: Player, req: IncomingRestartRequest | null) {
   clearRestartRequest(player);
   if (req) {
-    const { config, timeout } = req;
+    const { config } = req;
+    const timeout = new Date(req.timeout).getTime();
+    const received = Date.now();
     const handle = setTimeout(
       () => clearRestartRequest(player),
-      timeout.getTime()
+      timeout - received
     );
-    store.restartRequests[player] = { config, handle, timeout };
+    store.restartRequests[player] = { config, handle, timeout, received };
   }
 }
 
