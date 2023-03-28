@@ -79,6 +79,10 @@ button.icon {
   &.objectives {
     background-image: url(icons.$objectives);
   }
+
+  &.dot {
+    background-image: url(icons.$dot);
+  }
 }
 
 input[type="checkbox"] {
