@@ -183,7 +183,7 @@ $appear-duration: 200ms;
   transform: translateY(0);
 }
 
-@media (max-width: l.$popover-appearance-desktop) {
+@media (max-width: l.$popover-appearance-desktop) and (not (width: l.$popover-appearance-desktop)) {
   .popover:not(.popover-mobile, .popover-desktop) {
     @include mobile-layout;
   }
