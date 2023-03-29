@@ -156,6 +156,18 @@ $appear-duration: 200ms;
   position: absolute;
   top: var(--popover-top);
   left: var(--popover-left);
+
+  border-radius: 4px;
+
+  background: var(--c);
+  color: var(--c-text);
+  box-shadow: var(--c-context-menu-drop-shadow);
+
+  z-index: 100;
+
+  &.flat {
+    box-shadow: none;
+  }
 }
 
 .close-popover {
