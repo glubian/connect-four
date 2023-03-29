@@ -10,3 +10,11 @@ $panel-layout-tablet: $panel-min-width + $snapping;
 $panel-layout-desktop: g.$field-size-ui + 2 * $padding + $panel-min-width;
 
 $popover-appearance-desktop: 580px;
+
+$restart-popover-top: 64px;
+$restart-popover-left: 16px;
+$restart-popover-size: 440px;
+$restart-popover-auto: $popover-appearance-desktop;
+$restart-popover-desktop: g.$field-size-ui + 2 * $restart-popover-size + 4 * $padding;
+$restart-status-margin: 64px;
+$restart-status-height: 56px;

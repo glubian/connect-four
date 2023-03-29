@@ -39,6 +39,32 @@
           "restart": "Restart to apply"
         }
       },
+      "restartRequest": {
+        "withoutChanges": {
+          "title": "Request to restart",
+          "description": "Your opponent wants to restart the game.",
+          "reject": "Reject",
+          "accept": "Restart"
+        },
+        "withChanges": {
+          "title": "New rules",
+          "description": "Your opponent wants to change the rules:",
+          "time": {
+            "unlimited": "timer disabled",
+            "perTurn": "{n} per turn",
+            "passRemaining": "remaining time passes onto the next round",
+            "max": "cannot exceed {n}"
+          },
+          "draws": {
+            "disallowed": "first player to connect four wins",
+            "allowed": "player who is not starting can draw the game"
+          },
+          "reject": "Reject",
+          "accept": "Agree and restart"
+        },
+        "pending": "Your opponent has a request.",
+        "waiting": "Waiting for your opponent..."
+      },
       "dialog": {
         "playerSelection": {
           "title": "Who is starting the next game?",
@@ -212,6 +238,32 @@
           "start": "Rozpocznij",
           "restart": "Zrestartuj i zastosuj"
         }
+      },
+      "restartRequest": {
+        "withoutChanges": {
+          "title": "Propozycja restartu",
+          "description": "Przeciwnik chce zrestartować grę.",
+          "reject": "Odrzuć",
+          "accept": "Zrestartuj"
+        },
+        "withChanges": {
+          "title": "Zmiana zasad",
+          "description": "Twój przeciwnik chce zmienić zasady gry:",
+          "time": {
+            "unlimited": "brak limitu czasu",
+            "perTurn": "{n} na turę",
+            "passRemaining": "pozostały czas będzie przeniesiony do następnej tury",
+            "max": "maksymalnie {n}"
+          },
+          "draws": {
+            "disallowed": "remis tylko jeśli nie ma już miejsca",
+            "allowed": "gracz, który zaczyna jako drugi, zawsze kończy turę i może zremisować grę"
+          },
+          "reject": "Odrzuć",
+          "accept": "Akceptuj i zrestartuj"
+        },
+        "pending": "Twój przeciwnik ma propozycję.",
+        "waiting": "Oczekiwanie na przeciwnika..."
       },
       "dialog": {
         "playerSelection": {

@@ -34,7 +34,7 @@ type RestartRequests = [RestartRequest | null, RestartRequest | null];
  * Restart request made when the game cannot be restarted without asking
  * the permission of the opponent first.
  */
-interface RestartRequest {
+export interface RestartRequest {
   /** Changes to the configuration, if any. */
   config?: GameConfig | null;
   /** Expiry handle. */

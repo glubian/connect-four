@@ -15,6 +15,8 @@ import AppDialog from "./AppDialog.vue";
 import AppPageHeader from "./AppPageHeader.vue";
 import AppPageMainInGame from "./AppPageMainInGame.vue";
 import AppPageMainPlayerSelection from "./AppPageMainPlayerSelection.vue";
+import RequestStatus from "./RequestStatus.vue";
+import RequestPopover from "./RequestPopover.vue";
 
 const props = defineProps<{ isPanelShown?: boolean }>();
 
@@ -139,19 +141,26 @@ function slideAnimation() {
 function onSlideAnimationEvent() {
   showHeaderAndFooter.value = !props.isPanelShown;
 }
+
+const reqShown = ref(false);
 </script>
 
 <template>
   <div class="app-page c0">
     <AppPageHeader v-show="showHeaderAndFooter" />
 
+    <RequestPopover v-model:shown="reqShown" />
+    <RequestStatus class="request-status" v-if="!reqShown" />
+
     <main :style="mainStyle" ref="mainRef">
       <Transition name="main">
         <AppPageMainPlayerSelection
+          @show-request="reqShown = true"
           v-if="showPlayerSelectionScreen"
         ></AppPageMainPlayerSelection>
         <AppPageMainInGame
           :is-panel-shown="isPanelShown"
+          @show-request="reqShown = true"
           v-else
         ></AppPageMainInGame>
       </Transition>
@@ -197,6 +206,19 @@ function onSlideAnimationEvent() {
   flex-direction: column;
   height: 100%;
   flex: 1;
+}
+
+.request-status {
+  display: none;
+  position: absolute;
+  top: 64px;
+  right: 16px;
+}
+
+@media (min-width: layout.$restart-popover-desktop) {
+  .request-status {
+    display: flex;
+  }
 }
 
 main {

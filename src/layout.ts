@@ -12,6 +12,15 @@ const PANEL_LAYOUT_DESKTOP = FIELD_SIZE_UI + 2 * PADDING + PANEL_MIN_WIDTH; // p
 
 const POPOVER_APPEARANCE_DESKTOP = 580; // px
 
+const RESTART_POPOVER_TOP = 64; // px
+const RESTART_POPOVER_RIGHT = 16; // px
+const RESTART_POPOVER_WIDTH = 440; // px
+const RESTART_POPOVER_POPOVER = POPOVER_APPEARANCE_DESKTOP; // px
+const RESTART_POPOVER_DESKTOP =
+  FIELD_SIZE_UI + 2 * RESTART_POPOVER_WIDTH + 4 * PADDING; // px
+const RESTART_STATUS_MARGIN = 64; // px
+const RESTART_STATUS_HEIGHT = 56; // px
+
 enum PanelLayout {
   Mobile = "layout-mobile",
   Tablet = "layout-tablet",
@@ -21,6 +30,12 @@ enum PanelLayout {
 enum PopoverAppearance {
   Mobile = "popover-mobile",
   Desktop = "popover-desktop",
+}
+
+enum RestartPopoverAppearance {
+  Mobile = "restart-popover-mobile",
+  Auto = "restart-popover-auto",
+  Desktop = "restart-popover-desktop",
 }
 
 function panelLayout(innerWidth: number): PanelLayout {
@@ -39,6 +54,19 @@ function popoverAppearance(innerWidth: number): PopoverAppearance {
     : PopoverAppearance.Desktop;
 }
 
+function restartPopoverAppearance(
+  innerWidth: number
+): RestartPopoverAppearance {
+  const { Mobile, Auto: Popover, Desktop } = RestartPopoverAppearance;
+  if (innerWidth < RESTART_POPOVER_POPOVER) {
+    return Mobile;
+  } else if (innerWidth < RESTART_POPOVER_DESKTOP) {
+    return Popover;
+  }
+
+  return Desktop;
+}
+
 export {
   PANEL_APPEAR_DURATION,
   PANEL_MIN_TRANSLATE,
@@ -46,8 +74,18 @@ export {
   PANEL_MAX_WIDTH,
   PANEL_LAYOUT_TABLET,
   PANEL_LAYOUT_DESKTOP,
+  POPOVER_APPEARANCE_DESKTOP,
+  RESTART_POPOVER_TOP,
+  RESTART_POPOVER_RIGHT,
+  RESTART_POPOVER_WIDTH,
+  RESTART_POPOVER_POPOVER,
+  RESTART_POPOVER_DESKTOP,
+  RESTART_STATUS_MARGIN,
+  RESTART_STATUS_HEIGHT,
   panelLayout,
   popoverAppearance,
+  restartPopoverAppearance,
   PanelLayout,
   PopoverAppearance,
+  RestartPopoverAppearance,
 };

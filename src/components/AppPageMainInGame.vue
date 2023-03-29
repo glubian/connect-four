@@ -7,8 +7,10 @@ import { PlayerSelection, store } from "@/store";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import ConnectFour from "./ConnectFour.vue";
+import RequestStatus from "./RequestStatus.vue";
 
 const props = defineProps<{ isPanelShown?: boolean }>();
+const emit = defineEmits<{ (ev: "showRequest"): void }>();
 
 const { t } = useI18n();
 
@@ -68,6 +70,11 @@ const showStatusMessage = computed(
         >
           {{ statusMessage }}
         </h1>
+        <RequestStatus
+          class="request-status"
+          @click="$emit('showRequest')"
+          v-else
+        ></RequestStatus>
       </Transition>
     </div>
     <ConnectFour />
@@ -190,6 +197,12 @@ const showStatusMessage = computed(
 
   .bottom > * {
     margin-top: 48px;
+  }
+}
+
+@media (min-width: layout.$restart-popover-desktop) {
+  .request-status {
+    display: none;
   }
 }
 </style>
