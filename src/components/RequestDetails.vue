@@ -5,6 +5,7 @@ import { store, type RestartRequest } from "@/store";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import TimeoutBar from "./TimeoutBar.vue";
+import TimeoutCircle from "./TimeoutCircle.vue";
 
 const props = defineProps<{ req: RestartRequest; player: Player }>();
 
@@ -36,7 +37,16 @@ const acceptLabel = computed(() => t(ns.value + ".accept"));
 <template>
   <div class="restart-details" :class="restartDetails">
     <TimeoutBar class="bar" :start="req.received" :end="req.timeout" />
-    <div class="title dialog-title">{{ title }}</div>
+    <div class="title">
+      <div class="dialog-title">{{ title }}</div>
+      <TimeoutCircle
+        class="circle"
+        :start="req.received"
+        :end="req.timeout"
+        :size="28"
+        :width="4"
+      />
+    </div>
     <div class="description">{{ description }}</div>
     <ul v-if="allowDraws">
       <li class="section-label">
@@ -79,6 +89,10 @@ $dot-size: 4px;
   --bar-background: var(--c-p2-bar);
 }
 
+.title {
+  display: flex;
+}
+
 .bar {
   display: none;
   position: absolute;
@@ -92,6 +106,10 @@ $dot-size: 4px;
 @media (min-width: layout.$restart-popover-auto) {
   .bar {
     display: block;
+  }
+
+  .circle {
+    display: none;
   }
 }
 
