@@ -100,7 +100,7 @@ function disconnect() {
         <i class="mi-filter"></i>
       </button>
 
-      <button class="icon" @click="openSettings">
+      <button class="icon settings" @click="openSettings">
         <i class="mi-settings"></i>
       </button>
 
@@ -118,7 +118,11 @@ function disconnect() {
     </div>
     <div class="desktop">
       <!-- The references are needed to position popovers properly. -->
-      <button class="icon" @click="openSettings" ref="settingsButtonRef">
+      <button
+        class="icon settings"
+        @click="openSettings"
+        ref="settingsButtonRef"
+      >
         <i class="mi-settings"></i>
       </button>
 
@@ -212,5 +216,13 @@ function disconnect() {
 
 a {
   padding: 0 8px;
+}
+
+button.settings {
+  transform: rotate(0);
+  transition: transform 120ms ease-in-out;
+  &:hover {
+    transform: rotate(-45deg);
+  }
 }
 </style>
