@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { store } from "@/store";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { TIME_PER_TURN_MIN } from "@/constants";
 import DropDown from "./DropDown.vue";
 
 const props = defineProps<{ restartLabel?: boolean }>();
@@ -19,12 +20,44 @@ const timePerTurnList = computed(() => ({
   "32": t("unit.seconds", 32),
 }));
 
+const timeCapEnabled = ref(false);
+
+function genTimeCap(timePerTurn: number): number[] {
+  if (timePerTurn < TIME_PER_TURN_MIN) {
+    return [0];
+  }
+
+  const max = 60;
+  const out = [timePerTurn + timePerTurn];
+  for (
+    let i = out[0] + timePerTurn;
+    i <= max && out.length < 3;
+    i += timePerTurn
+  ) {
+    out.push(i);
+  }
+
+  return out;
+}
+
 const timeCap = ref("40");
-const timeCapList = computed(() => ({
-  "40": t("unit.seconds", 40),
-  "80": t("unit.seconds", 80),
-  "120": t("unit.seconds", 120),
-}));
+const timeCapList = computed(() => {
+  const list = genTimeCap(+timePerTurn.value);
+  const out: { [key: string]: string } = {};
+  for (const item of list) {
+    out[item] = t("unit.seconds", item);
+  }
+
+  return out;
+});
+
+watch(timeCapList, () => {
+  console.log(timeCap.value, timeCapList.value, timePerTurn.value);
+  if (!(timeCap.value in timeCapList.value)) {
+    const timePerTurnValue = +timePerTurn.value;
+    timeCap.value = (timePerTurnValue + timePerTurnValue).toString();
+  }
+});
 
 const allowDraws = ref(false);
 
@@ -55,13 +88,18 @@ function start() {
         <span>{{ $t("page.changeRules.section.timer.timePerTurn") }}</span>
         <DropDown :values="timePerTurnList" v-model:selected="timePerTurn" />
       </div>
-      <div class="setting checkbox">
-        <input type="checkbox" id="passRemaining" class="flat" />
+      <div class="setting checkbox" v-if="+timePerTurn">
+        <input
+          type="checkbox"
+          id="passRemaining"
+          class="flat"
+          v-model="timeCapEnabled"
+        />
         <label for="passRemaining">{{
           $t("page.changeRules.section.timer.passRemaining")
         }}</label>
       </div>
-      <div class="setting">
+      <div class="setting" v-if="+timePerTurn && timeCapEnabled">
         <span>{{ $t("page.changeRules.section.timer.atMost") }}</span>
         <DropDown :values="timeCapList" v-model:selected="timeCap" />
       </div>
