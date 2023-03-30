@@ -52,8 +52,8 @@
           "time": {
             "unlimited": "timer disabled",
             "perTurn": "{n} per turn",
-            "passRemaining": "remaining time passes onto the next round",
-            "max": "cannot exceed {n}"
+            "cap": "remaining time passes onto the next round",
+            "capAt": "cannot exceed {n}"
           },
           "draws": {
             "disallowed": "first player to connect four wins",
@@ -252,8 +252,8 @@
           "time": {
             "unlimited": "brak limitu czasu",
             "perTurn": "{n} na turę",
-            "passRemaining": "pozostały czas będzie przeniesiony do następnej tury",
-            "max": "maksymalnie {n}"
+            "cap": "pozostały czas będzie przeniesiony do następnej tury",
+            "capAt": "maksymalnie {n}"
           },
           "draws": {
             "disallowed": "remis tylko jeśli nie ma już miejsca",
