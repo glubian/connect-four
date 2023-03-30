@@ -52,6 +52,7 @@
           "time": {
             "unlimited": "timer disabled",
             "perTurn": "{0} per turn",
+            "capDisabled": "remaining time does not pass onto the next round",
             "cap": "remaining time passes onto the next round",
             "capAt": "cannot exceed {0}"
           },
@@ -252,6 +253,7 @@
           "time": {
             "unlimited": "brak limitu czasu",
             "perTurn": "{0} na turę",
+            "capDisabled": "pozostały czas nie przechodzi do następnej tury",
             "cap": "pozostały czas będzie przeniesiony do następnej tury",
             "capAt": "maksymalnie {0}"
           },
