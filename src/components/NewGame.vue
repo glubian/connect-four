@@ -19,8 +19,8 @@ const timePerTurnList = computed(() => ({
   "32": t("unit.seconds", 32),
 }));
 
-const atMost = ref("40");
-const atMostList = computed(() => ({
+const timeCap = ref("40");
+const timeCapList = computed(() => ({
   "40": t("unit.seconds", 40),
   "80": t("unit.seconds", 80),
   "120": t("unit.seconds", 120),
@@ -63,7 +63,7 @@ function start() {
       </div>
       <div class="setting">
         <span>{{ $t("page.changeRules.section.timer.atMost") }}</span>
-        <DropDown :values="atMostList" v-model:selected="atMost" />
+        <DropDown :values="timeCapList" v-model:selected="timeCap" />
       </div>
     </div>
 
