@@ -54,7 +54,11 @@ function defaultRules(): GameRules {
 }
 
 function defaultConfig(): GameConfig {
-  return { allowDraws: true };
+  return {
+    timePerTurn: 0,
+    timeCap: 0,
+    allowDraws: true,
+  };
 }
 
 const wsController = new WebSocketController();

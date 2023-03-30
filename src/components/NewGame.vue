@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { TIME_CAP_MIN, TIME_PER_TURN_MIN } from "@/constants";
 import { store } from "@/store";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { TIME_PER_TURN_MIN } from "@/constants";
 import DropDown from "./DropDown.vue";
 
 const props = defineProps<{ restartLabel?: boolean }>();
@@ -62,15 +62,43 @@ watch(timeCapList, () => {
 const allowDraws = ref(false);
 
 function reset() {
+  const { config } = store;
+
+  if (config.timePerTurn in timePerTurnList.value) {
+    timePerTurn.value = config.timePerTurn.toString();
+  }
+
+  timeCapEnabled.value = config.timeCap >= TIME_CAP_MIN;
+
+  if (config.timeCap in timeCapList.value) {
+    timeCap.value = config.timeCap.toString();
+  }
+
   allowDraws.value = store.config.allowDraws;
 }
+
+let configPtr: Object | null = null;
+watch(
+  store,
+  ({ config }) => {
+    if (config !== configPtr) {
+      reset();
+    }
+    configPtr = config;
+  },
+  { immediate: true }
+);
 
 function cancel() {
   emit("hide");
 }
 
 function start() {
-  store.restartGame({ allowDraws: allowDraws.value });
+  store.restartGame({
+    timePerTurn: +timePerTurn.value,
+    timeCap: timeCapEnabled.value ? +timeCap.value : 0,
+    allowDraws: allowDraws.value,
+  });
   emit("hide");
 }
 </script>

@@ -22,6 +22,8 @@ const TIME_DIFFERENCE_AVG = 3;
 
 /** A subset of `GameRules` used for starting a new game. */
 export interface GameConfig {
+  timePerTurn: number; // s
+  timeCap: number; // s
   allowDraws: boolean;
 }
 

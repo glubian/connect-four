@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { TIME_PER_TURN_MIN } from "@/constants";
 import type { Player } from "@/game";
 import { playerClass } from "@/game-ui";
 import { store, type RestartRequest } from "@/store";
@@ -22,6 +23,46 @@ const ns = computed(() =>
 
 const title = computed(() => t(ns.value + ".title"));
 const description = computed(() => t(ns.value + ".description"));
+const timeChanged = computed(() => {
+  const { config } = props.req;
+  return (
+    !config ||
+    config.timePerTurn !== store.config.timePerTurn ||
+    config.timeCap !== store.config.timeCap
+  );
+});
+const timePerTurn = computed(() => {
+  const { config } = props.req;
+  if (!(config && timeChanged.value)) {
+    return "";
+  }
+
+  if (config.timePerTurn < TIME_PER_TURN_MIN) {
+    return t(ns.value + ".time.unlimited");
+  }
+
+  return t(ns.value + ".time.perTurn", [t("unit.seconds", config.timePerTurn)]);
+});
+const timeCapEnabled = computed(() => {
+  const { config } = props.req;
+  if (
+    !config ||
+    config.timeCap === store.config.timeCap ||
+    !config.timePerTurn
+  ) {
+    return "";
+  }
+
+  return t(`${ns.value}.time.cap${config.timeCap ? "" : "Disabled"}`);
+});
+const timeCap = computed(() => {
+  const { config } = props.req;
+  if (!config || config.timeCap === store.config.timeCap || !config.timeCap) {
+    return "";
+  }
+
+  return t(ns.value + ".time.capAt", [t("unit.seconds", config.timeCap)]);
+});
 const allowDraws = computed(() => {
   const { config } = props.req;
   if (!config || config.allowDraws === store.config.allowDraws) {
@@ -48,6 +89,20 @@ const acceptLabel = computed(() => t(ns.value + ".accept"));
       />
     </div>
     <div class="description">{{ description }}</div>
+    <ul v-if="timePerTurn">
+      <li class="section-label">
+        <i class="mi-clock"></i>
+        <span class="item">{{ timePerTurn }}</span>
+      </li>
+      <li v-if="timeCapEnabled">
+        <span class="icon dot"></span>
+        <span class="item">{{ timeCapEnabled }}</span>
+      </li>
+      <li v-if="timeCap">
+        <span class="icon dot"></span>
+        <span class="item">{{ timeCap }}</span>
+      </li>
+    </ul>
     <ul v-if="allowDraws">
       <li class="section-label">
         <span class="icon objectives"></span>
