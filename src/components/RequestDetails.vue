@@ -177,7 +177,7 @@ $dot-size: 4px;
 }
 
 ul {
-  margin: 16px 0;
+  margin: 0;
   padding: 0;
 }
 
@@ -207,10 +207,15 @@ li {
 
   i {
     font-size: 24px;
+    padding: 8px 0;
   }
 
   .item {
     flex: 1;
+  }
+
+  &:last-child:not(:first-child) {
+    margin-bottom: 16px;
   }
 }
 
