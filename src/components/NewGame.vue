@@ -11,11 +11,12 @@ const { t } = useI18n();
 
 const timePerTurn = ref("20");
 const timePerTurnList = computed(() => ({
+  "0": t("page.changeRules.section.timer.unlimited"),
+  "4": t("unit.seconds", 4),
+  "8": t("unit.seconds", 8),
   "12": t("unit.seconds", 12),
   "20": t("unit.seconds", 20),
   "32": t("unit.seconds", 32),
-  "48": t("unit.seconds", 48),
-  "60": t("unit.seconds", 60),
 }));
 
 const atMost = ref("40");
