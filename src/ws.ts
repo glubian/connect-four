@@ -7,12 +7,18 @@ import {
 } from "./game";
 import { store } from "./store";
 import { WS_SERVER_URL } from "./urls";
+import { Average } from "@/stats";
 
 interface RemoteGame {
   field: GameField;
   state: GameState;
   rules: GameRules;
 }
+
+/** Heartbeat interval in milliseconds. */
+const HEARTBEAT_INTERVAL = 2000; // ms
+const DELAY_AVERAGE = 10;
+const TIME_DIFFERENCE_AVG = 3;
 
 /** A subset of `GameRules` used for starting a new game. */
 export interface GameConfig {
@@ -58,6 +64,7 @@ const GAME_SETUP = "gameSetup";
 const GAME_SYNC = "gameSync";
 const GAME_PLAYER_SELECTION = "gamePlayerSelection";
 const GAME_RESTART_REQUEST = "gameRestartRequest";
+const PONG = "pong";
 
 type IncomingMessage =
   | LobbyLinkMessage
@@ -66,7 +73,8 @@ type IncomingMessage =
   | GameSetupMessage
   | GameSyncMessage
   | GamePlayerSelectionMessage
-  | GameRestartRequestMessage;
+  | GameRestartRequestMessage
+  | Pong;
 
 interface LobbyLinkMessage {
   type: typeof LOBBY_LINK;
@@ -88,7 +96,6 @@ interface GameSetupMessage {
   type: typeof GAME_SETUP;
   role?: Player | null;
   config?: GameConfig | null;
-  timestamp?: string | null;
 }
 
 interface GameSyncMessage {
@@ -112,6 +119,12 @@ interface GameRestartRequestMessage {
   } | null;
 }
 
+interface Pong {
+  type: typeof PONG;
+  sent: number;
+  received: string;
+}
+
 // Outgoing messages
 
 const LOBBY_PICK_PLAYER = "lobbyPickPlayer";
@@ -119,6 +132,7 @@ const GAME_PLAYER_SELECTION_VOTE = "gamePlayerSelectionVote";
 const GAME_END_TURN = "gameEndTurn";
 const GAME_RESTART = "gameRestart";
 const GAME_RESTART_RESPONSE = "gameRestartResponse";
+const PING = "ping";
 
 interface LobbyPickPlayerMessage {
   type: typeof LOBBY_PICK_PLAYER;
@@ -149,6 +163,11 @@ interface GameRestartResponseMessage {
   accepted: boolean;
 }
 
+interface Ping {
+  type: typeof PING;
+  sent: number;
+}
+
 /** Manages communication with the server. */
 export default class WebSocketController {
   /** Current connection. */
@@ -159,6 +178,21 @@ export default class WebSocketController {
 
   /** True if a connection was successfully opened. */
   private connectionEstablished = false;
+
+  /** Used to disable pinging. */
+  private heartbeatHandle: ReturnType<typeof setInterval> | null = null;
+
+  /**
+   * An estimate of the time it takes for a packet to reach the server
+   * in milliseconds.
+   */
+  private readonly timeDifferenceAvg = new Average(TIME_DIFFERENCE_AVG);
+
+  /**
+   * An estimated difference in time configuration between
+   * client and server in milliseconds.
+   */
+  private readonly delayAvg = new Average(DELAY_AVERAGE);
 
   /**
    * Connects to the server if not already connected.
@@ -193,6 +227,10 @@ export default class WebSocketController {
   private onOpen = () => {
     store.wsConnected();
     this.connectionEstablished = true;
+    this.heartbeatHandle = setInterval(this.ping, HEARTBEAT_INTERVAL);
+    this.timeDifferenceAvg.reset();
+    this.delayAvg.reset();
+    this.ping();
   };
 
   private onMessage = (ev: MessageEvent) => {
@@ -228,15 +266,12 @@ export default class WebSocketController {
         return;
       }
       case GAME_SETUP: {
-        const { role, config, timestamp } = msg;
+        const { role, config } = msg;
         if (typeof role === "number") {
           store.wsSetRemoteRole(role);
         }
         if (config) {
           store.wsSetConfig(config);
-        }
-        if (timestamp) {
-          store.wsSetDelay(timestamp);
         }
         return;
       }
@@ -267,12 +302,49 @@ export default class WebSocketController {
         }
         return;
       }
+      case PONG: {
+        const { delayAvg: delayEstimate } = this;
+        if (!delayEstimate) {
+          return;
+        }
+
+        const { sent } = msg;
+        const received = new Date(msg.received).getTime();
+        const now = Date.now();
+        const timeDiff = received - sent;
+        const millisecondsElapsed = now - sent;
+
+        delayEstimate.add(millisecondsElapsed);
+        store.wsSetDelay(delayEstimate.value);
+
+        if (timeDiff >= 0 && timeDiff < millisecondsElapsed) {
+          /*
+           * `received` timestamp is within expected range,
+           * time difference is negligible
+           */
+          this.timeDifferenceAvg.add(0);
+          store.wsSetTimeDifference(0);
+        } else {
+          /* There is a significant time difference. */
+          this.timeDifferenceAvg.add(timeDiff);
+          store.wsSetTimeDifference(this.timeDifferenceAvg.value);
+        }
+
+        return;
+      }
     }
   };
 
   private onClose = (ev: CloseEvent) => {
     this.socket = null;
     this.inGame = false;
+    this.timeDifferenceAvg.reset();
+    this.delayAvg.reset();
+    if (this.heartbeatHandle !== null) {
+      clearInterval(this.heartbeatHandle);
+      this.heartbeatHandle = null;
+    }
+
     if (!store.disconnectedReason) {
       if (ev.reason) {
         store.wsDisconnectReason(ev.reason as ServerDisconnectReason);
@@ -286,6 +358,7 @@ export default class WebSocketController {
         store.wsDisconnectReason(ClientDisconnectReason.Offline);
       }
     }
+
     this.connectionEstablished = false;
     store.wsDisconnected();
   };
@@ -365,4 +438,14 @@ export default class WebSocketController {
     };
     this.socket.send(JSON.stringify(msg));
   }
+
+  /** Pings the server. */
+  private ping = () => {
+    if (!this.socket) {
+      return;
+    }
+
+    const msg: Ping = { type: PING, sent: Date.now() };
+    this.socket.send(JSON.stringify(msg));
+  };
 }

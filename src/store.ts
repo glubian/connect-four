@@ -229,10 +229,16 @@ function wsSetConfig(config: GameConfig) {
   store.config = config;
 }
 
+let delay = 0;
 /** Sets delay. */
-function wsSetDelay(timestamp: string) {
-  const delay = Date.now() - new Date(timestamp).getTime();
-  store.delay = Number.isNaN(delay) ? 0 : delay;
+function wsSetDelay(d: number) {
+  delay = d;
+}
+
+let timeDifference = 0;
+/** Sets time difference. */
+function wsSetTimeDifference(dt: number) {
+  timeDifference = dt;
 }
 
 /** Updates player selection. */
@@ -389,10 +395,20 @@ export const store = reactive({
   config: defaultConfig(),
 
   /**
-   * The amount of time it takes to deliver the message to the server
+   * An estimate of the time it takes for a packet to reach the server
    * in milliseconds.
    */
-  delay: 0, // ms
+  getDelay() {
+    return delay;
+  },
+
+  /**
+   * An estimated difference in time configuration between
+   * client and server in milliseconds.
+   */
+  getTimeDifference() {
+    return timeDifference;
+  },
 
   getGame: function () {
     return game;
@@ -416,6 +432,7 @@ export const store = reactive({
   wsSetRemoteRole,
   wsSetConfig,
   wsSetDelay,
+  wsSetTimeDifference,
   wsSyncGame,
   wsPlayerSelection,
   wsRestartRequest,
