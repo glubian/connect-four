@@ -51,9 +51,9 @@
           "description": "Your opponent wants to change the rules:",
           "time": {
             "unlimited": "timer disabled",
-            "perTurn": "{n} per turn",
+            "perTurn": "{0} per turn",
             "cap": "remaining time passes onto the next round",
-            "capAt": "cannot exceed {n}"
+            "capAt": "cannot exceed {0}"
           },
           "draws": {
             "disallowed": "first player to connect four wins",
@@ -251,9 +251,9 @@
           "description": "Twój przeciwnik chce zmienić zasady gry:",
           "time": {
             "unlimited": "brak limitu czasu",
-            "perTurn": "{n} na turę",
+            "perTurn": "{0} na turę",
             "cap": "pozostały czas będzie przeniesiony do następnej tury",
-            "capAt": "maksymalnie {n}"
+            "capAt": "maksymalnie {0}"
           },
           "draws": {
             "disallowed": "remis tylko jeśli nie ma już miejsca",
