@@ -9,20 +9,20 @@ const emit = defineEmits<{ (ev: "hide"): void }>();
 
 const { t } = useI18n();
 
-const timePerTurn = ref(20);
+const timePerTurn = ref("20");
 const timePerTurnList = computed(() => ({
-  12: t("unit.seconds", 12),
-  20: t("unit.seconds", 20),
-  32: t("unit.seconds", 32),
-  48: t("unit.seconds", 48),
-  60: t("unit.seconds", 60),
+  "12": t("unit.seconds", 12),
+  "20": t("unit.seconds", 20),
+  "32": t("unit.seconds", 32),
+  "48": t("unit.seconds", 48),
+  "60": t("unit.seconds", 60),
 }));
 
-const atMost = ref(40);
+const atMost = ref("40");
 const atMostList = computed(() => ({
-  40: t("unit.seconds", 40),
-  80: t("unit.seconds", 80),
-  120: t("unit.seconds", 120),
+  "40": t("unit.seconds", 40),
+  "80": t("unit.seconds", 80),
+  "120": t("unit.seconds", 120),
 }));
 
 const allowDraws = ref(false);
