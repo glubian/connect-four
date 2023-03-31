@@ -1,9 +1,15 @@
 import { FIELD_SIZE } from "@/game";
-import { BORDER_WIDTH, CONT_SIZE, HALF_CONT_SIZE } from "@/game-ui";
+import {
+  BORDER_WIDTH,
+  CONT_SIZE,
+  FOCUS_RING_OFFSET,
+  FOCUS_RING_WIDTH,
+  HALF_CONT_SIZE,
+} from "@/game-ui";
 import { gameUIStore } from "@/game-ui-store";
 import { clamp, lerp, mag, normalize } from "@/math";
 import { store } from "@/store";
-import { Tween } from "@/tween";
+import { NumberTween, Tween } from "@/tween";
 
 import { useAnimations } from "./composables/animations";
 import type { ExtendedTouch } from "./extended-touch";
@@ -19,6 +25,7 @@ const FALL_ACCELERATION = 1200; // px / (s^2)
 
 // timing
 const SLIDE_DURATION = 120; // ms
+const RAISE_DURATION = 120; //ms
 const MODE_TRANSITION = 48; // ms
 
 // CSS classes
@@ -275,6 +282,12 @@ export function slotAnimation({
   const animation = {
     locked: new LockAnimation(),
     gravity: new GravityAnimation(),
+    raise: new NumberTween(
+      0,
+      -FOCUS_RING_OFFSET - FOCUS_RING_WIDTH,
+      RAISE_DURATION,
+      true
+    ),
   } as const;
 
   // Updated by `updateFocus()`
@@ -391,7 +404,6 @@ export function slotAnimation({
     prevMode = mode;
     mode = newMode;
 
-    const v = vector;
     const a = animation;
 
     setVisible(mode !== Mode.Off && mode !== Mode.Inert);
@@ -400,10 +412,17 @@ export function slotAnimation({
       requestFrame(animationFrame);
     }
 
+    if (mode === Mode.Constrained) {
+      a.raise.forward();
+    } else {
+      a.raise.reverse();
+    }
+
     if (
       mode === Mode.Constrained ||
       (prevMode === Mode.Freeform && mode === Mode.Locked)
     ) {
+      a.raise.complete();
       a.locked.complete();
     }
 
@@ -420,7 +439,8 @@ export function slotAnimation({
       gameUIStore.startAnimation();
       gameUIStore.playerMoved(col, y);
       store.endTurn(col);
-      a.gravity.fall(y, v.nudge.y);
+      const startingPosition = getVectorForMode(prevMode, performance.now());
+      a.gravity.fall(y, startingPosition ? startingPosition[1] : 0);
     }
   }
 
@@ -694,13 +714,15 @@ export function slotAnimation({
       case Mode.Off:
         return null;
       case Mode.Freeform:
-        return [v.pointer.x, v.nudge.y];
+        return [v.pointer.x, v.nudge.y + a.raise.valueAsType(ts)];
       case Mode.Constrained:
-        return [a.locked.getX(ts), 0];
+        return [a.locked.getX(ts), a.raise.valueAsType(ts)];
       case Mode.Inert:
-        return [v.inertia.x, v.nudge.y];
-      case Mode.Locked:
-        return [a.locked.getX(ts) + v.nudge.x, v.nudge.y];
+        return [v.inertia.x, v.nudge.y + a.raise.valueAsType(ts)];
+      case Mode.Locked: {
+        const y = v.nudge.y + a.raise.valueAsType(ts);
+        return [a.locked.getX(ts) + v.nudge.x, y];
+      }
       case Mode.Falling:
         return [a.locked.getX(ts) + v.nudge.x, a.gravity.getY(ts)];
     }

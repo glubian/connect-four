@@ -1,4 +1,4 @@
-import { clamp } from "./math";
+import { clamp, lerp } from "./math";
 
 export class Tween {
   private timestamp = 0;
@@ -42,5 +42,24 @@ export class Tween {
   value(timestamp = performance.now()): number {
     const v = this.rawValue(timestamp);
     return this.isReversed ? 1 - v : v;
+  }
+}
+
+export class NumberTween extends Tween {
+  constructor(
+    protected from: number,
+    protected to: number,
+    duration: number,
+    isReversed = false
+  ) {
+    super(duration, isReversed);
+  }
+
+  rawValueAsType(timestamp = performance.now()): number {
+    return lerp(this.from, this.to, super.rawValue(timestamp));
+  }
+
+  valueAsType(timestamp = performance.now()): number {
+    return lerp(this.from, this.to, super.value(timestamp));
   }
 }
