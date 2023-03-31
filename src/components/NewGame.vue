@@ -52,7 +52,6 @@ const timeCapList = computed(() => {
 });
 
 watch(timeCapList, () => {
-  console.log(timeCap.value, timeCapList.value, timePerTurn.value);
   if (!(timeCap.value in timeCapList.value)) {
     const timePerTurnValue = +timePerTurn.value;
     timeCap.value = (timePerTurnValue + timePerTurnValue).toString();
