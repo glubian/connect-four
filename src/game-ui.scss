@@ -8,3 +8,5 @@ $size: 32px;
 $cont-size: $size + $spacing;
 $half-cont-size: math.div($cont-size, 2);
 $field-size-ui: $field-size * $cont-size;
+$focus-ring-width: 1px;
+$focus-ring-offset: 8px;

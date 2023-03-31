@@ -20,9 +20,14 @@ interface Slot {
   style: { transitionDuration?: string; transitionDelay?: string };
 }
 
-const rootClassListRef = ref({ animate: false, focus: false });
+const rootClassListRef = ref({ animate: false });
+const showFocusRing = ref(false);
 const slotsRef = shallowRef(createSlotArray(gameUIStore.field));
 let displayedRound = 0;
+
+const focusRingStyle = computed(() =>
+  showFocusRing.value ? {} : { display: "none" }
+);
 
 function slotFromValue(value: Player | null): Slot {
   return {
@@ -106,9 +111,10 @@ watch(gameUIStore, () => {
   <div class="connect-four" :class="rootClassListRef">
     <ConnectFourInput
       :disabled="isDisabled"
-      @update-focus-visible="(v) => (rootClassListRef.focus = v)"
+      @update-focus-visible="(v) => (showFocusRing = v)"
     />
     <ConnectFourResult :matches="gameMatches" />
+    <div class="focus-ring" :style="focusRingStyle"></div>
     <div v-for="(col, x) in slotsRef" :key="x" class="col">
       <div v-for="(slot, y) in col" :key="y" class="slot-container">
         <div class="slot" :class="slot.playerClass" :style="slot.style"></div>
@@ -118,6 +124,8 @@ watch(gameUIStore, () => {
 </template>
 
 <style scoped lang="scss">
+@use "@/game-ui" as g;
+
 .connect-four {
   position: relative;
   box-sizing: border-box;
@@ -125,9 +133,20 @@ watch(gameUIStore, () => {
   border: var(--c0-game-border);
   border-radius: 26px;
   user-select: none;
-  &.focus {
-    border-color: var(--c-focus-visible-border-color);
-  }
+}
+
+.focus-ring {
+  $position: g.$focus-ring-offset + g.$border-width + g.$focus-ring-width;
+  $offset: calc(100% + #{2 * $position});
+  position: absolute;
+  top: -$position;
+  left: -$position;
+  box-sizing: border-box;
+  width: $offset;
+  height: $offset;
+  border: g.$focus-ring-width solid var(--c-focus-visible-border-color);
+  border-radius: 28px + g.$focus-ring-offset;
+  z-index: -1;
 }
 </style>
 
