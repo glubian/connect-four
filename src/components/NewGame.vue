@@ -63,14 +63,16 @@ const allowDraws = ref(false);
 function reset() {
   const { config } = store;
 
-  if (config.timePerTurn in timePerTurnList.value) {
-    timePerTurn.value = config.timePerTurn.toString();
+  const configTimePerTurn = config.timePerTurn.toString();
+  if (configTimePerTurn in timePerTurnList.value) {
+    timePerTurn.value = configTimePerTurn;
   }
 
   timeCapEnabled.value = config.timeCap >= TIME_CAP_MIN;
 
-  if (config.timeCap in timeCapList.value) {
-    timeCap.value = config.timeCap.toString();
+  const configTimeCap = config.timeCap.toString();
+  if (configTimeCap in timeCapList.value) {
+    timeCap.value = configTimeCap;
   }
 
   allowDraws.value = store.config.allowDraws;
