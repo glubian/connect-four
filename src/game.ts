@@ -1,6 +1,6 @@
 const FIELD_SIZE = 7;
 const WIN_LENGTH = 4;
-const LAST_TURN = FIELD_SIZE * FIELD_SIZE - 1;
+const LAST_MOVE = FIELD_SIZE * FIELD_SIZE - 1;
 
 type GameField = (Player | null)[][];
 type GameMatch = [[number, number], [number, number]];
@@ -149,7 +149,7 @@ function getDiagonalMatches(matches: GameMatch[], field: GameField) {
   }
 }
 
-function getResult(field: GameField, turn: number): GameResult | null {
+function getResult(field: GameField, moves: number): GameResult | null {
   const matches: GameMatch[] = [];
 
   getHorizontalAndVerticalMatches(matches, field);
@@ -181,7 +181,7 @@ function getResult(field: GameField, turn: number): GameResult | null {
     return { winner, matches };
   }
 
-  if (turn >= LAST_TURN) {
+  if (moves >= LAST_MOVE) {
     return { winner: GameWinner.Draw, matches: [] };
   }
 
@@ -202,10 +202,10 @@ class Game {
 
   private updateResult(x: number, y: number) {
     const { field, state, rules } = this;
-    const { turn, player } = this.state;
+    const { turn, moves, player } = this.state;
 
-    if (turn >= LAST_TURN) {
-      state.gameResolved(getResult(field, turn) as GameResult);
+    if (moves >= LAST_MOVE) {
+      state.gameResolved(getResult(field, moves) as GameResult);
       return;
     }
 
@@ -228,7 +228,7 @@ class Game {
     }
 
     if (skipIncrementalCheck || this.isMoveWinning(x, y, player)) {
-      state.gameResolved(getResult(field, turn) as GameResult);
+      state.gameResolved(getResult(field, moves) as GameResult);
     }
   }
 
@@ -375,12 +375,13 @@ function otherPlayer(player: Player): Player {
 
 class GameState {
   static create(startingPlayer: Player): GameState {
-    return new GameState(startingPlayer, 0, null);
+    return new GameState(startingPlayer, 0, 0, null);
   }
 
   constructor(
     public player: Player,
     public turn: number,
+    public moves: number,
     public result: GameResult | null,
     public lastMove?: number | null
   ) {}
@@ -388,6 +389,7 @@ class GameState {
   nextTurn(col: number) {
     this.player = otherPlayer(this.player);
     this.turn++;
+    this.moves++;
     this.lastMove = col;
   }
 

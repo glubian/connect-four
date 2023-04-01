@@ -131,8 +131,14 @@ function cloneResult({ winner, matches }: GameResult): GameResult {
 
 /** Returns a copy of `GameState`. */
 function cloneState(state: GameState): GameState {
-  const { player, turn, result, lastMove } = state;
-  return new GameState(player, turn, result && cloneResult(result), lastMove);
+  const { player, turn, moves, result, lastMove } = state;
+  return new GameState(
+    player,
+    turn,
+    moves,
+    result && cloneResult(result),
+    lastMove
+  );
 }
 
 /** Handles UI-specific game state. */
