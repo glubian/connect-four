@@ -205,7 +205,7 @@ class Game {
     const { turn, moves, player } = this.state;
 
     if (moves >= LAST_MOVE) {
-      state.gameResolved(getResult(field, moves) as GameResult);
+      state.setResult(getResult(field, moves));
       return;
     }
 
@@ -228,7 +228,7 @@ class Game {
     }
 
     if (skipIncrementalCheck || this.isMoveWinning(x, y, player)) {
-      state.gameResolved(getResult(field, moves) as GameResult);
+      state.setResult(getResult(field, moves));
     }
   }
 
@@ -393,7 +393,7 @@ class GameState {
     this.lastMove = col;
   }
 
-  gameResolved(result: GameResult) {
+  setResult(result: GameResult | null) {
     this.result = result;
   }
 }
