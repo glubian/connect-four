@@ -245,9 +245,20 @@ class Game {
     return null;
   }
 
-  endTurn(col: number): boolean {
+  endTurn(col: number | null): boolean {
     const { field, state } = this;
-    if (col >= field.length || state.result) {
+
+    if (state.result) {
+      return false;
+    }
+
+    if (typeof col !== "number") {
+      state.setResult(this.getResult(null));
+      state.nextTurn(null);
+      return true;
+    }
+
+    if (col >= field.length) {
       return false;
     }
 
@@ -259,7 +270,6 @@ class Game {
       field[col][i] = state.player;
       state.setResult(this.getResult([col, i]));
       state.nextTurn(col);
-
       return true;
     }
 
@@ -399,10 +409,12 @@ class GameState {
     public lastMove?: number | null
   ) {}
 
-  nextTurn(col: number) {
+  nextTurn(col: number | null) {
     this.player = otherPlayer(this.player);
     this.turn++;
-    this.moves++;
+    if (typeof col === "number") {
+      this.moves++;
+    }
     this.lastMove = col;
   }
 

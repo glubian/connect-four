@@ -153,7 +153,7 @@ interface GamePlayerSelectionVoteMessage {
 interface GameEndTurnMessage {
   type: typeof GAME_END_TURN;
   turn: number;
-  col: number;
+  col?: number | null;
 }
 
 interface GameRestartMessage extends Partial<GameConfig> {
@@ -403,7 +403,7 @@ export default class WebSocketController {
   }
 
   /** Sends `GameEndTurnMessage`. */
-  endTurn(turn: number, col: number) {
+  endTurn(turn: number, col: number | null) {
     if (!(this.socket && this.inGame)) {
       return;
     }
@@ -411,7 +411,7 @@ export default class WebSocketController {
     const msg: GameEndTurnMessage = {
       type: GAME_END_TURN,
       turn,
-      col,
+      col: col ?? void 0,
     };
     this.socket.send(JSON.stringify(msg));
   }
