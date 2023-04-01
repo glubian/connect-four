@@ -200,36 +200,49 @@ class Game {
     public readonly rules: GameRules
   ) {}
 
-  private updateResult(x: number, y: number) {
+  private wasLastMoveWinning(): boolean {
+    const x = this.state.lastMove;
+    if (typeof x !== "number") {
+      return false;
+    }
+
+    const other = otherPlayer(this.state.player);
+    const y = this.field[x].findIndex((s) => s === other);
+    return y > -1 && this.isMoveWinning(x, y, other);
+  }
+
+  private getResult(point: [number, number] | null): GameResult | null {
     const { field, state, rules } = this;
-    const { turn, moves, player } = this.state;
+    const { moves, player } = state;
 
     if (moves >= LAST_MOVE) {
-      state.setResult(getResult(field, moves));
-      return;
+      return getResult(field, moves);
     }
 
-    let skipIncrementalCheck = false;
+    if (!point) {
+      if (rules.allowDraws && player === Player.P2) {
+        return getResult(field, moves);
+      }
+
+      return null;
+    }
+
     if (rules.allowDraws) {
-      if (turn % 2 === 0) {
-        return;
+      if (player === Player.P1) {
+        return null;
       }
 
-      if (typeof state.lastMove === "number") {
-        const col = state.lastMove;
-        const other = otherPlayer(player);
-        for (let i = 0; i < FIELD_SIZE; i++) {
-          if (field[col][i] === other) {
-            skipIncrementalCheck = this.isMoveWinning(col, i, other);
-            break;
-          }
-        }
+      if (this.wasLastMoveWinning()) {
+        return getResult(field, moves);
       }
     }
 
-    if (skipIncrementalCheck || this.isMoveWinning(x, y, player)) {
-      state.setResult(getResult(field, moves));
+    const [x, y] = point;
+    if (this.isMoveWinning(x, y, player)) {
+      return getResult(field, moves);
     }
+
+    return null;
   }
 
   endTurn(col: number): boolean {
@@ -244,7 +257,7 @@ class Game {
       }
 
       field[col][i] = state.player;
-      this.updateResult(col, i);
+      state.setResult(this.getResult([col, i]));
       state.nextTurn(col);
 
       return true;
