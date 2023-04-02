@@ -3,6 +3,7 @@ import { Game, otherPlayer, Player, type GameRules } from "./game";
 import { URL_LOBBY_PARAMETER } from "./urls";
 import type { DisconnectReason, GameConfig, QR } from "./ws";
 import WebSocketController from "./ws";
+import { TIME_PER_TURN_MIN } from "./constants";
 
 interface Lobby {
   isHost: true;
@@ -74,12 +75,19 @@ let wasGameSynced = false;
  */
 let localConfig: GameConfig | null = null;
 
+/** Extra time of both players in a local game. */
+const extraTime: [number, number] = [0, 0];
+/** Turn timeout handle in a local game. */
+let turnTimeoutHandle: ReturnType<typeof setTimeout> | null = null;
+
 function startLocalGame(startingPlayer: Player) {
   game.value = Game.create({
     startingPlayer,
     ...store.config,
   });
   store.round++;
+  clearTurnTimeout();
+  extraTime.fill(0);
 }
 
 // Mutations that can be invoked by the UI
@@ -118,19 +126,29 @@ function setPlayerCode(code: number | null) {
 function endTurn(col: number | null) {
   const { state } = game.value;
 
-  if (
-    store.playerSelection !== PlayerSelection.Hidden ||
-    store.lobby ||
-    state.result
-  ) {
+  if (store.lobby || state.result) {
     return;
   }
 
   if (store.isConnected) {
     wsController.endTurn(state.turn, col);
   } else {
-    game.value.endTurn(col);
+    const gameValue = game.value;
+    const lastPlayer = gameValue.state.player;
+
+    if (!gameValue.endTurn(col)) {
+      return;
+    }
+
     triggerRef(game);
+
+    const timeRemained = clearTurnTimeout();
+    if (gameValue.state.turn) {
+      extraTime[lastPlayer] = timeRemained;
+    }
+    if (!gameValue.state.result) {
+      setLocalTurnTimeout(extraTime[gameValue.state.player]);
+    }
   }
 }
 
@@ -266,7 +284,11 @@ function wsSyncGame(g: Game, round: number, timeout?: string | null) {
   store.remoteRound = round;
   store.lobby = null;
   store.playerSelection = PlayerSelection.Hidden;
-  store.turnTimeout = timeout ? new Date(timeout) : null;
+
+  clearTurnTimeout();
+  if (timeout) {
+    setRemoteTurnTimeout(timeout);
+  }
 }
 
 /** Signals the connection was successfully opened. */
@@ -377,6 +399,52 @@ function clearRestartRequest(player: Player) {
   store.restartRequests[player] = null;
 }
 
+/**
+ * Clears the current turn timeout and returns how much time remained until
+ * it would fire.
+ */
+function clearTurnTimeout(): number {
+  if (turnTimeoutHandle === null) {
+    store.turnTimeout = null;
+    return 0;
+  }
+
+  const { turnTimeout } = store;
+  const timeRemained = turnTimeout ? Math.max(turnTimeout - Date.now(), 0) : 0;
+  clearTimeout(turnTimeoutHandle);
+
+  turnTimeoutHandle = null;
+  store.turnTimeout = null;
+
+  return timeRemained;
+}
+
+/** Starts a new timeout in a local game. */
+function setLocalTurnTimeout(extraTime: number) {
+  const { config } = store;
+  if (config.timePerTurn < TIME_PER_TURN_MIN) {
+    return;
+  }
+
+  const AS_MS = 1000;
+  const timePerTurn = config.timePerTurn * AS_MS;
+  const timeCap = Math.max(timePerTurn, config.timeCap * AS_MS);
+
+  const now = Date.now();
+  const duration = Math.min(extraTime + timePerTurn, timeCap);
+  const timeout = now + duration;
+
+  turnTimeoutHandle = setTimeout(() => store.endTurn(null), duration);
+  store.turnTimeout = timeout;
+}
+
+/** Stores timeout in a remote game. */
+function setRemoteTurnTimeout(timeout: string) {
+  const dt = store.getTimeDifference();
+  const delay = store.getDelay();
+  store.turnTimeout = new Date(timeout).getTime() - delay - dt;
+}
+
 /** Handles the game state. */
 export const store = reactive({
   lobby: null as Lobby | JoiningLobby | null,
@@ -401,7 +469,7 @@ export const store = reactive({
   config: defaultConfig(),
 
   /** In a timed game, indicates when the turn will end automatically. */
-  turnTimeout: null as Date | null,
+  turnTimeout: null as number | null,
 
   /**
    * An estimate of the time it takes for a packet to reach the server
