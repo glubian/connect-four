@@ -114,8 +114,8 @@ function setPlayerCode(code: number | null) {
   }
 }
 
-/** Makes a move and ends turn. */
-function endTurn(col: number) {
+/** Ends the current turn. Passing `null` ends the turn without making a move. */
+function endTurn(col: number | null) {
   const { state } = game.value;
 
   if (
@@ -259,13 +259,14 @@ function wsPlayerSelection(p1Voted: boolean, p2Voted: boolean) {
 }
 
 /** Updates `Game` and round. */
-function wsSyncGame(g: Game, round: number) {
+function wsSyncGame(g: Game, round: number, timeout?: string | null) {
   wasGameSynced = true;
   game.value = g;
   store.round = round;
   store.remoteRound = round;
   store.lobby = null;
   store.playerSelection = PlayerSelection.Hidden;
+  store.turnTimeout = timeout ? new Date(timeout) : null;
 }
 
 /** Signals the connection was successfully opened. */
@@ -285,6 +286,7 @@ function wsDisconnected() {
   store.isConnected = false;
   store.lobby = null;
   store.remoteRole = null;
+  store.turnTimeout = null;
 
   clearRestartRequest(Player.P1);
   clearRestartRequest(Player.P2);
@@ -397,6 +399,9 @@ export const store = reactive({
    */
   playerSelection: PlayerSelection.Hidden,
   config: defaultConfig(),
+
+  /** In a timed game, indicates when the turn will end automatically. */
+  turnTimeout: null as Date | null,
 
   /**
    * An estimate of the time it takes for a packet to reach the server

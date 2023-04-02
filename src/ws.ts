@@ -104,6 +104,7 @@ interface GameSyncMessage {
   type: typeof GAME_SYNC;
   game: RemoteGame;
   round: number;
+  timeout?: string | null;
 }
 
 interface GamePlayerSelectionMessage {
@@ -282,8 +283,9 @@ export default class WebSocketController {
         const {
           round,
           game: { field, state, rules },
+          timeout,
         } = msg;
-        store.wsSyncGame(new Game(field, state, rules), round);
+        store.wsSyncGame(new Game(field, state, rules), round, timeout);
         return;
       }
       case GAME_PLAYER_SELECTION: {
