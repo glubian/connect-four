@@ -1,9 +1,9 @@
 import { computed, reactive, shallowRef, triggerRef, watch } from "vue";
-import { Game, otherPlayer, Player, type GameRules } from "./game";
+import { TIME_PER_TURN_MIN } from "./constants";
+import { Game, Player, otherPlayer, type GameRules } from "./game";
 import { URL_LOBBY_PARAMETER } from "./urls";
 import type { DisconnectReason, GameConfig, QR } from "./ws";
 import WebSocketController from "./ws";
-import { TIME_PER_TURN_MIN } from "./constants";
 
 interface Lobby {
   isHost: true;
