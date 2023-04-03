@@ -181,6 +181,9 @@ $p2-svg: "data:image/svg+xml," +
   --c0-text: #{$black-text-primary};
   --c0-text-secondary: #{$black-text-secondary};
   --c0-text-tertiary: #{$black-text-tertiary};
+  --c0-text-solid: #{$black-text-primary-solid};
+  --c0-text-secondary-solid: #{$black-text-secondary-solid};
+  --c0-text-tertiary-solid: #{$black-text-tertiary-solid};
   --c0-drop-shadow: transparent;
 
   --c0-button: #{$tb-gray700};
@@ -299,6 +302,9 @@ $p2-svg: "data:image/svg+xml," +
   --c0-text: #{$dark-gray900-text-primary};
   --c0-text-secondary: #{$dark-gray900-text-secondary};
   --c0-text-tertiary: #{$dark-gray900-text-tertiary};
+  --c0-text-solid: #{$dark-gray900-text-primary-solid};
+  --c0-text-secondary-solid: #{$dark-gray900-text-secondary-solid};
+  --c0-text-tertiary-solid: #{$dark-gray900-text-tertiary-solid};
   --c0-drop-shadow: #{$shadow-on-dark-gray900};
 
   --c0-button: #{$dark-gray700};
@@ -417,6 +423,9 @@ $p2-svg: "data:image/svg+xml," +
   --c0-text: #{$light-gray100-text-primary};
   --c0-text-secondary: #{$light-gray100-text-secondary};
   --c0-text-tertiary: #{$light-gray100-text-tertiary};
+  --c0-text-solid: #{$light-gray100-text-primary-solid};
+  --c0-text-secondary-solid: #{$light-gray100-text-secondary-solid};
+  --c0-text-tertiary-solid: #{$light-gray100-text-tertiary-solid};
   --c0-drop-shadow: #{$shadow-on-light-gray100};
 
   --c0-button: #{$light-gray300};
@@ -538,6 +547,9 @@ body {
   --c-text: var(--c0-text);
   --c-text-secondary: var(--c0-text-secondary);
   --c-text-tertiary: var(--c0-text-tertiary);
+  --c-text-solid: var(--c0-text-solid);
+  --c-text-secondary-solid: var(--c0-text-secondary-solid);
+  --c-text-tertiary-solid: var(--c0-text-tertiary-solid);
   --c-drop-shadow: var(--c0-drop-shadow);
 
   --c-button: var(--c0-button);
