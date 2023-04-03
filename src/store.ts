@@ -440,6 +440,10 @@ function getTimeoutDuration(extraTime: number): number {
 
 /** Starts a new timeout in a local game. */
 function setLocalTurnTimeout(duration: number) {
+  if (duration < TIME_PER_TURN_MIN) {
+    return;
+  }
+
   turnTimeoutHandle = setTimeout(() => store.endTurn(null), duration);
   timeoutRemaining = null;
   store.turnTimeout = Date.now() + duration;
