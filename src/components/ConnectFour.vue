@@ -5,6 +5,7 @@ import { gameUIStore } from "@/game-ui-store";
 import { randomRange } from "@/math";
 import { PlayerSelection, store } from "@/store";
 import { computed, ref, shallowRef, triggerRef, watch } from "vue";
+import ConnectFourBorder from "./ConnectFourBorder.vue";
 import ConnectFourInput from "./ConnectFourInput.vue";
 import ConnectFourResult from "./ConnectFourResult.vue";
 
@@ -109,6 +110,7 @@ watch(gameUIStore, () => {
 
 <template>
   <div class="connect-four" :class="rootClassListRef">
+    <ConnectFourBorder :start="0" :end="1" />
     <ConnectFourInput
       :disabled="isDisabled"
       @update-focus-visible="(v) => (showFocusRing = v)"
@@ -130,8 +132,6 @@ watch(gameUIStore, () => {
   position: relative;
   box-sizing: border-box;
   display: flex;
-  border: var(--c0-game-border);
-  border-radius: 26px;
   user-select: none;
 }
 
