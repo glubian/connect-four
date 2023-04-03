@@ -3,7 +3,10 @@ import { FIELD_SIZE_UI } from "@/game-ui";
 import { TAU } from "@/math";
 import { computed } from "vue";
 
-const props = defineProps<{ start: number; end: number }>();
+const props = defineProps<{ start: number; end: number; isActive?: boolean }>();
+
+const ACTIVE_CLASS = "active";
+const activeClass = computed(() => (props.isActive ? ACTIVE_CLASS : ""));
 
 const STROKE_WIDTH = 2; // px
 const RECT_SIZE = FIELD_SIZE_UI + STROKE_WIDTH;
@@ -61,6 +64,7 @@ const dashArray = computed(() =>
     <rect
       fill="transparent"
       class="bar"
+      :class="activeClass"
       :stroke-width="STROKE_WIDTH"
       :stroke-dasharray="dashArray"
       :x="STROKE_WIDTH"
@@ -90,5 +94,9 @@ svg {
 
 .bar {
   stroke: var(--c-text-secondary-solid);
+  transition: stroke 120ms ease-in-out;
+  &.active {
+    stroke: var(--c-text-solid);
+  }
 }
 </style>
