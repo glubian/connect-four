@@ -146,7 +146,8 @@ function endTurn(col: number | null) {
       extraTime[lastPlayer] = timeRemained;
     }
     if (!gameValue.state.result) {
-      setLocalTurnTimeout(extraTime[gameValue.state.player]);
+      const duration = getTimeoutDuration(extraTime[gameValue.state.player]);
+      setLocalTurnTimeout(duration);
     }
   }
 }
@@ -418,23 +419,26 @@ function clearTurnTimeout(): number {
   return timeRemained;
 }
 
-/** Starts a new timeout in a local game. */
-function setLocalTurnTimeout(extraTime: number) {
+/**
+ * Returns the amount of time the current turn should take,
+ * or `0` if timer is disabled.
+ */
+function getTimeoutDuration(extraTime: number): number {
   const { config } = store;
   if (config.timePerTurn < TIME_PER_TURN_MIN) {
-    return;
+    return 0;
   }
 
   const AS_MS = 1000;
   const timePerTurn = config.timePerTurn * AS_MS;
   const timeCap = Math.max(timePerTurn, config.timeCap * AS_MS);
+  return Math.min(extraTime + timePerTurn, timeCap);
+}
 
-  const now = Date.now();
-  const duration = Math.min(extraTime + timePerTurn, timeCap);
-  const timeout = now + duration;
-
+/** Starts a new timeout in a local game. */
+function setLocalTurnTimeout(duration: number) {
   turnTimeoutHandle = setTimeout(() => store.endTurn(null), duration);
-  store.turnTimeout = timeout;
+  store.turnTimeout = Date.now() + duration;
 }
 
 /** Stores timeout in a remote game. */
