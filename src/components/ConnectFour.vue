@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useTimerAnimation } from "@/composables/timer-animation";
 import { FIELD_SIZE, Player, type GameField } from "@/game";
 import { playerClass, type PlayerClass } from "@/game-ui";
 import { gameUIStore } from "@/game-ui-store";
@@ -24,6 +25,7 @@ interface Slot {
 const rootClassListRef = ref({ animate: false });
 const showFocusRing = ref(false);
 const slotsRef = shallowRef(createSlotArray(gameUIStore.field));
+const timerAnimation = useTimerAnimation();
 let displayedRound = 0;
 
 const focusRingStyle = computed(() =>
@@ -110,7 +112,11 @@ watch(gameUIStore, () => {
 
 <template>
   <div class="connect-four" :class="rootClassListRef">
-    <ConnectFourBorder :start="0" :end="1" />
+    <ConnectFourBorder
+      :start="timerAnimation.start"
+      :end="timerAnimation.end"
+      :is-active="timerAnimation.isOngoing"
+    />
     <ConnectFourInput
       :disabled="isDisabled"
       @update-focus-visible="(v) => (showFocusRing = v)"
