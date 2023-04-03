@@ -79,6 +79,8 @@ let localConfig: GameConfig | null = null;
 const extraTime: [number, number] = [0, 0];
 /** Turn timeout handle in a local game. */
 let turnTimeoutHandle: ReturnType<typeof setTimeout> | null = null;
+/** Stores how much time is remaining in case the timer is paused. */
+let timeoutRemaining: number | null = null; // timestamp
 
 function startLocalGame(startingPlayer: Player) {
   game.value = Game.create({
@@ -413,6 +415,7 @@ function clearTurnTimeout(): number {
   const timeRemained = turnTimeout ? Math.max(turnTimeout - Date.now(), 0) : 0;
   clearTimeout(turnTimeoutHandle);
 
+  timeoutRemaining = null;
   turnTimeoutHandle = null;
   store.turnTimeout = null;
 
@@ -438,6 +441,7 @@ function getTimeoutDuration(extraTime: number): number {
 /** Starts a new timeout in a local game. */
 function setLocalTurnTimeout(duration: number) {
   turnTimeoutHandle = setTimeout(() => store.endTurn(null), duration);
+  timeoutRemaining = null;
   store.turnTimeout = Date.now() + duration;
 }
 
@@ -445,7 +449,24 @@ function setLocalTurnTimeout(duration: number) {
 function setRemoteTurnTimeout(timeout: string) {
   const dt = store.getTimeDifference();
   const delay = store.getDelay();
+  timeoutRemaining = null;
   store.turnTimeout = new Date(timeout).getTime() - delay - dt;
+}
+
+/** Pauses or unpauses turn timeout in a local game. */
+function pauseLocalTurnTimeout(isPaused: boolean) {
+  if (store.turnTimeout !== null && !turnTimeoutHandle) {
+    return;
+  }
+
+  const { turnTimeout } = store;
+  if (!isPaused && turnTimeout === null) {
+    if (timeoutRemaining) {
+      setLocalTurnTimeout(timeoutRemaining);
+    }
+  } else if (isPaused && turnTimeout !== null) {
+    timeoutRemaining = clearTurnTimeout();
+  }
 }
 
 /** Handles the game state. */
@@ -536,3 +557,14 @@ watch(
     window.history.replaceState(null, "", url.toString());
   }
 );
+
+{
+  let lobby: Object | null = null;
+  watch(store, (current) => {
+    if (current.lobby !== lobby) {
+      pauseLocalTurnTimeout(!!current.lobby);
+    }
+
+    lobby = current.lobby;
+  });
+}
