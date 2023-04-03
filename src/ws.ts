@@ -200,10 +200,11 @@ export default class WebSocketController {
   /**
    * Connects to the server if not already connected.
    * @param id - lobby to connect to
+   * @returns true if a new connection has been started
    */
-  connect(id?: string | null): void {
+  connect(id?: string | null): boolean {
     if (this.socket) {
-      return;
+      return false;
     }
 
     const url = new URL(WS_SERVER_URL);
@@ -216,6 +217,7 @@ export default class WebSocketController {
     socket.addEventListener("message", this.onMessage);
     socket.addEventListener("close", this.onClose);
     this.socket = socket;
+    return true;
   }
 
   /** Closes the connection. */

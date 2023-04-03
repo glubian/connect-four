@@ -97,8 +97,7 @@ function startLocalGame(startingPlayer: Player) {
  * a new one will be created.
  */
 function connect(lobbyId?: string | null) {
-  if (!store.isConnected) {
-    wsController.connect(lobbyId);
+  if (!store.isConnected && wsController.connect(lobbyId)) {
     store.lobby = createLobby(lobbyId);
     store.disconnectedReason = null;
     store.disconnectedByUser = false;
