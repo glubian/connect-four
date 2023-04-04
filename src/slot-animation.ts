@@ -27,7 +27,6 @@ const FALL_ACCELERATION = 1200; // px / (s^2)
 
 // timing
 const SLIDE_DURATION = 120; // ms
-const RAISE_DURATION = 120; //ms
 const MODE_TRANSITION = 48; // ms
 
 // CSS classes

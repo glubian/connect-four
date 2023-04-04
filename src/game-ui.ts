@@ -9,6 +9,7 @@ export const HALF_CONT_SIZE = CONT_SIZE / 2; // px
 export const FIELD_SIZE_UI = FIELD_SIZE * CONT_SIZE; // px
 export const FOCUS_RING_WIDTH = 1; // px
 export const FOCUS_RING_OFFSET = 4; // px
+export const RAISE_DURATION = 120; //ms
 
 export type PlayerClass = "p1" | "p2";
 
