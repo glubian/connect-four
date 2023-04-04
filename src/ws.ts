@@ -137,13 +137,16 @@ const GAME_RESTART = "gameRestart";
 const GAME_RESTART_RESPONSE = "gameRestartResponse";
 const PING = "ping";
 
-interface LobbyPickPlayerMessage {
-  type: typeof LOBBY_PICK_PLAYER;
+export interface PickPlayerContents {
   code: number;
   role: Player;
   game?: RemoteGame | null;
   config: GameConfig;
   round: number;
+}
+
+interface LobbyPickPlayerMessage extends PickPlayerContents {
+  type: typeof LOBBY_PICK_PLAYER;
 }
 
 interface GamePlayerSelectionVoteMessage {
@@ -370,24 +373,14 @@ export default class WebSocketController {
   };
 
   /** Sends `LobbyPickPlayerMessage`. */
-  pickPlayer(
-    code: number,
-    role: Player,
-    game: Game | null,
-    config: GameConfig,
-    round: number
-  ) {
+  pickPlayer(contents: PickPlayerContents) {
     if (!this.socket || this.inGame) {
       return;
     }
 
     const msg: LobbyPickPlayerMessage = {
       type: LOBBY_PICK_PLAYER,
-      code,
-      role,
-      game,
-      config,
-      round,
+      ...contents,
     };
     const textMsg = JSON.stringify(msg);
     this.socket.send(textMsg);

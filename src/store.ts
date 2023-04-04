@@ -111,7 +111,13 @@ function acceptPlayer(code: number, role: Player) {
   if (store.lobby && store.lobby.isHost) {
     const isVoting = store.playerSelection === PlayerSelection.Voting;
     const gameValue = isVoting ? null : game.value;
-    wsController.pickPlayer(code, role, gameValue, store.config, store.round);
+    wsController.pickPlayer({
+      code,
+      role,
+      game: gameValue,
+      config: store.config,
+      round: store.round,
+    });
     store.remoteRole = otherPlayer(role);
   }
 }
