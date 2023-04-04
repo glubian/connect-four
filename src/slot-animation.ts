@@ -5,16 +5,16 @@ import {
   FOCUS_RING_OFFSET,
   FOCUS_RING_WIDTH,
   HALF_CONT_SIZE,
+  RAISE_DURATION,
 } from "@/game-ui";
 import { gameUIStore } from "@/game-ui-store";
 import { clamp, lerp, mag, normalize } from "@/math";
 import { store } from "@/store";
 import { NumberTween, Tween } from "@/tween";
-
+import { otherPlayer } from "@/game";
+import { playerClass } from "@/game-ui";
 import { useAnimations } from "./composables/animations";
 import type { ExtendedTouch } from "./extended-touch";
-import { playerClass } from "@/game-ui";
-import { otherPlayer } from "@/game";
 
 const { min, floor, sqrt } = Math;
 
