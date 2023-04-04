@@ -9,6 +9,7 @@ import { computed, ref, shallowRef, triggerRef, watch } from "vue";
 import ConnectFourBorder from "./ConnectFourBorder.vue";
 import ConnectFourInput from "./ConnectFourInput.vue";
 import ConnectFourResult from "./ConnectFourResult.vue";
+import ConnectFourTimer from "./ConnectFourTimer.vue";
 
 const UPDATE_DURATION = 96; // ms
 const DELAY_MIN = 0; // ms
@@ -117,6 +118,7 @@ watch(gameUIStore, () => {
       :end="timerAnimation.end"
       :is-active="timerAnimation.isOngoing"
     />
+    <ConnectFourTimer :is-focus-visible="showFocusRing" />
     <ConnectFourInput
       :disabled="isDisabled"
       @update-focus-visible="(v) => (showFocusRing = v)"
