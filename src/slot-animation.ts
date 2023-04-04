@@ -13,6 +13,8 @@ import { NumberTween, Tween } from "@/tween";
 
 import { useAnimations } from "./composables/animations";
 import type { ExtendedTouch } from "./extended-touch";
+import { playerClass } from "@/game-ui";
+import { otherPlayer } from "@/game";
 
 const { min, floor, sqrt } = Math;
 
@@ -347,9 +349,17 @@ export function slotAnimation({
       return;
     }
 
-    el.style.opacity = "";
-    el.classList.toggle(ENTER_CLASS, isVisible);
-    el.classList.toggle(LEAVE_CLASS, !isVisible);
+    const { classList, style } = el;
+
+    if (isVisible) {
+      const player = gameUIStore.state.player;
+      classList.add(playerClass(player));
+      classList.remove(playerClass(otherPlayer(player)));
+    }
+
+    style.opacity = "";
+    classList.toggle(ENTER_CLASS, isVisible);
+    classList.toggle(LEAVE_CLASS, !isVisible);
     isTransitionForward = isVisible;
     isTransitionComplete = false;
   }

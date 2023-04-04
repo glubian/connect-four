@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { Player } from "@/game";
-import { gameUIStore } from "@/game-ui-store";
 import { usePreventContextMenu } from "@/composables/prevent-context-menu";
 import { store } from "@/store";
-import { computed, onMounted, onUnmounted, ref, watch, type Ref } from "vue";
+import { onMounted, onUnmounted, ref, watch, type Ref } from "vue";
 import type { ExtendedTouch } from "../extended-touch";
 import { extendTouch } from "../extended-touch";
 import { slotAnimation } from "../slot-animation";
@@ -204,10 +202,19 @@ onUnmounted(() => {
   slotAnimRef.value = null;
 });
 
-const playerClass = computed(() => ({
-  p1: gameUIStore.state.player === Player.P1,
-  p2: gameUIStore.state.player === Player.P2,
-}));
+let displayedTimeout: number | null = null;
+watch(store, ({ turnTimeout }) => {
+  if (turnTimeout !== displayedTimeout) {
+    displayedTimeout = turnTimeout;
+
+    const slotAnim = slotAnimRef.value;
+    if (slotAnim) {
+      slotAnim.continuousInput(false);
+      slotAnim.disabled(true);
+      slotAnim.disabled(false);
+    }
+  }
+});
 </script>
 
 <template>
@@ -231,7 +238,7 @@ const playerClass = computed(() => ({
   ></div>
   <div class="new-area" ref="areaRef">
     <div class="slot-container" ref="contRef">
-      <div class="slot animate" :class="playerClass" ref="slotRef"></div>
+      <div class="slot animate p1" ref="slotRef"></div>
     </div>
   </div>
 </template>
