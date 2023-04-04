@@ -14,17 +14,15 @@ export function useTimerAnimation() {
   const { requestFrame } = useAnimations();
 
   function drawFrame() {
-    const { turnTimeout, config } = store;
-    const { timePerTurn, timeCap } = config;
-    const tc = Math.max(timePerTurn, timeCap);
-    if (turnTimeout === null || tc < TIME_PER_TURN_MIN) {
+    const { turnTimeout, timeCap } = store;
+    if (turnTimeout === null || timeCap < TIME_PER_TURN_MIN) {
       timerAnimation.start = 0;
       timerAnimation.end = 1;
       timerAnimation.isOngoing = false;
       return;
     }
 
-    timerAnimation.end = (turnTimeout - Date.now()) / (tc * 1000);
+    timerAnimation.end = (turnTimeout - Date.now()) / timeCap;
     timerAnimation.isOngoing = true;
     requestFrame(drawFrame);
   }

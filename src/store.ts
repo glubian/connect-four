@@ -1,4 +1,11 @@
-import { computed, reactive, shallowRef, triggerRef, watch } from "vue";
+import {
+  computed,
+  reactive,
+  shallowRef,
+  triggerRef,
+  watch,
+  type ComputedRef,
+} from "vue";
 import { TIME_PER_TURN_MIN } from "./constants";
 import { Game, Player, otherPlayer, type GameRules } from "./game";
 import { URL_LOBBY_PARAMETER } from "./urls";
@@ -434,16 +441,25 @@ function clearTurnTimeout(): number {
  * or `0` if timer is disabled.
  */
 function getTimeoutDuration(extraTime: number): number {
-  const { config } = store;
-  if (config.timePerTurn < TIME_PER_TURN_MIN) {
-    return 0;
-  }
-
-  const AS_MS = 1000;
-  const timePerTurn = config.timePerTurn * AS_MS;
-  const timeCap = Math.max(timePerTurn, config.timeCap * AS_MS);
-  return Math.min(extraTime + timePerTurn, timeCap);
+  return Math.min(extraTime + timePerTurn.value, timeCap.value);
 }
+
+/** Time per turn in milliseconds, or 0 if timer is disabled. */
+const timePerTurn: ComputedRef<number> = computed(() => {
+  const { timePerTurn } = store.config;
+  const AS_MS = 1000;
+  return timePerTurn < TIME_PER_TURN_MIN ? 0 : timePerTurn * AS_MS;
+});
+
+/** Time cap in milliseconds, or 0 if timer is disabled. */
+const timeCap: ComputedRef<number> = computed(() => {
+  const { timeCap } = store.config;
+  const timePerTurnValue = timePerTurn.value;
+  const AS_MS = 1000;
+  return timePerTurnValue < TIME_PER_TURN_MIN
+    ? 0
+    : Math.max(timePerTurnValue, timeCap * AS_MS);
+});
 
 /** Starts a new timeout in a local game. */
 function setLocalTurnTimeout(duration: number) {
@@ -505,6 +521,8 @@ export const store = reactive({
 
   /** In a timed game, indicates when the turn will end automatically. */
   turnTimeout: null as number | null,
+  timePerTurn,
+  timeCap,
 
   /**
    * An estimate of the time it takes for a packet to reach the server
