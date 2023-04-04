@@ -143,6 +143,7 @@ export interface PickPlayerContents {
   game?: RemoteGame | null;
   config: GameConfig;
   round: number;
+  extraTime?: [number, number] | null;
 }
 
 interface LobbyPickPlayerMessage extends PickPlayerContents {

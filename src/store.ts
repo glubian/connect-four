@@ -117,6 +117,7 @@ function acceptPlayer(code: number, role: Player) {
       game: gameValue,
       config: store.config,
       round: store.round,
+      extraTime: getTimeoutDuration(0) === 0 ? void 0 : extraTime,
     });
     store.remoteRole = otherPlayer(role);
   }
