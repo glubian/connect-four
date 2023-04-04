@@ -538,6 +538,10 @@ export function slotAnimation({
     const isRight = KEYS_RIGHT.includes(ev.key);
     const isSubmit = !ev.repeat && KEYS_SUBMIT.includes(ev.key);
 
+    if (isLeft || isRight) {
+      keyboard(true);
+    }
+
     updateFocus(isFocused, Device.Keyboard);
 
     if (mode === Mode.Falling && isSubmit) {
