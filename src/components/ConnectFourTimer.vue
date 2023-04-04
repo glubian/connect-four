@@ -30,7 +30,7 @@ const right = computed(() => round(store.timeCap / 4000));
     name="appear"
     :duration="{ enter: ENTER_DURATION, leave: DURATION }"
   >
-    <div :class="focusVisibleClass" v-if="enabled">
+    <div class="timer" :class="focusVisibleClass" v-if="enabled">
       <div class="top">
         <span class="time">{{ top }}</span>
         <span class="vert-dash"></span>
@@ -58,6 +58,10 @@ $offset: g.$field-size-ui + g.$border-width + g.$border-width + 8px;
 $offset-focus-visible: $offset + g.$focus-ring-width + g.$focus-ring-offset;
 
 $stagger: 40ms;
+
+.timer {
+  display: none;
+}
 
 .top,
 .left,
@@ -139,5 +143,13 @@ $stagger: 40ms;
   width: 8px;
   height: 2px;
   background-color: var(--c-text-tertiary);
+}
+
+$width-00: 20px; // Maximum expected width of a number
+$min-width: g.$field-size-ui + 2 * (g.$border-width + 48px + $width-00);
+@media (min-width: $min-width) {
+  .timer {
+    display: block;
+  }
 }
 </style>
