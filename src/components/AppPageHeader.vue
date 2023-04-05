@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PopoverAppearance } from "@/layout";
 import { layoutStore } from "@/layout-store";
-import { store } from "@/store";
+import { PlayerSelection, store } from "@/store";
 import { computed, ref, type Ref } from "vue";
 import { useI18n } from "vue-i18n";
 import AppDialog from "./AppDialog.vue";
@@ -50,6 +50,15 @@ const changeRulesButtonLabel = computed(() => {
     : t("page.changeRulesButton");
 });
 
+// restart button
+
+const showRestartButton = computed(() => {
+  const { lobby, playerSelection } = store;
+  const { turn, result } = gameRef.value.state;
+  const { Hidden } = PlayerSelection;
+  return !result && turn && (!lobby || playerSelection === Hidden);
+});
+
 // settings
 
 const settingsButtonRef: Ref<HTMLButtonElement | null> = ref(null);
@@ -93,12 +102,22 @@ function disconnect() {
         the position of the button on mobile. 
       -->
       <button
-        class="icon align-left"
+        class="icon"
         :style="changeRulesButtonStyle"
         @click="openChangeRulesPopover"
       >
         <i class="mi-filter"></i>
       </button>
+
+      <button
+        class="icon"
+        @click="store.restartGame()"
+        v-if="showRestartButton"
+      >
+        <i class="mi-refresh"></i>
+      </button>
+
+      <div class="space"></div>
 
       <button class="icon settings" @click="openSettings">
         <i class="mi-settings"></i>
@@ -124,6 +143,10 @@ function disconnect() {
         ref="settingsButtonRef"
       >
         <i class="mi-settings"></i>
+      </button>
+
+      <button @click="store.restartGame()" v-if="showRestartButton">
+        {{ $t("page.restartButton") }}
       </button>
 
       <button
@@ -200,6 +223,10 @@ function disconnect() {
   padding: 0 16px;
 }
 
+.space {
+  flex: 1;
+}
+
 @media (min-width: layout.$popover-appearance-desktop) {
   .desktop {
     display: flex;
@@ -208,10 +235,6 @@ function disconnect() {
   .mobile {
     display: none;
   }
-}
-
-.align-left {
-  margin-right: auto;
 }
 
 a {
