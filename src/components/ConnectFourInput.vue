@@ -16,6 +16,7 @@ const areaRef: Ref<HTMLDivElement | null> = ref(null);
 const contRef: Ref<HTMLDivElement | null> = ref(null);
 const slotRef: Ref<HTMLDivElement | null> = ref(null);
 const slotAnimRef: Ref<ReturnType<typeof slotAnimation> | null> = ref(null);
+const gameRef = store.getGame();
 
 usePreventContextMenu(eventAreaRef);
 
@@ -202,18 +203,19 @@ onUnmounted(() => {
   slotAnimRef.value = null;
 });
 
-let displayedTimeout: number | null = null;
-watch(store, ({ turnTimeout }) => {
-  if (turnTimeout !== displayedTimeout) {
-    displayedTimeout = turnTimeout;
-
-    const slotAnim = slotAnimRef.value;
-    if (slotAnim) {
-      slotAnim.continuousInput(false);
-      slotAnim.disabled(true);
-      slotAnim.disabled(false);
-    }
+let prevMoves = 0;
+let prevTimeout: number | null = null;
+watch(gameRef, (game) => {
+  const { turnTimeout } = store;
+  const { moves } = game.state;
+  const slotAnim = slotAnimRef.value;
+  if (turnTimeout !== prevTimeout && moves === prevMoves && slotAnim) {
+    slotAnim.disabled(true);
+    slotAnim.disabled(false);
   }
+
+  prevTimeout = turnTimeout;
+  prevMoves = moves;
 });
 </script>
 
