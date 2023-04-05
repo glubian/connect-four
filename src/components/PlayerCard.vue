@@ -5,7 +5,7 @@ const props = defineProps<{ code: number }>();
 </script>
 
 <template>
-  <div class="player-card card">
+  <div class="player-card">
     <span class="card-player-code">{{ code }}</span>
     <div class="actions">
       <button class="p1" @click="store.acceptPlayer(props.code, Player.P1)">
@@ -23,8 +23,12 @@ const props = defineProps<{ code: number }>();
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px;
-  border-radius: 8px;
+  padding: 0 16px 0 12px;
+  height: 56px;
+}
+
+span {
+  margin-top: 1px;
 }
 
 .actions {

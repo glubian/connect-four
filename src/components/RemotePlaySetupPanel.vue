@@ -119,7 +119,7 @@ const playerCodes = computed(() => {
       <div class="section">
         <h2>{{ $t("page.remotePlaySetup.addYourFriend") }}</h2>
         <p>{{ $t("page.remotePlaySetup.addYourFriendText") }}</p>
-        <div class="player-cards">
+        <div class="player-cards card">
           <PlayerCard :code="code" :key="code" v-for="code of playerCodes" />
         </div>
       </div>
@@ -269,8 +269,10 @@ p {
 .player-cards {
   display: flex;
   flex-direction: column;
-
-  padding-top: 8px;
-  gap: 16px;
+  margin-top: 24px;
+  border-radius: 4px;
+  & > :not(:last-child) {
+    border-bottom: var(--c-button-border);
+  }
 }
 </style>
