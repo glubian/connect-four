@@ -13,7 +13,7 @@ const LAYOUT_WIDE = 640;
 const LAYOUT_WIDE_CLASS = "layout-wide";
 
 const remotePlaySetupRef: Ref<HTMLElement | null> = ref(null);
-const titleBarRef: Ref<HTMLElement | null> = ref(null);
+const titleBarRef: Ref<HTMLHeadingElement | null> = ref(null);
 const linkQRRef: Ref<HTMLImageElement | null> = ref(null);
 
 const { t } = useI18n();
@@ -88,7 +88,7 @@ const playerCodes = computed(() => {
     :class="[layoutStore.panelLayout, panelLayoutWide]"
     ref="remotePlaySetupRef"
   >
-    <div class="title-bar" ref="titleBarRef">
+    <div class="title-bar">
       <button @click="store.disconnect()" class="icon">
         <i class="mi-close"></i>
       </button>
@@ -98,7 +98,7 @@ const playerCodes = computed(() => {
     </div>
 
     <div class="content">
-      <h1 :class="headingClass">
+      <h1 :class="headingClass" ref="titleBarRef">
         {{ $t("page.remotePlaySetup.setUpRemotePlay") }}
       </h1>
 
