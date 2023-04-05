@@ -46,7 +46,7 @@ const changeRulesButtonStyle = computed(() => ({
 }));
 const changeRulesButtonLabel = computed(() => {
   return restartLabel.value
-    ? t("page.restartButton")
+    ? t("page.newGameButton")
     : t("page.changeRulesButton");
 });
 

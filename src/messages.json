@@ -11,6 +11,7 @@
       "disconnectButton": "Disconnect",
       "changeRulesButton": "Change rules",
       "restartButton": "Restart",
+      "newGameButton": "New game",
       "playerSelection": {
         "message": "Who is starting the next game?",
         "me": "I want to start",
@@ -212,6 +213,7 @@
       "disconnectButton": "Rozłącz",
       "changeRulesButton": "Zmień zasady",
       "restartButton": "Zrestartuj",
+      "newGameButton": "Nowa gra",
       "playerSelection": {
         "message": "Kto zaczyna następną grę?",
         "me": "Ja chcę zacząć",
