@@ -34,7 +34,7 @@ function openChangeRulesPopover() {
   changeRulesPopover.value = true;
 }
 
-// create rules button
+// change rules button
 
 const changeRulesButtonRef: Ref<HTMLButtonElement | null> = ref(null);
 const changeRulesButtonStyle = computed(() => ({
