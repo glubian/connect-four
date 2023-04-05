@@ -116,6 +116,15 @@ function stopAnimation() {
 
   isAnimating = false;
   sync();
+
+  // After the animation finishes, the most recent move cannot be null.
+  const { field, state, playerMove } = gameUIStore;
+  if (playerMove) {
+    const [x, y] = playerMove;
+    if (field[x][y] === null) {
+      field[x][y] = state.player;
+    }
+  }
 }
 
 /** Returns a copy of `GameResult`. */
