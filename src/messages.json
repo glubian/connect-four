@@ -19,7 +19,10 @@
         "waiting": "Waiting for your opponent..."
       },
       "changeRules": {
-        "title": "Start a new game",
+        "title": {
+          "newGame": "Start a new game",
+          "changeRules": "Change rules"
+        },
         "section": {
           "timer": {
             "label": "Timer",
@@ -221,7 +224,10 @@
         "waiting": "Oczekiwanie na przeciwnika..."
       },
       "changeRules": {
-        "title": "Rozpocznij nową grę",
+        "title": {
+          "newGame": "Rozpocznij nową grę",
+          "changeRules": "Zmień zasady"
+        },
         "section": {
           "timer": {
             "label": "Limit czasu",

@@ -10,6 +10,11 @@ const emit = defineEmits<{ (ev: "hide"): void }>();
 
 const { t } = useI18n();
 
+const title = computed(() => {
+  const property = props.restartLabel ? "newGame" : "changeRules";
+  return t("page.changeRules.title." + property);
+});
+
 const timePerTurn = ref("20");
 const timePerTurnList = computed(() => ({
   "0": t("page.changeRules.section.timer.unlimited"),
@@ -106,7 +111,7 @@ function start() {
 
 <template>
   <form class="change-rules-popover" @submit="$event.preventDefault()">
-    <div class="dialog-title">{{ $t("page.changeRules.title") }}</div>
+    <div class="dialog-title">{{ title }}</div>
 
     <div class="section-label">
       <i class="mi-clock"></i>
