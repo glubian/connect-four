@@ -590,7 +590,7 @@ watch(
 {
   let lobby: Object | null = null;
   watch(store, (current) => {
-    if (current.lobby !== lobby) {
+    if (current.lobby !== lobby && !wasGameSynced) {
       pauseLocalTurnTimeout(!!current.lobby);
     }
 
