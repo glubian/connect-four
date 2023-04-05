@@ -96,6 +96,8 @@ function sync() {
 
   // Allow player selection to be hidden, since all changes are committed.
   gameUIStore.playerSelection = store.playerSelection;
+
+  gameUIStore.lockField = false;
 }
 
 /** Updates the coordinates of the most recent move made by a local player. */
@@ -123,6 +125,7 @@ function stopAnimation() {
     const [x, y] = playerMove;
     if (field[x][y] === null) {
       field[x][y] = state.player;
+      gameUIStore.lockField = true;
     }
   }
 }
@@ -160,6 +163,9 @@ export const gameUIStore = reactive({
   lastMove: null as GameUILastMove | null,
   playerMove: null as [number, number] | null,
   round: 0,
+
+  /** Indicates whether the game is waiting for the field to be updated. */
+  lockField: false,
 
   /**
    * Indicates whether the player selection screen should be shown.
