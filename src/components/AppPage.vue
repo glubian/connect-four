@@ -62,7 +62,7 @@ const showPlayerSelectionDialog = computed({
     return (
       !store.isConnected &&
       !disconnectedDialogShown.value &&
-      gameUIStore.playerSelection === PlayerSelection.Voting
+      store.playerSelection === PlayerSelection.Voting
     );
   },
   set(v: boolean) {
