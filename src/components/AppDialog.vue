@@ -11,7 +11,6 @@ const props = defineProps({
 const emit = defineEmits(["update:shown"]);
 
 const backgroundRef: Ref<HTMLDivElement | null> = ref(null);
-const focusTrapRef: Ref<typeof FocusTrap | null> = ref(null);
 
 const focusTrapModel = computed({
   get() {
@@ -32,7 +31,7 @@ function dismiss(ev: MouseEvent) {
 <template>
   <Teleport to="body">
     <div class="background" @click="dismiss" v-if="shown" ref="backgroundRef">
-      <FocusTrap v-model:active="focusTrapModel" ref="focusTrapRef">
+      <FocusTrap v-model:active="focusTrapModel">
         <div class="dialog c1">
           <div class="title dialog-title">{{ title }}</div>
           <div class="description" v-if="description">{{ description }}</div>
