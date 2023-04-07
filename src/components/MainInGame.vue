@@ -9,7 +9,6 @@ import { useI18n } from "vue-i18n";
 import ConnectFour from "./ConnectFour.vue";
 import RequestStatus from "./RequestStatus.vue";
 
-const props = defineProps<{ isPanelShown?: boolean }>();
 const emit = defineEmits<{ (ev: "showRequest"): void }>();
 
 const { t } = useI18n();
@@ -20,7 +19,7 @@ const showPausedControls = computed(
 
 const statusMessage = computed(() => {
   const { result } = gameUIStore.state;
-  if (props.isPanelShown) {
+  if (layoutStore.isPanelShown) {
     return t("page.statusIndicator.paused");
   }
 
@@ -48,7 +47,7 @@ const statusMessage = computed(() => {
 });
 
 const statusMessageSlideUp = computed(() =>
-  !props.isPanelShown && gameUIStore.state.result ? "slide-up" : ""
+  !layoutStore.isPanelShown && gameUIStore.state.result ? "slide-up" : ""
 );
 
 const showStatusMessage = computed(

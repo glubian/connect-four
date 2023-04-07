@@ -9,7 +9,7 @@ const code = computed(() => {
 </script>
 
 <template>
-  <div class="joining-page c0">
+  <div class="main-joining c0">
     <template v-if="typeof code === 'number'">
       <div class="top">
         <h1 class="lobby-state">{{ $t("joiningPage.connectedText") }}</h1>
@@ -40,7 +40,7 @@ const code = computed(() => {
 </template>
 
 <style scoped lang="scss">
-.joining-page {
+.main-joining {
   display: flex;
   align-items: center;
   justify-content: center;

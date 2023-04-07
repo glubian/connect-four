@@ -12,6 +12,11 @@ import NewGame from "./NewGame.vue";
 const gameRef = store.getGame();
 const { t } = useI18n();
 
+const joiningPage = computed(() => {
+  const { lobby } = store;
+  return lobby && !lobby.isHost;
+});
+
 // change rules popover
 
 const restartLabel = computed(() => {
@@ -79,9 +84,10 @@ function openSettings() {
 
 // create lobby button
 
-const createLobbyButton = computed(
-  () => !store.isUntouched && store.remoteRole === null
-);
+const createLobbyButton = computed(() => {
+  const { isUntouched, remoteRole } = store;
+  return !isUntouched && remoteRole === null && !joiningPage.value;
+});
 
 // disconnect buttons
 
@@ -105,6 +111,7 @@ function disconnect() {
         class="icon"
         :style="changeRulesButtonStyle"
         @click="openChangeRulesPopover"
+        v-if="!joiningPage"
       >
         <i class="mi-filter"></i>
       </button>
@@ -153,6 +160,7 @@ function disconnect() {
         :style="changeRulesButtonStyle"
         @click="openChangeRulesPopover"
         ref="changeRulesButtonRef"
+        v-if="!joiningPage"
       >
         {{ changeRulesButtonLabel }}
       </button>
