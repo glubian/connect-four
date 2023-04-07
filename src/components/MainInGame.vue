@@ -50,18 +50,22 @@ const statusMessageSlideUp = computed(() =>
   !layoutStore.isPanelShown && gameUIStore.state.result ? "slide-up" : ""
 );
 
-const showStatusMessage = computed(
-  () =>
+const showStatusMessage = computed(() => {
+  const { lobby, isConnected, restartRequests } = store;
+  const { playerSelection, hideRequestStatus } = gameUIStore;
+  const { Hidden } = PlayerSelection;
+  return (
     statusMessage.value &&
-    (!store.lobby || showPausedControls.value) &&
-    (!store.isConnected ||
-      gameUIStore.playerSelection === PlayerSelection.Hidden)
-);
+    (!lobby || showPausedControls.value) &&
+    (!isConnected || playerSelection === Hidden) &&
+    !(restartRequests.some((req) => req !== null) && !hideRequestStatus)
+  );
+});
 </script>
 <template>
   <div class="main-in-game">
     <div class="top">
-      <Transition>
+      <Transition mode="out-in">
         <h1
           v-if="showStatusMessage"
           class="game-state large"
@@ -131,7 +135,6 @@ const showStatusMessage = computed(
 
 .game-state {
   text-align: center;
-  opacity: 1;
   transform: translateY(0);
 
   &.v-enter-active {
@@ -141,9 +144,7 @@ const showStatusMessage = computed(
   }
 
   &.v-leave-active {
-    transition-property: opacity;
-    transition-duration: 120ms;
-    transition-timing-function: ease-in;
+    transition: opacity 120ms ease-in;
   }
 
   &:is(.v-enter-from, .v-leave-to) {
@@ -152,6 +153,20 @@ const showStatusMessage = computed(
 
   &.slide-up.v-enter-from {
     transform: translateY(32px);
+  }
+}
+
+.request-status {
+  &:is(.v-enter-from, v.leave-to) {
+    opacity: 0;
+  }
+
+  &.v-enter-active {
+    transition: opacity 120ms ease-out;
+  }
+
+  &.v-leave-active {
+    transition: opacity 120ms ease-in;
   }
 }
 

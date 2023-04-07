@@ -6,6 +6,9 @@ import { PlayerSelection, store } from "./store";
 const gameRef = store.getGame();
 let isAnimating = false;
 
+const HIDE_REQUEST_STATUS_DURATION = 5000; // ms
+let hideRequestStatusHandle: ReturnType<typeof setTimeout> | null = null;
+
 interface GameUILastMove {
   index: [number, number];
   player: Player;
@@ -98,6 +101,10 @@ function sync() {
   gameUIStore.playerSelection = store.playerSelection;
 
   gameUIStore.lockField = false;
+
+  if (game.state.result) {
+    showRequestStatus(false);
+  }
 }
 
 /** Updates the coordinates of the most recent move made by a local player. */
@@ -153,6 +160,22 @@ function cloneState(state: GameState): GameState {
   );
 }
 
+/** Shows or temporarily hides request status. */
+function showRequestStatus(show: boolean) {
+  if (hideRequestStatusHandle !== null) {
+    clearTimeout(hideRequestStatusHandle);
+  }
+
+  if (!show) {
+    hideRequestStatusHandle = setTimeout(
+      () => showRequestStatus(true),
+      HIDE_REQUEST_STATUS_DURATION
+    );
+  }
+
+  gameUIStore.hideRequestStatus = !show;
+}
+
 /** Handles UI-specific game state. */
 export const gameUIStore = reactive({
   field: Array.from(gameRef.value.field, (col) => Array.from(col)),
@@ -174,6 +197,12 @@ export const gameUIStore = reactive({
    * propagated to `gameUIStore` to prevent content flash.
    */
   playerSelection: store.playerSelection,
+
+  /**
+   * Whether the request status should be shown instead of
+   * game over message.
+   */
+  hideRequestStatus: false,
 
   hasSpaceAt,
   getY,
