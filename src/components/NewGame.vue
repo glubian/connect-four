@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { TIME_PER_TURN_MIN } from "@/constants";
-import { store } from "@/store";
+import { store, TIME_PER_TURN_MIN } from "@/store";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import DropDown from "./DropDown.vue";

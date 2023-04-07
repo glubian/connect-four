@@ -6,11 +6,17 @@ import {
   watch,
   type ComputedRef,
 } from "vue";
-import { TIME_PER_TURN_MIN } from "./constants";
 import { Game, Player, otherPlayer, type GameRules } from "./game";
 import { URL_LOBBY_PARAMETER } from "./urls";
 import type { DisconnectReason, GameConfig, QR } from "./ws";
 import WebSocketController from "./ws";
+
+/**
+ * The minimum amount of time the user has to make a move in a timed game.
+ * Values that are falsy, or lesser than this constant mean the
+ * timer is disabled.
+ */
+export const TIME_PER_TURN_MIN = 3; // s
 
 interface Lobby {
   isHost: true;
