@@ -96,9 +96,6 @@ $stagger: 40ms;
 
 .top {
   bottom: $offset;
-  .appear-enter-active & {
-    transition-delay: 0ms, 0ms, 0ms, 0ms, #{3 * $stagger};
-  }
   .focus-visible & {
     bottom: $offset-focus-visible;
   }
@@ -106,6 +103,9 @@ $stagger: 40ms;
 
 .left {
   right: $offset;
+  .appear-enter-active & {
+    transition-delay: 0ms, 0ms, 0ms, 0ms, #{$stagger};
+  }
   .focus-visible & {
     right: $offset-focus-visible;
   }
@@ -114,7 +114,7 @@ $stagger: 40ms;
 .right {
   left: $offset;
   .appear-enter-active & {
-    transition-delay: 0ms, 0ms, 0ms, 0ms, #{2 * $stagger};
+    transition-delay: 0ms, 0ms, 0ms, 0ms, #{3 * $stagger};
   }
   .focus-visible & {
     left: $offset-focus-visible;
@@ -124,7 +124,7 @@ $stagger: 40ms;
 .bottom {
   top: $offset;
   .appear-enter-active & {
-    transition-delay: 0ms, 0ms, 0ms, 0ms, #{$stagger};
+    transition-delay: 0ms, 0ms, 0ms, 0ms, #{2 * $stagger};
   }
   .focus-visible & {
     top: $offset-focus-visible;
