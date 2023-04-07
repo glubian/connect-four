@@ -8,6 +8,7 @@ import AppDialog from "./AppDialog.vue";
 import AppPopover from "./AppPopover.vue";
 import AppSettings from "./AppSettings.vue";
 import NewGame from "./NewGame.vue";
+import type { GameConfig } from "@/ws";
 
 const gameRef = store.getGame();
 const { t } = useI18n();
@@ -43,6 +44,7 @@ const restartLabel = computed(() => {
 const changeRulesPopover = ref(false);
 const CHANGE_RULES_TOP = 8; // px
 const changeRulesRight = ref(getChangeRulesRight());
+let newConfig: GameConfig | null = null;
 
 function getChangeRulesRight(): number {
   const el = changeRulesButtonRef.value;
@@ -56,6 +58,18 @@ function getChangeRulesRight(): number {
 function openChangeRulesPopover() {
   changeRulesRight.value = getChangeRulesRight();
   changeRulesPopover.value = true;
+}
+
+function hideChangeRulesPopover(config: GameConfig | null) {
+  newConfig = config;
+  changeRulesPopover.value = false;
+}
+
+function changeRulesAfterLeave() {
+  if (newConfig) {
+    store.restartGame(newConfig);
+    newConfig = null;
+  }
 }
 
 // restart button
@@ -206,11 +220,9 @@ watch(
       :top="CHANGE_RULES_TOP"
       :right="changeRulesRight"
       v-model:shown="changeRulesPopover"
+      @after-leave="changeRulesAfterLeave"
     >
-      <NewGame
-        :restart-label="restartLabel"
-        @hide="changeRulesPopover = false"
-      />
+      <NewGame :restart-label="restartLabel" @hide="hideChangeRulesPopover" />
     </AppPopover>
 
     <AppDialog

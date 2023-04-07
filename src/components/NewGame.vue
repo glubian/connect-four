@@ -3,9 +3,10 @@ import { store, TIME_PER_TURN_MIN } from "@/store";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import DropDown from "./DropDown.vue";
+import type { GameConfig } from "@/ws";
 
 const props = defineProps<{ restartLabel?: boolean }>();
-const emit = defineEmits<{ (ev: "hide"): void }>();
+const emit = defineEmits<{ (ev: "hide", config: GameConfig | null): void }>();
 
 const { t } = useI18n();
 
@@ -85,16 +86,15 @@ function reset() {
 watch(() => store.config, reset, { immediate: true });
 
 function cancel() {
-  emit("hide");
+  emit("hide", null);
 }
 
 function start() {
-  store.restartGame({
+  emit("hide", {
     timePerTurn: +timePerTurn.value,
     timeCap: timeCapEnabled.value ? +timeCap.value : 0,
     allowDraws: allowDraws.value,
   });
-  emit("hide");
 }
 </script>
 
