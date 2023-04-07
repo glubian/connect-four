@@ -1,9 +1,10 @@
-import { reactive } from "vue";
+import { computed, reactive } from "vue";
 import {
   panelLayout,
   popoverAppearance,
   restartPopoverAppearance,
 } from "./layout";
+import { store } from "./store";
 
 function setFullscreen(isFullscreen: boolean) {
   if (isFullscreen) {
@@ -29,6 +30,7 @@ export const layoutStore = reactive({
   innerWidth,
   innerHeight,
   isFullscreen: isFullscreen(),
+  isPanelShown: computed(() => !!store.lobby && store.lobby.isHost),
   setFullscreen,
 });
 
