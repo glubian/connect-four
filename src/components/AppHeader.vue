@@ -2,7 +2,7 @@
 import { PopoverAppearance } from "@/layout";
 import { layoutStore } from "@/layout-store";
 import { PlayerSelection, store } from "@/store";
-import { computed, ref, type Ref } from "vue";
+import { computed, ref, watch, type Ref } from "vue";
 import { useI18n } from "vue-i18n";
 import AppDialog from "./AppDialog.vue";
 import AppPopover from "./AppPopover.vue";
@@ -16,28 +16,6 @@ const joiningPage = computed(() => {
   const { lobby } = store;
   return lobby && !lobby.isHost;
 });
-
-// change rules popover
-
-const restartLabel = computed(() => {
-  const { state } = gameRef.value;
-  return !!state.turn && !state.result;
-});
-
-const changeRulesPopover = ref(false);
-const CHANGE_RULES_TOP = 8; // px
-const changeRulesRight = computed(() => {
-  const el = changeRulesButtonRef.value;
-  if (!el) {
-    return 16; // px
-  }
-  const { right } = el.getBoundingClientRect();
-  return layoutStore.innerWidth - right + 2;
-});
-
-function openChangeRulesPopover() {
-  changeRulesPopover.value = true;
-}
 
 // change rules button
 
@@ -55,6 +33,31 @@ const changeRulesButtonLabel = computed(() => {
     : t("page.changeRulesButton");
 });
 
+// change rules popover
+
+const restartLabel = computed(() => {
+  const { state } = gameRef.value;
+  return !!state.turn && !state.result;
+});
+
+const changeRulesPopover = ref(false);
+const CHANGE_RULES_TOP = 8; // px
+const changeRulesRight = ref(getChangeRulesRight());
+
+function getChangeRulesRight(): number {
+  const el = changeRulesButtonRef.value;
+  if (!el) {
+    return 16; // px
+  }
+  const { right } = el.getBoundingClientRect();
+  return layoutStore.innerWidth - right + 2;
+}
+
+function openChangeRulesPopover() {
+  changeRulesRight.value = getChangeRulesRight();
+  changeRulesPopover.value = true;
+}
+
 // restart button
 
 const showRestartButton = computed(() => {
@@ -69,16 +72,19 @@ const showRestartButton = computed(() => {
 const settingsButtonRef: Ref<HTMLButtonElement | null> = ref(null);
 const settingsShown = ref(false);
 const SETTINGS_TOP = 8; // px
-const settingsRight = computed(() => {
+const settingsRight = ref(getSettingsRight());
+
+function getSettingsRight(): number {
   const el = settingsButtonRef.value;
   if (!el) {
     return 16; // px
   }
   const { right } = el.getBoundingClientRect();
-  return window.innerWidth - right + 4;
-});
+  return window.innerWidth - right + 8;
+}
 
 function openSettings() {
+  settingsRight.value = getSettingsRight();
   settingsShown.value = true;
 }
 
@@ -98,6 +104,20 @@ function disconnect() {
   disconnectDialogShown.value = false;
   store.disconnect();
 }
+
+// update popover positions
+
+watch(
+  () => layoutStore.innerWidth,
+  () => {
+    if (changeRulesPopover.value) {
+      changeRulesRight.value = getChangeRulesRight();
+    }
+    if (settingsShown.value) {
+      settingsRight.value = getSettingsRight();
+    }
+  }
+);
 </script>
 
 <template>
