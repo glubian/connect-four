@@ -30,19 +30,23 @@ function dismiss(ev: MouseEvent) {
 
 <template>
   <Teleport to="body">
-    <div class="background" @click="dismiss" v-if="shown" ref="backgroundRef">
-      <FocusTrap v-model:active="focusTrapModel">
-        <div class="dialog c1">
-          <div class="title dialog-title">{{ title }}</div>
-          <div class="description" v-if="description">{{ description }}</div>
-          <div class="actions"><slot></slot></div>
-        </div>
-      </FocusTrap>
-    </div>
+    <Transition name="dialog">
+      <div class="background" @click="dismiss" v-if="shown" ref="backgroundRef">
+        <FocusTrap v-model:active="focusTrapModel">
+          <div class="dialog c1">
+            <div class="title dialog-title">{{ title }}</div>
+            <div class="description" v-if="description">{{ description }}</div>
+            <div class="actions"><slot></slot></div>
+          </div>
+        </FocusTrap>
+      </div>
+    </Transition>
   </Teleport>
 </template>
 
 <style lang="scss" scoped>
+$appear-duration: 80ms;
+
 .background {
   display: flex;
   align-items: center;
@@ -57,6 +61,18 @@ function dismiss(ev: MouseEvent) {
 
   background-color: var(--c-dialog-background);
   color: var(--c1-text);
+
+  &:is(.dialog-enter-from, .dialog-leave-to) {
+    opacity: 0;
+  }
+
+  &.dialog-enter-active {
+    transition: opacity $appear-duration ease-out;
+  }
+
+  &.dialog-leave-active {
+    transition: opacity $appear-duration ease-in;
+  }
 }
 
 .dialog {
@@ -70,6 +86,29 @@ function dismiss(ev: MouseEvent) {
 
   background: var(--c1);
   box-shadow: var(--c-dialog-drop-shadow);
+
+  transform: translate(0, 0);
+
+  :is(.dialog-enter-from, .dialog-leave-to) & {
+    transform: translate(0, 8px);
+    opacity: 0;
+    box-shadow: none;
+    body:is(.light, .dark) & {
+      transform: translate(4px, 4px);
+    }
+  }
+
+  .dialog-enter-active & {
+    transition-property: opacity, transform, box-shadow;
+    transition-duration: $appear-duration;
+    transition-timing-function: ease-out;
+  }
+
+  .dialog-leave-active & {
+    transition-property: opacity, transform, box-shadow;
+    transition-duration: $appear-duration;
+    transition-timing-function: ease-in;
+  }
 }
 
 .title {
