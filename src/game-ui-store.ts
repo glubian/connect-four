@@ -6,8 +6,8 @@ import { PlayerSelection, store } from "./store";
 const gameRef = store.getGame();
 let isAnimating = false;
 
-const HIDE_REQUEST_STATUS_DURATION = 5000; // ms
-let hideRequestStatusHandle: ReturnType<typeof setTimeout> | null = null;
+const SHOW_REQUEST_STATUS_DURATION = 5000; // ms
+let showRequestStatusHandle: ReturnType<typeof setTimeout> | null = null;
 
 interface GameUILastMove {
   index: [number, number];
@@ -162,18 +162,18 @@ function cloneState(state: GameState): GameState {
 
 /** Shows or temporarily hides request status. */
 function showRequestStatus(show: boolean) {
-  if (hideRequestStatusHandle !== null) {
-    clearTimeout(hideRequestStatusHandle);
+  if (showRequestStatusHandle !== null) {
+    clearTimeout(showRequestStatusHandle);
   }
 
   if (!show) {
-    hideRequestStatusHandle = setTimeout(
+    showRequestStatusHandle = setTimeout(
       () => showRequestStatus(true),
-      HIDE_REQUEST_STATUS_DURATION
+      SHOW_REQUEST_STATUS_DURATION
     );
   }
 
-  gameUIStore.hideRequestStatus = !show;
+  gameUIStore.showRequestStatus = show;
 }
 
 /** Handles UI-specific game state. */
@@ -202,7 +202,7 @@ export const gameUIStore = reactive({
    * Whether the request status should be shown instead of
    * game over message.
    */
-  hideRequestStatus: false,
+  showRequestStatus: false,
 
   hasSpaceAt,
   getY,
