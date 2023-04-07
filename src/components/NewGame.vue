@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TIME_CAP_MIN, TIME_PER_TURN_MIN } from "@/constants";
+import { TIME_PER_TURN_MIN } from "@/constants";
 import { store } from "@/store";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -73,7 +73,7 @@ function reset() {
     timePerTurn.value = configTimePerTurn;
   }
 
-  timeCapEnabled.value = config.timeCap >= TIME_CAP_MIN;
+  timeCapEnabled.value = config.timeCap > config.timePerTurn;
 
   const configTimeCap = config.timeCap.toString();
   if (configTimeCap in timeCapList.value) {
