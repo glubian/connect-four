@@ -80,7 +80,7 @@ function getSettingsRight(): number {
     return 16; // px
   }
   const { right } = el.getBoundingClientRect();
-  return window.innerWidth - right + 8;
+  return window.innerWidth - right + 9;
 }
 
 function openSettings() {
