@@ -50,15 +50,21 @@ const statusMessageSlideUp = computed(() =>
   !layoutStore.isPanelShown && gameUIStore.state.result ? "slide-up" : ""
 );
 
+const showRequestStatus = computed(() => {
+  const { restartRequests } = store;
+  const { showRequestStatus } = gameUIStore;
+  return showRequestStatus && restartRequests.some((req) => !!req);
+});
+
 const showStatusMessage = computed(() => {
-  const { lobby, isConnected, restartRequests } = store;
-  const { playerSelection, hideRequestStatus } = gameUIStore;
+  const { lobby, isConnected } = store;
+  const { playerSelection } = gameUIStore;
   const { Hidden } = PlayerSelection;
   return (
     statusMessage.value &&
     (!lobby || showPausedControls.value) &&
     (!isConnected || playerSelection === Hidden) &&
-    !(restartRequests.some((req) => req !== null) && !hideRequestStatus)
+    !showRequestStatus.value
   );
 });
 </script>
@@ -76,7 +82,7 @@ const showStatusMessage = computed(() => {
         <RequestStatus
           class="request-status"
           @click="$emit('showRequest')"
-          v-else
+          v-else-if="showRequestStatus"
         ></RequestStatus>
       </Transition>
     </div>
