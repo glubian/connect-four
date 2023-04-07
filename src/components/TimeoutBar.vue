@@ -38,20 +38,14 @@ function startAnimation(el: HTMLDivElement) {
 }
 
 watch(
-  props,
-  () => {
-    const el = barRef.value;
+  [barRef, props],
+  ([el]) => {
     if (el) {
       startAnimation(el);
     }
   },
   { immediate: true }
 );
-watch(barRef, (el) => {
-  if (el) {
-    startAnimation(el);
-  }
-});
 watch(userStore, () => {
   const el = barRef.value;
   if (el) {

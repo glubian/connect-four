@@ -443,12 +443,8 @@ function createResult([p1, p2]: GameMatch, delay: number): ResultElement {
 }
 
 watch(
-  props,
-  ({ matches }) => {
-    if (displayedMatches === matches) {
-      return;
-    }
-
+  () => props.matches,
+  (matches) => {
     if (!matches || matches.length === 0) {
       setResults();
       displayedMatches = matches;

@@ -50,20 +50,14 @@ function startAnimation(el: SVGCircleElement) {
 }
 
 watch(
-  props,
-  () => {
-    const el = circleRef.value;
+  [circleRef, props],
+  ([el]) => {
     if (el) {
       startAnimation(el);
     }
   },
   { immediate: true }
 );
-watch(circleRef, (el) => {
-  if (el) {
-    startAnimation(el);
-  }
-});
 watch(userStore, () => {
   const el = circleRef.value;
   if (el) {

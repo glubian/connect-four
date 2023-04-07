@@ -588,12 +588,12 @@ watch(
 );
 
 {
-  let lobby: Object | null = null;
-  watch(store, (current) => {
-    if (current.lobby !== lobby && !wasGameSynced) {
-      pauseLocalTurnTimeout(!!current.lobby);
+  watch(
+    () => store.lobby,
+    (lobby) => {
+      if (!wasGameSynced) {
+        pauseLocalTurnTimeout(!!lobby);
+      }
     }
-
-    lobby = current.lobby;
-  });
+  );
 }

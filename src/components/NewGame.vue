@@ -83,17 +83,7 @@ function reset() {
   allowDraws.value = store.config.allowDraws;
 }
 
-let configPtr: Object | null = null;
-watch(
-  store,
-  ({ config }) => {
-    if (config !== configPtr) {
-      reset();
-    }
-    configPtr = config;
-  },
-  { immediate: true }
-);
+watch(() => store.config, reset, { immediate: true });
 
 function cancel() {
   emit("hide");
