@@ -14,7 +14,7 @@ const props = defineProps({
   layout: String, // "mobile" | "auto" | "desktop", default is "auto"
   disableFocusTrap: Boolean,
 });
-const emit = defineEmits(["update:shown"]);
+const emit = defineEmits(["update:shown", "after-leave"]);
 
 const PROP_BG_SHOWN = "shown";
 const PROP_BG_HIDDEN = "hidden";
@@ -123,7 +123,7 @@ watch(popoverRef, (el) => {
 </script>
 <template>
   <Teleport to="body">
-    <Transition name="appear">
+    <Transition name="appear" @after-leave="$emit('after-leave')">
       <div
         class="close-popover"
         :class="closePopoverClass"
