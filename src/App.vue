@@ -196,7 +196,7 @@ function onSlideAnimationEvent() {
 .request-status {
   display: none;
   position: absolute;
-  top: 16px;
+  top: 64px;
   right: 16px;
 }
 
