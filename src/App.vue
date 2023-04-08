@@ -141,7 +141,7 @@ function onSlideAnimationEvent() {
 <template>
   <AppHeader v-show="showHeaderAndFooter" />
 
-  <RequestPopover v-model:shown="reqShown" />
+  <RequestPopover v-model:shown="reqShown" :zIndex="90" />
   <RequestStatus class="request-status" v-if="!reqShown" />
 
   <main :style="mainStyle" ref="mainRef">
