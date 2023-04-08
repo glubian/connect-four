@@ -272,7 +272,7 @@ p {
   margin-top: 24px;
   border-radius: 4px;
   & > :not(:last-child) {
-    border-bottom: var(--c-button-border);
+    border-bottom: var(--c-card-separator);
   }
 }
 </style>

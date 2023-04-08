@@ -221,6 +221,7 @@ $p2-svg: "data:image/svg+xml," +
   --c1-drop-shadow: #{$shadow-on-tb-gray700};
   --c1-card: #{$tb-gray600};
   --c1-card-text: #{$tb-gray-text-primary};
+  --c1-card-separator: 1px solid #{$tb-gray200};
   --c1-card-drop-shadow: #{$drop-shadow-on-tb-gray700};
 
   --c1-button: #{$tb-gray500};
@@ -342,6 +343,7 @@ $p2-svg: "data:image/svg+xml," +
   --c1-drop-shadow: #{$shadow-on-dark-gray700};
   --c1-card: #{$dark-gray600};
   --c1-card-text: #{$dark-gray-text-primary};
+  --c1-card-separator: 1px solid #{$dark-gray200};
   --c1-card-drop-shadow: #{$drop-shadow-on-dark-gray700};
 
   --c1-button: #{$dark-gray500};
@@ -463,6 +465,7 @@ $p2-svg: "data:image/svg+xml," +
   --c1-drop-shadow: #{$shadow-on-light-gray300};
   --c1-card: #{$light-gray200};
   --c1-card-text: #{$light-gray-text-primary};
+  --c1-card-separator: 1px solid #{$light-gray700};
   --c1-card-drop-shadow: #{$drop-shadow-on-light-gray300};
 
   --c1-p1: #{$blue500};
@@ -589,6 +592,7 @@ body {
   --c-drop-shadow: var(--c1-drop-shadow);
   --c-card: var(--c1-card);
   --c-card-text: var(--c1-card-text);
+  --c-card-separator: var(--c1-card-separator);
   --c-card-drop-shadow: var(--c1-card-drop-shadow);
 
   --c-button: var(--c1-button);
