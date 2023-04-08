@@ -51,9 +51,9 @@ const statusMessageSlideUp = computed(() =>
 );
 
 const showRequestStatus = computed(() => {
-  const { restartRequests } = store;
+  const [r1, r2] = store.restartRequests;
   const { showRequestStatus } = gameUIStore;
-  return showRequestStatus && restartRequests.some((req) => !!req);
+  return showRequestStatus && (r1 || r2);
 });
 
 const showStatusMessage = computed(() => {
