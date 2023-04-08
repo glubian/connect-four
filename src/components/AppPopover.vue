@@ -13,6 +13,7 @@ const props = defineProps({
   background: String, // "shown" | "auto" | "hidden" | "disabled", default is "auto"
   layout: String, // "mobile" | "auto" | "desktop", default is "auto"
   disableFocusTrap: Boolean,
+  zIndex: Number,
 });
 const emit = defineEmits(["update:shown", "after-leave"]);
 
@@ -73,6 +74,7 @@ const popoverClass = computed(() => ({
 const popoverStyle = computed(() => ({
   [POPOVER_TOP]: popoverTop.value + "px",
   [POPOVER_LEFT]: popoverLeft.value + "px",
+  zIndex: props.zIndex,
 }));
 
 /**
@@ -126,6 +128,7 @@ watch(popoverRef, (el) => {
     <Transition name="appear" @after-leave="$emit('after-leave')">
       <div
         class="close-popover"
+        :style="{ zIndex: zIndex ? zIndex - 1 : void 0 }"
         :class="closePopoverClass"
         @click="closePopover"
         v-if="shown"
