@@ -1,3 +1,5 @@
+import { onUnmounted } from "vue";
+
 type AnimationFrameCallback = (dt: number) => void;
 
 /** Ensures `window.requestAnimationFrame()` is only called once per frame. */
@@ -21,6 +23,12 @@ export function useAnimations() {
       cb(dt);
     }
   }
+
+  onUnmounted(() => {
+    if (handle !== null) {
+      cancelAnimationFrame(handle);
+    }
+  });
 
   return { requestFrame };
 }
