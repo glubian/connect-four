@@ -1,9 +1,11 @@
-import { computed, ref, watch, type Ref } from "vue";
+import type { Ref, WatchStopHandle } from "vue";
+import { onMounted, onUnmounted, ref, watch } from "vue";
 
 /** Observes `elementRef` for changes in `offsetWidth` and `offsetHeight`. */
 export function useResize(elementRef: Ref<HTMLElement | null>) {
   const offsetWidth = ref(0);
   const offsetHeight = ref(0);
+  let unwatch: WatchStopHandle | null = null;
 
   const resizeObserver = new ResizeObserver(() => {
     const el = elementRef.value;
@@ -15,18 +17,25 @@ export function useResize(elementRef: Ref<HTMLElement | null>) {
     offsetHeight.value = el.offsetHeight;
   });
 
-  watch(elementRef, (currEl, prevEl) => {
-    if (prevEl === currEl) {
-      return;
+  function updateObservedElement(el: HTMLElement) {
+    resizeObserver.disconnect();
+    resizeObserver.observe(el);
+  }
+
+  onMounted(() => {
+    unwatch = watch(elementRef, (el) => {
+      if (el) {
+        updateObservedElement(el);
+      }
+    });
+  });
+
+  onUnmounted(() => {
+    if (unwatch) {
+      unwatch();
     }
 
-    if (prevEl) {
-      resizeObserver.unobserve(prevEl);
-    }
-
-    if (currEl) {
-      resizeObserver.observe(currEl);
-    }
+    resizeObserver.disconnect();
   });
 
   return { offsetWidth, offsetHeight };
