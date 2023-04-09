@@ -29,8 +29,5 @@ export function useResize(elementRef: Ref<HTMLElement | null>) {
     }
   });
 
-  return {
-    offsetWidth: computed(() => offsetWidth.value),
-    offsetHeight: computed(() => offsetHeight.value),
-  };
+  return { offsetWidth, offsetHeight };
 }
