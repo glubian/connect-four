@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useSettingsAnimation } from "@/composables/settings-animation";
 import { PopoverAppearance } from "@/layout";
 import { layoutStore } from "@/layout-store";
 import { PlayerSelection, store } from "@/store";
@@ -84,6 +85,8 @@ const showRestartButton = computed(() => {
 // settings
 
 const settingsButtonRef: Ref<HTMLButtonElement | null> = ref(null);
+const settingsIconRef: Ref<HTMLElement | null> = ref(null);
+const settingsIcon = useSettingsAnimation(settingsIconRef);
 const settingsShown = ref(false);
 const SETTINGS_TOP = 8; // px
 const settingsRight = ref(getSettingsRight());
@@ -160,8 +163,12 @@ watch(
 
       <div class="space"></div>
 
-      <button class="icon settings" @click="openSettings">
-        <i class="mi-settings"></i>
+      <button
+        class="icon"
+        @click="openSettings"
+        @mouseenter="settingsIcon.turn()"
+      >
+        <i class="mi-settings" ref="settingsIconRef"></i>
       </button>
 
       <button class="icon" @click="store.connect()" v-if="createLobbyButton">
@@ -179,11 +186,12 @@ watch(
     <div class="desktop">
       <!-- The references are needed to position popovers properly. -->
       <button
-        class="icon settings"
+        class="icon"
         @click="openSettings"
+        @mouseenter="settingsIcon.turn()"
         ref="settingsButtonRef"
       >
-        <i class="mi-settings"></i>
+        <i class="mi-settings" ref="settingsIconRef"></i>
       </button>
 
       <button @click="store.restartGame()" v-if="showRestartButton">
@@ -279,13 +287,5 @@ watch(
 
 a {
   padding: 0 8px;
-}
-
-button.settings {
-  transform: rotate(0);
-  transition: transform 120ms ease-in-out;
-  &:hover {
-    transform: rotate(-45deg);
-  }
 }
 </style>
