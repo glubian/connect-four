@@ -11,7 +11,7 @@ const emit = defineEmits<{ (ev: "update:selected", v: ObjectKey): void }>();
 
 const DEFAULT_KEY = "select";
 const DEFAULT_VALUE = "Select";
-const DEFAULT_VALUES = { select: "Select" };
+const DEFAULT_VALUES: DropDownValues = { select: "Select" };
 
 const buttonRef: Ref<HTMLButtonElement | null> = ref(null);
 const buttonLabel = computed(
