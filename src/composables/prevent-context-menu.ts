@@ -32,9 +32,8 @@ export function usePreventContextMenu(r: Ref<HTMLElement | null>) {
   }
 
   onMounted(() => {
-    unwatch = watch(r, (curr) => toggleEventListener(!!curr), {
-      immediate: true,
-    });
+    const opts = { immediate: true };
+    unwatch = watch(r, (curr) => toggleEventListener(!!curr), opts);
   });
 
   onUnmounted(() => {

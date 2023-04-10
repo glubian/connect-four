@@ -11,14 +11,13 @@ const emit = defineEmits<{ (ev: "update:selected", v: ObjectKey): void }>();
 
 const DEFAULT_KEY = "select";
 const DEFAULT_VALUE = "Select";
-const DEFAULT_VALUES: DropDownValues = { select: "Select" };
+const DEFAULT_VALUES: DropDownValues = { select: "Select" } as const;
 
 const buttonRef: Ref<HTMLButtonElement | null> = ref(null);
-const buttonLabel = computed(
-  () =>
-    (props.values ?? DEFAULT_VALUES)[props.selected ?? DEFAULT_KEY] ??
-    DEFAULT_VALUE
-);
+const buttonLabel = computed(() => {
+  const { values, selected } = props;
+  return (values ?? DEFAULT_VALUES)[selected ?? DEFAULT_KEY] ?? DEFAULT_VALUE;
+});
 const buttonLeft = ref(0);
 const buttonTop = ref(0);
 

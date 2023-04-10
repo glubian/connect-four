@@ -17,25 +17,22 @@ export function useResize(elementRef: Ref<HTMLElement | null>) {
     offsetHeight.value = el.offsetHeight;
   });
 
-  function updateObservedElement(el: HTMLElement) {
+  function updateObservedElement(el: HTMLElement | null) {
     resizeObserver.disconnect();
-    resizeObserver.observe(el);
+    if (el) {
+      resizeObserver.observe(el);
+    }
   }
 
   onMounted(() => {
-    unwatch = watch(elementRef, (el) => {
-      if (el) {
-        updateObservedElement(el);
-      }
-    });
+    unwatch = watch(elementRef, updateObservedElement);
   });
 
   onUnmounted(() => {
     if (unwatch) {
       unwatch();
+      updateObservedElement(null);
     }
-
-    resizeObserver.disconnect();
   });
 
   return { offsetWidth, offsetHeight };
