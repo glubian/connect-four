@@ -25,7 +25,7 @@ export function useResize(elementRef: Ref<HTMLElement | null>) {
   }
 
   onMounted(() => {
-    unwatch = watch(elementRef, updateObservedElement);
+    unwatch = watch(elementRef, updateObservedElement, { immediate: true });
   });
 
   onUnmounted(() => {
