@@ -12,13 +12,14 @@ import PlayerCard from "./PlayerCard.vue";
 const LAYOUT_WIDE = 640;
 const LAYOUT_WIDE_CLASS = "layout-wide";
 
+const PREFERRED_QR_CODE_SIZE = 160; // px
+
 const remotePlaySetupRef: Ref<HTMLElement | null> = ref(null);
 const titleBarRef: Ref<HTMLHeadingElement | null> = ref(null);
 const linkQRRef: Ref<HTMLImageElement | null> = ref(null);
 
 const { t } = useI18n();
 const { offsetWidth: panelWidth } = useResize(remotePlaySetupRef);
-const { offsetWidth: linkQROffsetWidth } = useResize(linkQRRef);
 const { entries: rootIOEls } = useIntersectionObserver({
   rootRef: remotePlaySetupRef,
   refs: { titleBar: titleBarRef },
@@ -70,10 +71,12 @@ const linkQRStyle = computed(() => {
     return;
   }
 
-  const moduleWidth = lobby.qrCode.width;
-  const width = linkQROffsetWidth.value;
-  const moduleSize = Math.floor(width / moduleWidth);
-  return { borderWidth: moduleSize * 2 + "px" };
+  const size = lobby.qrCode.width;
+  const scale = Math.max(Math.floor(PREFERRED_QR_CODE_SIZE / size), 1);
+
+  const scaledSize = size * scale + "px";
+  const borderWidth = scale * 2 + "px";
+  return { width: scaledSize, height: scaledSize, borderWidth };
 });
 
 const playerCodes = computed(() => {
@@ -219,7 +222,6 @@ p {
   }
 
   img {
-    box-sizing: border-box;
     grid-area: qr;
     margin: 0 auto;
 
