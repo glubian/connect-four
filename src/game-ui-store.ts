@@ -64,26 +64,6 @@ function getLastMove(): GameUILastMove | null {
   return null;
 }
 
-/**
- * Commits pending changes to the `gameUIStore.field` and returns a
- * list of changed indices.
- */
-function syncField(): [number, number][] {
-  const changes: [number, number][] = [];
-  const { field } = gameRef.value;
-
-  for (let x = 0; x < FIELD_SIZE; x++) {
-    for (let y = 0; y < FIELD_SIZE; y++) {
-      if (gameUIStore.field[x][y] !== field[x][y]) {
-        gameUIStore.field[x][y] = field[x][y];
-        changes.push([x, y]);
-      }
-    }
-  }
-
-  return changes;
-}
-
 /** Updates UI properties to reflect the most recent changes. */
 function sync() {
   if (isAnimating) {
@@ -91,7 +71,12 @@ function sync() {
   }
 
   const game = gameRef.value;
-  gameUIStore.delta = syncField();
+  for (let x = 0; x < FIELD_SIZE; x++) {
+    for (let y = 0; y < FIELD_SIZE; y++) {
+      gameUIStore.field[x][y] = game.field[x][y];
+    }
+  }
+
   gameUIStore.state = cloneState(game.state);
   gameUIStore.rules = { ...gameRef.value.rules };
   gameUIStore.lastMove = getLastMove();
@@ -179,7 +164,6 @@ function showRequestStatus(show: boolean) {
 /** Handles UI-specific game state. */
 export const gameUIStore = reactive({
   field: Array.from(gameRef.value.field, (col) => Array.from(col)),
-  delta: [] as [number, number][],
   state: cloneState(gameRef.value.state),
   rules: { ...gameRef.value.rules } as GameRules,
 
