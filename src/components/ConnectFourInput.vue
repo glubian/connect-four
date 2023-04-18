@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { usePreventContextMenu } from "@/composables/prevent-context-menu";
+import { useTimer } from "@/composables/timer";
+import { HALF_CONT_SIZE } from "@/game-ui";
 import { store } from "@/store";
-import { onMounted, onUnmounted, ref, watch, type Ref } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch, type Ref } from "vue";
 import type { ExtendedTouch } from "../extended-touch";
 import { extendTouch } from "../extended-touch";
 import { slotAnimation } from "../slot-animation";
+import ConnectFourInputHint from "./ConnectFourInputHint.vue";
 
 const props = defineProps<{ disabled?: boolean }>();
 const emit = defineEmits<{
@@ -18,7 +21,33 @@ const slotRef: Ref<HTMLDivElement | null> = ref(null);
 const slotAnimRef: Ref<ReturnType<typeof slotAnimation> | null> = ref(null);
 const gameRef = store.getGame();
 
+const chipVisible = ref(false);
+const chipPosition = ref(0);
+const hintVisible = ref(false);
+const hasMoved = ref(false);
+
 usePreventContextMenu(eventAreaRef);
+const inactivityTimer = useTimer(2000, showHint);
+const turnDebounceTimer = useTimer(1000, () => {
+  hasMoved.value = false;
+  const slotAnim = slotAnimRef.value;
+  if (slotAnim && store.timePerTurn > 0) {
+    showHint();
+  }
+});
+
+function trackEvent(ts: number) {
+  if (!(props.disabled || store.isUntouched || turnDebounceTimer.isRunning)) {
+    inactivityTimer.reset(ts);
+  }
+}
+
+function showHint() {
+  const slotAnim = slotAnimRef.value;
+  if (slotAnim && !store.isUntouched) {
+    slotAnim.hint();
+  }
+}
 
 function isWithinTarget(touch: ExtendedTouch) {
   const el = touch.target as HTMLElement;
@@ -35,11 +64,13 @@ function isWithinTarget(touch: ExtendedTouch) {
 let trackedTouch: ExtendedTouch | null = null;
 function onTouchStart(ev: TouchEvent) {
   ev.preventDefault();
+  hasMoved.value = true;
   const slotAnim = slotAnimRef.value;
   if (trackedTouch || !slotAnim) {
     return;
   }
 
+  trackEvent(ev.timeStamp);
   trackedTouch = extendTouch(ev.changedTouches.item(0) as Touch, {
     rect: (ev.target as HTMLElement).getBoundingClientRect(),
   });
@@ -58,6 +89,7 @@ function onTouchMove(ev: TouchEvent) {
 
   for (const t of ev.changedTouches) {
     if (t.identifier === trackedTouch.identifier) {
+      trackEvent(ev.timeStamp);
       const touchMove = extendTouch(t, {
         rect: (ev.target as HTMLElement).getBoundingClientRect(),
         prevTouch: trackedTouch,
@@ -89,6 +121,7 @@ function onTouchEndOrCancel(ev: TouchEvent) {
 
   for (const t of ev.changedTouches) {
     if (t.identifier === trackedTouch.identifier) {
+      trackEvent(ev.timeStamp);
       const touchEnd = extendTouch(t, {
         rect: (ev.target as HTMLElement).getBoundingClientRect(),
         prevTouch: trackedTouch,
@@ -104,72 +137,86 @@ function onTouchEndOrCancel(ev: TouchEvent) {
 }
 
 function onMouseEnter(ev: MouseEvent) {
+  hasMoved.value = true;
   const slotAnim = slotAnimRef.value;
   if (slotAnim) {
+    trackEvent(ev.timeStamp);
     slotAnim.continuousInput(true);
     slotAnim.pointer(true);
     slotAnim.pointerMove(ev);
   }
 }
 
-function onMouseLeave() {
+function onMouseLeave(ev: MouseEvent) {
   const slotAnim = slotAnimRef.value;
   if (slotAnim) {
+    trackEvent(ev.timeStamp);
     slotAnim.continuousInput(true);
     slotAnim.pointer(false);
   }
 }
 
 function onMouseMove(ev: MouseEvent) {
+  hasMoved.value = hasMoved.value || !!(ev.buttons & 1);
   const slotAnim = slotAnimRef.value;
   if (slotAnim) {
+    trackEvent(ev.timeStamp);
     slotAnim.continuousInput(true);
     slotAnim.pointer(true);
     slotAnim.pointerMove(ev);
   }
 }
 
-function onMouseDown() {
+function onMouseDown(ev: MouseEvent) {
+  hasMoved.value = hasMoved.value || !!(ev.buttons & 1);
   const slotAnim = slotAnimRef.value;
   if (slotAnim) {
+    trackEvent(ev.timeStamp);
     slotAnim.continuousInput(true);
     slotAnim.pointerPressed(true);
   }
 }
 
-function onMouseUp() {
+function onMouseUp(ev: MouseEvent) {
   const slotAnim = slotAnimRef.value;
   if (slotAnim) {
+    trackEvent(ev.timeStamp);
     slotAnim.continuousInput(true);
     slotAnim.pointerPressed(false);
   }
 }
 
-function onFocus() {
+function onFocus(ev: FocusEvent) {
+  hasMoved.value = true;
   const slotAnim = slotAnimRef.value;
   if (slotAnim) {
+    trackEvent(ev.timeStamp);
     slotAnim.keyboard(true);
   }
 }
 
-function onBlur() {
+function onBlur(ev: FocusEvent) {
   const slotAnim = slotAnimRef.value;
   if (slotAnim) {
+    trackEvent(ev.timeStamp);
     slotAnim.keyboard(false);
   }
 }
 
 function onKeyDown(ev: KeyboardEvent) {
+  hasMoved.value = true;
   const slotAnim = slotAnimRef.value;
   if (slotAnim) {
+    trackEvent(ev.timeStamp);
     slotAnim.continuousInput(true);
     slotAnim.keyboardKeyDown(ev);
   }
 }
 
-function onKeyUp() {
+function onKeyUp(ev: KeyboardEvent) {
   const slotAnim = slotAnimRef.value;
   if (slotAnim) {
+    trackEvent(ev.timeStamp);
     slotAnim.continuousInput(true);
     slotAnim.keyboardKeyUp();
   }
@@ -179,8 +226,28 @@ function onDisabled(isDisabled: boolean) {
   const slotAnim = slotAnimRef.value;
   if (slotAnim) {
     slotAnim.disabled(isDisabled);
+    if (isDisabled) {
+      inactivityTimer.clear();
+    } else {
+      inactivityTimer.reset();
+    }
   }
 }
+
+const hintStyle = computed(() => {
+  const x = chipPosition.value;
+  const isVisible = chipVisible.value;
+  const clipPath = isVisible ? `inset(0 0 0 ${x + HALF_CONT_SIZE}px)` : "";
+  return { clipPath };
+});
+
+watch(
+  () => gameRef.value.state.turn,
+  () => {
+    hasMoved.value = false;
+    turnDebounceTimer.reset();
+  }
+);
 
 watch(props, (v) => onDisabled(!!v.disabled), { immediate: true });
 
@@ -188,10 +255,14 @@ onMounted(() => {
   const slotEl = slotRef.value as HTMLDivElement;
   const slotAnim = slotAnimation({
     el: slotEl,
+    updateVisible: (v) => void (chipVisible.value = v),
+    updatePosition: (x) => void (chipPosition.value = x),
+    updateHint: (v) => void (hintVisible.value = v),
     updateFocusVisible: (v) => emit("update-focus-visible", v),
   });
   slotAnim.disabled(!!props.disabled);
   slotAnimRef.value = slotAnim;
+  inactivityTimer.reset();
 });
 
 onUnmounted(() => {
@@ -239,6 +310,12 @@ watch(gameRef, (game) => {
     ref="eventAreaRef"
   ></div>
   <div class="new-area" ref="areaRef">
+    <ConnectFourInputHint
+      :chip-visible="chipVisible"
+      :hint-visible="hintVisible"
+      :has-moved="hasMoved && !turnDebounceTimer.isRunning"
+      :style="hintStyle"
+    />
     <div class="slot-container" ref="contRef">
       <div class="slot animate p1" ref="slotRef"></div>
     </div>

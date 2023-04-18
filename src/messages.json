@@ -70,6 +70,12 @@
         "pending": "Your opponent has a request.",
         "waiting": "Waiting for your opponent..."
       },
+      "hint": {
+        "youStart": "You start",
+        "yourMove": "Your move",
+        "opponentMoving": "Opponent is moving.",
+        "opponentStarts": "Opponent was chosen to start the game."
+      },
       "dialog": {
         "playerSelection": {
           "title": "Who is starting the next game?",
@@ -274,6 +280,12 @@
         },
         "pending": "Twój przeciwnik ma propozycję.",
         "waiting": "Oczekiwanie na przeciwnika..."
+      },
+      "hint": {
+        "youStart": "Rozpocznij grę",
+        "yourMove": "Twoja tura",
+        "opponentMoving": "Przeciwnik się rusza.",
+        "opponentStarts": "Przeciwnik rozpoczyna grę."
       },
       "dialog": {
         "playerSelection": {
