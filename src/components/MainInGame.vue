@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { GameWinner, Player } from "@/game";
 import { gameUIStore } from "@/game-ui-store";
-import { PanelLayout } from "@/layout";
+import { PanelLayout, RestartPopoverAppearance } from "@/layout";
 import { layoutStore } from "@/layout-store";
 import { PlayerSelection, store } from "@/store";
 import { computed } from "vue";
@@ -60,11 +60,13 @@ const showStatusMessage = computed(() => {
   const { lobby, isConnected } = store;
   const { playerSelection } = gameUIStore;
   const { Hidden } = PlayerSelection;
+  const { restartPopoverAppearance } = layoutStore;
+  const { Desktop } = RestartPopoverAppearance;
   return (
     statusMessage.value &&
     (!lobby || showPausedControls.value) &&
     (!isConnected || playerSelection === Hidden) &&
-    !showRequestStatus.value
+    (!showRequestStatus.value || restartPopoverAppearance === Desktop)
   );
 });
 </script>
