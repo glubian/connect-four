@@ -186,7 +186,7 @@ export const gameUIStore = reactive({
    * Whether the request status should be shown instead of
    * game over message.
    */
-  showRequestStatus: false,
+  showRequestStatus: true,
 
   hasSpaceAt,
   getY,
