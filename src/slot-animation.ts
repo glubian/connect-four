@@ -54,7 +54,7 @@ enum Device {
 
 interface SlotAnimationParameters {
   el: HTMLElement;
-  updateFocusVisible: (isFocusVisible: boolean) => void;
+  updateFocusVisible?: (isFocusVisible: boolean) => void;
 }
 
 type PointerEventSource = MouseEvent | ExtendedTouch;
@@ -386,7 +386,7 @@ export function slotAnimation({
    */
   function updateFocus(focused: boolean, device = lastEventDevice) {
     const focusVisible = focused && device === Device.Keyboard;
-    if (isFocusVisible !== focusVisible) {
+    if (isFocusVisible !== focusVisible && updateFocusVisible) {
       updateFocusVisible(focusVisible);
     }
 
