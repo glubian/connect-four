@@ -54,10 +54,18 @@ enum Device {
 }
 
 interface SlotAnimationParameters {
+  /** Element to control. */
   el: HTMLElement;
+  /** Called when element becomes visible or completely hidden. */
   updateVisible?: (isVisible: boolean) => void;
+  /**
+   * Called when position changes, with coordinates of the top left
+   * corner of `el`.
+   */
   updatePosition?: (x: number, y: number) => void;
+  /** Called when the hint should be shown or hidden. */
   updateHint?: (isVisible: boolean) => void;
+  /** Called when focus ring is shown or hidden. */
   updateFocusVisible?: (isFocusVisible: boolean) => void;
 }
 
