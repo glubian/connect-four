@@ -40,6 +40,7 @@ const KEYS_SUBMIT = ["Enter", " "];
 
 enum Mode {
   Off,
+  Hint,
   Freeform,
   Constrained,
   Locked,
@@ -56,6 +57,7 @@ interface SlotAnimationParameters {
   el: HTMLElement;
   updateVisible?: (isVisible: boolean) => void;
   updatePosition?: (x: number, y: number) => void;
+  updateHint?: (isVisible: boolean) => void;
   updateFocusVisible?: (isFocusVisible: boolean) => void;
 }
 
@@ -228,6 +230,7 @@ export function slotAnimation({
   el,
   updateVisible,
   updatePosition,
+  updateHint,
   updateFocusVisible,
 }: SlotAnimationParameters) {
   /*
@@ -240,22 +243,22 @@ export function slotAnimation({
    * Slot animation is based around a state machine,
    * which roughly looks like this (it starts in `Off` mode):
    *
-   *   ┌────────────────────────────────────┐
-   *   │             ╔═════════════╗        │
-   *   │     ┌──────→╢ Constrained ╟─────→┐ │
-   *   │     │       ╚═══╤════════╤╝  ╔═══╧═╧═══╗
-   *   │     │           ↕        ↑   ║ Falling ║
-   *   │     │       ╔═══╧════╗   │   ╚════╤════╝
-   *   │     │ ┌─────╢ Locked ╟──╼┿╾──────→┘
-   *   │     ↓ ↓     ╚═══╤════╝   │
-   *   │   ╔═╧═╧═╗       ↑        │
-   *   └──→╢ Off ║       │        │
-   *       ╚═╤═╤═╝       ↓        │
-   *         ↑ │     ╔═══╧══════╗ │
-   *         │ └────→╢ Freeform ╟←┘
-   *         │       ╚═══╤══════╝
-   *      ╔══╧════╗      │
-   *      ║ Inert ╟←─────┘
+   *   ┌──────────────────────────────────────────────┐
+   *   │                       ╔═════════════╗        │
+   *   │     ┌────────────────→╢ Constrained ╟─────→┐ │
+   *   │     │                 ╚═══╤═╤══════╤╝  ╔═══╧═╧═══╗
+   *   │     │        ┌───────────→┘ ↕      ↑   ║ Falling ║
+   *   │     │     ╔══╧═══╗    ╔═════╧══╗   │   ╚════╤════╝
+   *   │     │ ┌──→╢ Hint ╟───→╢ Locked ╟──╼┿╾──────→┘
+   *   │     ↓ ↓   ╚══╤═══╝    ╚═╤═══╤══╝   │
+   *   │   ╔═╧═╧═╗    │          │   ↑      │
+   *   └──→╢ Off ║←───╂──────────┘   │      │
+   *       ╚═╤═╤═╝    └───────────→┐ ↓      │
+   *         ↑ │               ╔═══╧═╧════╗ │
+   *         │ └──────────────→╢ Freeform ╟←┘
+   *         │                 ╚═══╤══════╝
+   *      ╔══╧════╗                │
+   *      ║ Inert ╟←───────────────┘
    *      ╚═══════╝
    *
    *
@@ -453,6 +456,11 @@ export function slotAnimation({
       transition.reset();
     }
 
+    const isHintVisible = mode === Mode.Hint;
+    if ((isHintVisible || prevMode === Mode.Hint) && updateHint) {
+      updateHint(isHintVisible);
+    }
+
     if (mode === Mode.Falling) {
       const y = gameUIStore.getY(col) as number;
       gameUIStore.startAnimation();
@@ -534,7 +542,10 @@ export function slotAnimation({
       return;
     }
 
-    if (focused && (mode === Mode.Off || mode === Mode.Freeform)) {
+    if (
+      focused &&
+      (mode === Mode.Off || mode === Mode.Freeform || mode === Mode.Hint)
+    ) {
       const newCol = getColNearest();
       if (newCol !== null) {
         col = newCol;
@@ -572,7 +583,10 @@ export function slotAnimation({
       return;
     }
 
-    if (mode === Mode.Freeform && (isLeft || isRight || isSubmit)) {
+    if (
+      (mode === Mode.Freeform || mode === Mode.Hint) &&
+      (isLeft || isRight || isSubmit)
+    ) {
       const newCol = getColNearest();
       if (newCol !== null) {
         col = newCol;
@@ -626,7 +640,10 @@ export function slotAnimation({
       return;
     }
 
-    if (isEntering && (mode === Mode.Off || mode === Mode.Inert)) {
+    if (
+      isEntering &&
+      (mode === Mode.Off || mode === Mode.Inert || mode === Mode.Hint)
+    ) {
       setMode(Mode.Freeform);
     } else if (!isEntering && mode === Mode.Freeform) {
       setMode(Mode.Inert);
@@ -666,7 +683,12 @@ export function slotAnimation({
       return;
     }
 
-    if (isPressed && (mode === Mode.Freeform || mode === Mode.Constrained)) {
+    if (
+      isPressed &&
+      (mode === Mode.Freeform ||
+        mode === Mode.Hint ||
+        mode === Mode.Constrained)
+    ) {
       const hit = colFromPointer();
       const newCol = getColNearest();
       if (hit === newCol && gameUIStore.getY(newCol) !== null) {
@@ -698,6 +720,9 @@ export function slotAnimation({
       pointer(false);
       keyboard(false);
       updateFocus(wasFocused);
+      if (mode === Mode.Hint) {
+        setMode(Mode.Off);
+      }
     } else {
       pointer(isPointerHovering);
       keyboard(isFocused);
@@ -719,6 +744,13 @@ export function slotAnimation({
     isInputContinuous = v;
   }
 
+  /** Shows hint if the element is currently hidden. */
+  function hint() {
+    if (!isDisabled && mode === Mode.Off) {
+      setMode(Mode.Hint);
+    }
+  }
+
   /** Immediately completes the falling animation. */
   function complete() {
     animation.gravity.complete();
@@ -736,6 +768,8 @@ export function slotAnimation({
     switch (mode) {
       case Mode.Off:
         return null;
+      case Mode.Hint:
+        return [0, 0];
       case Mode.Freeform:
         return [v.pointer.x, v.nudge.y + a.raise.valueAsType(ts)];
       case Mode.Constrained:
@@ -849,6 +883,7 @@ export function slotAnimation({
     pointerPressed,
     disabled,
     continuousInput,
+    hint,
     complete,
     destroy,
   };
