@@ -54,6 +54,8 @@ enum Device {
 
 interface SlotAnimationParameters {
   el: HTMLElement;
+  updateVisible?: (isVisible: boolean) => void;
+  updatePosition?: (x: number, y: number) => void;
   updateFocusVisible?: (isFocusVisible: boolean) => void;
 }
 
@@ -224,6 +226,8 @@ class GravityAnimation {
 
 export function slotAnimation({
   el,
+  updateVisible,
+  updatePosition,
   updateFocusVisible,
 }: SlotAnimationParameters) {
   /*
@@ -354,6 +358,9 @@ export function slotAnimation({
       const player = gameUIStore.state.player;
       classList.add(playerClass(player));
       classList.remove(playerClass(otherPlayer(player)));
+      if (updateVisible) {
+        updateVisible(true);
+      }
     }
 
     style.opacity = "";
@@ -372,6 +379,9 @@ export function slotAnimation({
       el.style.opacity = "0";
       setMode(Mode.Off);
       el.classList.remove(LEAVE_CLASS);
+      if (updateVisible) {
+        updateVisible(false);
+      }
     }
 
     isTransitionComplete = true;
@@ -825,6 +835,9 @@ export function slotAnimation({
   function applyTransform(ts: number) {
     const [x, y] = getVector(ts);
     el.style.transform = `translate(${x}px, ${y}px)`;
+    if (updatePosition) {
+      updatePosition(x, y);
+    }
   }
 
   return {
