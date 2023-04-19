@@ -450,6 +450,7 @@ export function slotAnimation({
 
     if (
       mode === Mode.Constrained ||
+      prevMode === Mode.Hint ||
       (prevMode === Mode.Freeform && mode === Mode.Locked)
     ) {
       a.raise.complete();

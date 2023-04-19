@@ -76,7 +76,11 @@ function onTouchStart(ev: TouchEvent) {
     rect: (ev.target as HTMLElement).getBoundingClientRect(),
   });
   slotAnim.continuousInput(false);
-  slotAnim.pointer(true);
+  // A temporary fix that allows mode transition to happen.
+  // FIXME: Handle this within `slot-animation.ts`
+  if (!hintVisible.value) {
+    slotAnim.pointer(true);
+  }
   slotAnim.pointerMove(trackedTouch);
   slotAnim.pointerPressed(true);
 }
