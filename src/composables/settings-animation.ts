@@ -1,3 +1,4 @@
+import { isWebkit } from "@/compatibility-fixes";
 import { computed, type Ref } from "vue";
 
 export function useSettingsAnimation(ref: Ref<HTMLElement | null>) {
@@ -5,6 +6,15 @@ export function useSettingsAnimation(ref: Ref<HTMLElement | null>) {
     const iconEl = ref.value;
     if (!iconEl) {
       return;
+    }
+
+    if (isWebkit) {
+      const { style } = iconEl;
+      // For some reason this prevents the element from being darker during
+      // animation, but only in Chrome.
+      style.transformOrigin = "12px 14px";
+      style.transform = "rotate(-45deg)";
+      style.willChange = "transform";
     }
 
     const keyframes = [

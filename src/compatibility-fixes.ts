@@ -1,4 +1,4 @@
-const isWebkit = navigator.userAgent.indexOf("AppleWebKit") !== -1;
+export const isWebkit = navigator.userAgent.indexOf("AppleWebKit") !== -1;
 
 /**
  * Fixes scaleX() rendering bug on WebKit browsers
