@@ -2,13 +2,15 @@
 import { playerClass } from "@/game-ui";
 import { gameUIStore } from "@/game-ui-store";
 import { store } from "@/store";
-import { computed } from "vue";
+import { computed, watch } from "vue";
 
 const props = defineProps<{
   chipVisible: boolean;
   hintVisible: boolean;
   hasMoved: boolean;
 }>();
+
+const emit = defineEmits<{ (ev: "update:shown", isShown: boolean): void }>();
 
 enum Display {
   YourMove,
@@ -37,6 +39,8 @@ const display = computed(() => {
 });
 
 const activeClass = computed(() => playerClass(gameUIStore.state.player));
+
+watch(display, (d) => emit("update:shown", d !== null));
 </script>
 
 <template>

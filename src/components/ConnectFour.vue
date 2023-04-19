@@ -27,6 +27,7 @@ const rootClassListRef = ref({ animate: false });
 const showFocusRing = ref(false);
 const slotsRef = shallowRef(createSlotArray(gameUIStore.field));
 const timerAnimation = useTimerAnimation();
+const hintShown = ref(false);
 let displayedRound = 0;
 
 const focusRingStyle = computed(() =>
@@ -119,9 +120,14 @@ watch(gameUIStore, () => {
       :end="timerAnimation.end"
       :is-active="timerAnimation.isOngoing"
     />
-    <ConnectFourTimer :is-focus-visible="showFocusRing" />
+    <ConnectFourTimer
+      :disabled="isDisabled"
+      :hint-shown="hintShown"
+      :focus-visible="showFocusRing"
+    />
     <ConnectFourInput
       :disabled="isDisabled"
+      @update:hint-shown="(v) => (hintShown = v)"
       @update-focus-visible="(v) => (showFocusRing = v)"
     />
     <ConnectFourResult :matches="gameMatches" />

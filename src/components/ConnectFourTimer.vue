@@ -3,7 +3,11 @@ import { gameUIStore } from "@/game-ui-store";
 import { store } from "@/store";
 import { computed } from "vue";
 
-const props = defineProps<{ showTop?: boolean; isFocusVisible?: boolean }>();
+const props = defineProps<{
+  hintShown?: boolean;
+  disabled?: boolean;
+  focusVisible?: boolean;
+}>();
 
 const { round } = Math;
 
@@ -16,13 +20,18 @@ const enabled = computed(() => {
   return store.timeCap !== 0 && !gameUIStore.state.result && !store.lobby;
 });
 const focusVisibleClass = computed(() => {
-  return props.isFocusVisible ? FOCUS_VISIBLE_CLASS : "";
+  return props.focusVisible ? FOCUS_VISIBLE_CLASS : "";
 });
 
 const top = computed(() => round(store.timeCap / 1000));
 const left = computed(() => round((3 * store.timeCap) / 4000));
 const bottom = computed(() => round(store.timeCap / 2000));
 const right = computed(() => round(store.timeCap / 4000));
+
+const topStyle = computed(() => {
+  const { disabled, hintShown } = props;
+  return { opacity: !disabled || hintShown ? "0" : "" };
+});
 </script>
 
 <template>
@@ -31,7 +40,7 @@ const right = computed(() => round(store.timeCap / 4000));
     :duration="{ enter: ENTER_DURATION, leave: DURATION }"
   >
     <div class="timer" :class="focusVisibleClass" v-if="enabled">
-      <div class="top">
+      <div class="top" :style="topStyle">
         <span class="time">{{ top }}</span>
         <span class="vert-dash"></span>
       </div>

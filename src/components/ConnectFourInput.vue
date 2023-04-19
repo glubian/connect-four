@@ -11,6 +11,7 @@ import ConnectFourInputHint from "./ConnectFourInputHint.vue";
 
 const props = defineProps<{ disabled?: boolean }>();
 const emit = defineEmits<{
+  (ev: "update:hint-shown", isShown: boolean): void;
   (ev: "update-focus-visible", isFocusVisible: boolean): void;
 }>();
 
@@ -315,6 +316,7 @@ watch(gameRef, (game) => {
       :hint-visible="hintVisible"
       :has-moved="hasMoved && !turnDebounceTimer.isRunning"
       :style="hintStyle"
+      @update:shown="(v) => emit('update:hint-shown', v)"
     />
     <div class="slot-container" ref="contRef">
       <div class="slot animate p1" ref="slotRef"></div>
