@@ -39,6 +39,17 @@ npm run dev
 npm run build
 ```
 
+### Generate icons
+
+```sh
+npm run gen
+```
+
+Runs `build/gen.mjs` which creates `gen/dist/icons.scss` containing inlined
+custom icons. This should be automatically executed after installing packages,
+but in case something went wrong, or you have changed some of the icons, use 
+this to regenerate the file.
+
 ### Run ESLint
 
 ```sh
