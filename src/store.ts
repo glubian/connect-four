@@ -16,7 +16,7 @@ import WebSocketController from "./ws";
  * Values that are falsy, or lesser than this constant mean the
  * timer is disabled.
  */
-export const TIME_PER_TURN_MIN = 3; // s
+export const TIME_PER_TURN_MIN = 3000; // ms
 
 interface Lobby {
   isHost: true;
@@ -453,18 +453,16 @@ function getTimeoutDuration(extraTime: number): number {
 /** Time per turn in milliseconds, or 0 if timer is disabled. */
 const timePerTurn: ComputedRef<number> = computed(() => {
   const { timePerTurn } = store.config;
-  const AS_MS = 1000;
-  return timePerTurn < TIME_PER_TURN_MIN ? 0 : timePerTurn * AS_MS;
+  return timePerTurn < TIME_PER_TURN_MIN ? 0 : timePerTurn;
 });
 
 /** Time cap in milliseconds, or 0 if timer is disabled. */
 const timeCap: ComputedRef<number> = computed(() => {
   const { timeCap } = store.config;
   const timePerTurnValue = timePerTurn.value;
-  const AS_MS = 1000;
   return timePerTurnValue < TIME_PER_TURN_MIN
     ? 0
-    : Math.max(timePerTurnValue, timeCap * AS_MS);
+    : Math.max(timePerTurnValue, timeCap);
 });
 
 /** Starts a new timeout in a local game. */

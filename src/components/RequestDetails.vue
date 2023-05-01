@@ -11,6 +11,9 @@ const props = defineProps<{ req: RestartRequest; player: Player }>();
 
 const restartDetails = computed(() => playerClass(props.player));
 
+/** Milliseconds in a second. */
+const MS_IN_S = 1000;
+
 const { t } = useI18n();
 
 // namespace
@@ -40,7 +43,8 @@ const timePerTurn = computed(() => {
     return t(ns.value + ".time.unlimited");
   }
 
-  return t(ns.value + ".time.perTurn", [t("unit.seconds", config.timePerTurn)]);
+  const timePerTurn = config.timePerTurn / MS_IN_S;
+  return t(ns.value + ".time.perTurn", [t("unit.seconds", timePerTurn)]);
 });
 const timeCapEnabled = computed(() => {
   const { config } = props.req;
@@ -60,7 +64,8 @@ const timeCap = computed(() => {
     return "";
   }
 
-  return t(ns.value + ".time.capAt", [t("unit.seconds", config.timeCap)]);
+  const timeCap = Math.floor(config.timeCap / MS_IN_S);
+  return t(ns.value + ".time.capAt", [t("unit.seconds", timeCap)]);
 });
 const allowDraws = computed(() => {
   const { config } = props.req;

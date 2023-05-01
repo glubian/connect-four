@@ -15,14 +15,17 @@ const title = computed(() => {
   return t("page.changeRules.title." + property);
 });
 
-const timePerTurn = ref("20");
+/** Milliseconds in a second. */
+const MS_IN_S = 1000;
+
+const timePerTurn = ref("20000");
 const timePerTurnList = computed(() => ({
   "0": t("page.changeRules.section.timer.unlimited"),
-  "4": t("unit.seconds", 4),
-  "8": t("unit.seconds", 8),
-  "12": t("unit.seconds", 12),
-  "20": t("unit.seconds", 20),
-  "32": t("unit.seconds", 32),
+  "4000": t("unit.seconds", 4),
+  "8000": t("unit.seconds", 8),
+  "12000": t("unit.seconds", 12),
+  "20000": t("unit.seconds", 20),
+  "32000": t("unit.seconds", 32),
 }));
 
 const timeCapEnabled = ref(false);
@@ -32,7 +35,7 @@ function genTimeCap(timePerTurn: number): number[] {
     return [0];
   }
 
-  const max = 60;
+  const max = 60000; // ms
   const out = [timePerTurn + timePerTurn];
   for (
     let i = out[0] + timePerTurn;
@@ -45,12 +48,12 @@ function genTimeCap(timePerTurn: number): number[] {
   return out;
 }
 
-const timeCap = ref("40");
+const timeCap = ref("40000");
 const timeCapList = computed(() => {
   const list = genTimeCap(+timePerTurn.value);
   const out: { [key: string]: string } = {};
   for (const item of list) {
-    out[item] = t("unit.seconds", item);
+    out[item] = t("unit.seconds", item / MS_IN_S);
   }
 
   return out;
