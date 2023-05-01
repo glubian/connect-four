@@ -28,7 +28,9 @@ export interface GameConfig {
 }
 
 export interface QR {
+  /** Base64-encoded PNG. */
   img: string;
+  /** The number of modules per side. */
   width: number;
 }
 
@@ -80,12 +82,14 @@ type IncomingMessage =
 
 interface LobbyLinkMessage {
   type: typeof LOBBY_LINK;
+  /** Lobby ID. */
   lobby: string;
   qrCode: QR;
 }
 
 interface LobbySyncMessage {
   type: typeof LOBBY_SYNC;
+  /** Player codes. */
   players: number[];
 }
 
@@ -96,14 +100,17 @@ interface LobbyCodeMessage {
 
 interface GameSetupMessage {
   type: typeof GAME_SETUP;
-  role?: Player | null;
+  /** Game configuration. */
   config?: GameConfig | null;
+  /** Which role the client should assume - `P1` (blue) or `P2` (red). */
+  role?: Player | null;
 }
 
 interface GameSyncMessage {
   type: typeof GAME_SYNC;
   game: RemoteGame;
   round: number;
+  /** ISO 8601 timestamp of when the turn will be ended automatically. */
   timeout?: string | null;
 }
 
@@ -115,9 +122,13 @@ interface GamePlayerSelectionMessage {
 
 interface GameRestartRequestMessage {
   type: typeof GAME_RESTART_REQUEST;
+  /** Player who made the request. */
   player: Player;
+  /** Request details, or null if it expired. */
   req?: {
+    /** Changes to the configuration, if any. */
     config?: GameConfig | null;
+    /** ISO 8601 timestamp of when the restart request will expire. */
     timeout: string;
   } | null;
 }
@@ -138,11 +149,19 @@ const GAME_RESTART_RESPONSE = "gameRestartResponse";
 const PING = "ping";
 
 export interface PickPlayerContents {
+  /** Player's code. */
   code: number;
+  /** Player's role. */
   role: Player;
+  /** State of the local game, or `null` to start in player selection. */
   game?: RemoteGame | null;
+  /** Game configuration. */
   config: GameConfig;
   round: number;
+  /**
+   * If the game is timed, notifies the server of the time saved by
+   * both players.
+   */
   extraTime?: [number, number] | null;
 }
 
@@ -157,7 +176,9 @@ interface GamePlayerSelectionVoteMessage {
 
 interface GameEndTurnMessage {
   type: typeof GAME_END_TURN;
+  /** Turn to end. */
   turn: number;
+  /** Move to make, if any. */
   col?: number | null;
 }
 
