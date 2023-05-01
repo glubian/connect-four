@@ -220,7 +220,7 @@ class Game {
     }
 
     if (!point) {
-      if (rules.allowDraws && player === Player.P2) {
+      if (rules.allowDraws && player === otherPlayer(rules.startingPlayer)) {
         return getResult(field, moves);
       }
 
@@ -228,7 +228,7 @@ class Game {
     }
 
     if (rules.allowDraws) {
-      if (player === Player.P1) {
+      if (player === rules.startingPlayer) {
         return null;
       }
 

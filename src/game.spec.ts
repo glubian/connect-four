@@ -122,16 +122,20 @@ describe("Game", () => {
   });
 
   it("does not allow draws when allowDraws rule is false", () => {
-    const rules: GameRules = { startingPlayer: Player.P1, allowDraws: false };
-    const { game, drawn } = drawnGame(rules);
-    expect(game.state.result?.winner).toBe(GameWinner.P1);
-    expect(drawn).toBe(false);
+    for (const startingPlayer of [Player.P1, Player.P2]) {
+      const rules: GameRules = { startingPlayer, allowDraws: false };
+      const { game, drawn } = drawnGame(rules);
+      expect(game.state.result?.winner).toBe(startingPlayer);
+      expect(drawn).toBe(false);
+    }
   });
 
   it("does allow draws when allowDraws rule is true", () => {
-    const rules: GameRules = { startingPlayer: Player.P1, allowDraws: true };
-    const { game, drawn } = drawnGame(rules);
-    expect(game.state.result?.winner).toBe(GameWinner.Draw);
-    expect(drawn).toBe(true);
+    for (const startingPlayer of [Player.P1, Player.P2]) {
+      const rules: GameRules = { startingPlayer, allowDraws: true };
+      const { game, drawn } = drawnGame(rules);
+      expect(game.state.result?.winner).toBe(GameWinner.Draw);
+      expect(drawn).toBe(true);
+    }
   });
 });
