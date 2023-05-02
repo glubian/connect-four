@@ -15,6 +15,11 @@ interface RemoteGame {
   rules: GameRules;
 }
 
+/** Specifies the supported protocol version when requesting a connection. */
+export const URL_VERSION_PARAMETER = "version";
+/** Supported protocol version. */
+export const URL_VERSION_VALUE = "1";
+
 /** Heartbeat interval in milliseconds. */
 const HEARTBEAT_INTERVAL = 2000; // ms
 const DELAY_AVERAGE = 10;
@@ -233,6 +238,7 @@ export default class WebSocketController {
     }
 
     const url = new URL(WS_SERVER_URL);
+    url.searchParams.set(URL_VERSION_PARAMETER, URL_VERSION_VALUE);
     if (id) {
       url.searchParams.set("lobby", id);
     }
