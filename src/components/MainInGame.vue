@@ -69,6 +69,11 @@ const showStatusMessage = computed(() => {
     (!showRequestStatus.value || restartPopoverAppearance === Desktop)
   );
 });
+
+const welcomeSectionStyle = computed(() => {
+  const { areTimerMarksVisible } = layoutStore;
+  return { paddingTop: areTimerMarksVisible && store.timeCap ? "44px" : "" };
+});
 </script>
 <template>
   <div class="main-in-game">
@@ -97,7 +102,10 @@ const showStatusMessage = computed(() => {
         >
           {{ $t("page.resumeButton") }}
         </button>
-        <div v-else-if="store.isUntouched && !store.lobby">
+        <div
+          :style="welcomeSectionStyle"
+          v-else-if="store.isUntouched && !store.lobby"
+        >
           <div>{{ $t("page.welcome.startPlayingLocally") }}</div>
           <button @click="store.connect()">
             {{ $t("page.welcome.createLobbyButton") }}

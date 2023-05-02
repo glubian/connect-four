@@ -154,9 +154,7 @@ $stagger: 40ms;
   background-color: var(--c-text-tertiary);
 }
 
-$width-00: 20px; // Maximum expected width of a number
-$min-width: g.$field-size-ui + 2 * (g.$border-width + 48px + $width-00);
-@media (min-width: $min-width) {
+@media (min-width: g.$timer-min-width) {
   .timer {
     display: block;
   }

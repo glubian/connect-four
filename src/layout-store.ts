@@ -1,4 +1,5 @@
 import { computed, reactive } from "vue";
+import { areTimerMarksVisible } from "./game-ui";
 import {
   panelLayout,
   popoverAppearance,
@@ -27,6 +28,7 @@ export const layoutStore = reactive({
   panelLayout: panelLayout(innerWidth),
   popoverAppearance: popoverAppearance(innerWidth),
   restartPopoverAppearance: restartPopoverAppearance(innerWidth),
+  areTimerMarksVisible: areTimerMarksVisible(innerWidth),
   innerWidth,
   innerHeight,
   isFullscreen: isFullscreen(),
@@ -43,4 +45,5 @@ window.addEventListener("resize", () => {
   layoutStore.panelLayout = panelLayout(innerWidth);
   layoutStore.popoverAppearance = popoverAppearance(innerWidth);
   layoutStore.restartPopoverAppearance = restartPopoverAppearance(innerWidth);
+  layoutStore.areTimerMarksVisible = areTimerMarksVisible(innerWidth);
 });

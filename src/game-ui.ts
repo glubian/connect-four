@@ -11,6 +11,11 @@ export const FOCUS_RING_WIDTH = 1; // px
 export const FOCUS_RING_OFFSET = 4; // px
 export const RAISE_DURATION = 120; //ms
 
+/** Maximum expected width of a number. */
+export const TIMER_WIDTH_00 = 20; // px
+export const TIMER_MIN_WIDTH =
+  FIELD_SIZE_UI + 2 * (BORDER_WIDTH + TIMER_WIDTH_00 + 48); // px
+
 export type PlayerClass = "p1" | "p2";
 
 export function playerClass(player: Player | null): PlayerClass | "" {
@@ -22,4 +27,8 @@ export function playerClass(player: Player | null): PlayerClass | "" {
   }
 
   return "";
+}
+
+export function areTimerMarksVisible(innerWidth: number): boolean {
+  return innerWidth >= TIMER_MIN_WIDTH;
 }
