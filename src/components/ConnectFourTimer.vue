@@ -4,6 +4,7 @@ import { store } from "@/store";
 import { computed } from "vue";
 
 const props = defineProps<{
+  chipVisible?: boolean;
   hintShown?: boolean;
   disabled?: boolean;
   focusVisible?: boolean;
@@ -29,8 +30,11 @@ const bottom = computed(() => round(store.timeCap / 2000));
 const right = computed(() => round(store.timeCap / 4000));
 
 const topStyle = computed(() => {
-  const { disabled, hintShown } = props;
-  return { opacity: !disabled || hintShown ? "0" : "" };
+  const { chipVisible, disabled, hintShown } = props;
+  const { isUntouched } = store;
+  return !(isUntouched && !chipVisible) && (!disabled || hintShown)
+    ? { opacity: "0" }
+    : {};
 });
 </script>
 

@@ -27,6 +27,7 @@ const rootClassListRef = ref({ animate: false });
 const showFocusRing = ref(false);
 const slotsRef = shallowRef(createSlotArray(gameUIStore.field));
 const timerAnimation = useTimerAnimation();
+const chipVisible = ref(false);
 const hintShown = ref(false);
 let displayedRound = 0;
 
@@ -122,11 +123,13 @@ watch(gameUIStore, () => {
     />
     <ConnectFourTimer
       :disabled="isDisabled"
+      :chip-visible="chipVisible"
       :hint-shown="hintShown"
       :focus-visible="showFocusRing"
     />
     <ConnectFourInput
       :disabled="isDisabled"
+      @update:chip-visible="(v) => (chipVisible = v)"
       @update:hint-shown="(v) => (hintShown = v)"
       @update-focus-visible="(v) => (showFocusRing = v)"
     />

@@ -11,6 +11,7 @@ import ConnectFourInputHint from "./ConnectFourInputHint.vue";
 
 const props = defineProps<{ disabled?: boolean }>();
 const emit = defineEmits<{
+  (ev: "update:chip-visible", isVisible: boolean): void;
   (ev: "update:hint-shown", isShown: boolean): void;
   (ev: "update-focus-visible", isFocusVisible: boolean): void;
 }>();
@@ -239,6 +240,11 @@ function onDisabled(isDisabled: boolean) {
   }
 }
 
+function updateChipVisible(isVisible: boolean) {
+  chipVisible.value = isVisible;
+  emit("update:chip-visible", isVisible);
+}
+
 const hintStyle = computed(() => {
   const x = chipPosition.value;
   const isVisible = chipVisible.value;
@@ -260,7 +266,7 @@ onMounted(() => {
   const slotEl = slotRef.value as HTMLDivElement;
   const slotAnim = slotAnimation({
     el: slotEl,
-    updateVisible: (v) => void (chipVisible.value = v),
+    updateVisible: updateChipVisible,
     updatePosition: (x) => void (chipPosition.value = x),
     updateHint: (v) => void (hintVisible.value = v),
     updateFocusVisible: (v) => emit("update-focus-visible", v),
