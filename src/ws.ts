@@ -15,6 +15,13 @@ interface RemoteGame {
   rules: GameRules;
 }
 
+/**
+ * The minimum amount of time the user has to make a move in a timed game.
+ * Values that are falsy, or lesser than this constant mean the
+ * timer is disabled.
+ */
+export const TIME_PER_TURN_MIN = 3000; // ms
+
 /** Specifies the supported protocol version when requesting a connection. */
 export const URL_VERSION_PARAMETER = "version";
 /** Supported protocol version. */

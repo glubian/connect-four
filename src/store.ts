@@ -6,17 +6,11 @@ import {
   watch,
   type ComputedRef,
 } from "vue";
+import { cookie, updateGameConfig } from "./cookie";
 import { Game, Player, otherPlayer, type GameRules } from "./game";
 import { URL_LOBBY_PARAMETER } from "./urls";
 import type { DisconnectReason, GameConfig, QR } from "./ws";
-import WebSocketController from "./ws";
-
-/**
- * The minimum amount of time the user has to make a move in a timed game.
- * Values that are falsy, or lesser than this constant mean the
- * timer is disabled.
- */
-export const TIME_PER_TURN_MIN = 3000; // ms
+import WebSocketController, { TIME_PER_TURN_MIN } from "./ws";
 
 interface Lobby {
   isHost: true;
@@ -60,18 +54,10 @@ export interface RestartRequest {
 }
 
 function defaultRules(): GameRules {
-  const { allowDraws } = defaultConfig();
+  const { allowDraws } = cookie.gameConfig;
   return {
     startingPlayer: Player.P1,
     allowDraws,
-  };
-}
-
-function defaultConfig(): GameConfig {
-  return {
-    timePerTurn: 0,
-    timeCap: 0,
-    allowDraws: true,
   };
 }
 
@@ -521,7 +507,7 @@ export const store = reactive({
    * For most cases, use `playerSelection` in `gameUIStore` instead.
    */
   playerSelection: PlayerSelection.Hidden,
-  config: defaultConfig(),
+  config: { ...cookie.gameConfig },
 
   /** In a timed game, indicates when the turn will end automatically. */
   turnTimeout: null as number | null,
@@ -601,3 +587,5 @@ watch(
     }
   );
 }
+
+watch(() => store.config, updateGameConfig, { deep: true });

@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import type { Player } from "@/game";
 import { playerClass } from "@/game-ui";
-import { TIME_PER_TURN_MIN, store, type RestartRequest } from "@/store";
+import { store, type RestartRequest } from "@/store";
+import { TIME_PER_TURN_MIN } from "@/ws";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import TimeoutBar from "./TimeoutBar.vue";

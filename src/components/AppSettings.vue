@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { Lang, Theme } from "@/cookie";
 import { layoutStore } from "@/layout-store";
-import { Lang, Theme, userStore } from "@/user-store";
+import { userStore } from "@/user-store";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import AppSettingToggle from "./AppSettingToggle.vue";

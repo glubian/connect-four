@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { store, TIME_PER_TURN_MIN } from "@/store";
+import { store } from "@/store";
+import { TIME_PER_TURN_MIN, type GameConfig } from "@/ws";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import DropDown from "./DropDown.vue";
-import type { GameConfig } from "@/ws";
 
 const props = defineProps<{ restartLabel?: boolean }>();
 const emit = defineEmits<{ (ev: "hide", config: GameConfig | null): void }>();

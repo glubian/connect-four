@@ -1,27 +1,6 @@
 import { computed, reactive, watch } from "vue";
+import { Lang, Theme, cookie, updateUserPreferences } from "./cookie";
 import { i18n } from "./i18n";
-
-/** Language setting. */
-export enum Lang {
-  English = "en",
-  Polish = "pl",
-}
-
-/** Theme setting. */
-export enum Theme {
-  Light = "light",
-  Dark = "dark",
-  TrueBlack = "",
-}
-
-/**
- * Preferences stored in `document.cookie`.
- * `null` and `undefined` values mean lack of preference.
- */
-interface UserPreferences {
-  lang?: Lang | null;
-  theme?: Theme | null;
-}
 
 const DEFAULT_THEME = defaultTheme();
 
@@ -44,13 +23,11 @@ const currentTheme = computed(
 /** Updates the preferred language and saves changes. */
 function setPreferredLang(lang: Lang | null) {
   userStore.preferred.lang = lang;
-  savePreferences();
 }
 
 /** Updates the preferred theme and saves changes. */
 function setPreferredTheme(theme: Theme | null) {
   userStore.preferred.theme = theme;
-  savePreferences();
 }
 
 /** Changes display language. Should not be called directly. */
@@ -68,28 +45,9 @@ function applyTheme(theme: Theme) {
   }
 }
 
-/** Loads preferences from the cookie. */
-function loadPreferences() {
-  if (!document.cookie) {
-    return;
-  }
-
-  userStore.preferred = JSON.parse(document.cookie);
-  userStore.preferred.lang ??= null;
-  userStore.preferred.theme ??= null;
-}
-
-/** Saves preferences to the cookie. */
-function savePreferences() {
-  document.cookie = JSON.stringify(userStore.preferred, (_, v) => v ?? void 0);
-}
-
 /** Handles user preferences. */
 export const userStore = reactive({
-  preferred: {
-    lang: null,
-    theme: null,
-  } as UserPreferences,
+  preferred: { ...cookie.userPreferences },
   current: {
     lang: currentLang,
     theme: currentTheme,
@@ -100,4 +58,4 @@ export const userStore = reactive({
 
 watch(currentLang, applyLang, { immediate: true });
 watch(currentTheme, applyTheme, { immediate: true });
-loadPreferences();
+watch(() => userStore.preferred, updateUserPreferences, { deep: true });

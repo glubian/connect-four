@@ -1,4 +1,5 @@
-import { store, TIME_PER_TURN_MIN } from "@/store";
+import { store } from "@/store";
+import { TIME_PER_TURN_MIN } from "@/ws";
 import {
   onMounted,
   onUnmounted,
