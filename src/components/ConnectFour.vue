@@ -13,9 +13,9 @@ import ConnectFourTimer from "./ConnectFourTimer.vue";
 
 const UPDATE_DURATION = 96; // ms
 const DELAY_MIN = 0; // ms
-const DELAY_MAX = 140; // ms
-const CLEAR_DURATION_MIN = 160; // ms
-const CLEAR_DURATION_MAX = 360; // ms
+const DELAY_MAX = 152; // ms
+const CLEAR_DURATION_MIN = 128; // ms
+const CLEAR_DURATION_MAX = 288; // ms
 
 const rootClassListRef = ref({ animate: false });
 const showFocusRing = ref(false);
