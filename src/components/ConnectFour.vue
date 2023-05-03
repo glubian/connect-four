@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useTimerAnimation } from "@/composables/timer-animation";
 import { FIELD_SIZE, Player, type GameField } from "@/game";
-import { playerClass, type PlayerClass } from "@/game-ui";
 import { gameUIStore } from "@/game-ui-store";
 import { randomRange } from "@/math";
 import { PlayerSelection, store } from "@/store";
@@ -9,6 +8,7 @@ import { computed, ref, shallowRef, triggerRef, watch } from "vue";
 import ConnectFourBorder from "./ConnectFourBorder.vue";
 import ConnectFourInput from "./ConnectFourInput.vue";
 import ConnectFourResult from "./ConnectFourResult.vue";
+import ConnectFourSlot, { type SlotConfig } from "./ConnectFourSlot.vue";
 import ConnectFourTimer from "./ConnectFourTimer.vue";
 
 const UPDATE_DURATION = 96; // ms
@@ -16,12 +16,6 @@ const DELAY_MIN = 0; // ms
 const DELAY_MAX = 140; // ms
 const CLEAR_DURATION_MIN = 160; // ms
 const CLEAR_DURATION_MAX = 360; // ms
-
-interface Slot {
-  value: Player | null;
-  playerClass: PlayerClass | "";
-  style: { transitionDuration?: string; transitionDelay?: string };
-}
 
 const rootClassListRef = ref({ animate: false });
 const showFocusRing = ref(false);
@@ -35,16 +29,16 @@ const focusRingStyle = computed(() =>
   showFocusRing.value ? {} : { display: "none" }
 );
 
-function slotFromValue(value: Player | null): Slot {
+function slotConfig(value: Player | null): SlotConfig {
   return {
     value,
-    playerClass: playerClass(value),
-    style: {},
+    delay: 0,
+    duration: 0,
   };
 }
 
-function createSlotArray(field: GameField): Slot[][] {
-  return Array.from(field, (col) => Array.from(col, (v) => slotFromValue(v)));
+function createSlotArray(field: GameField): SlotConfig[][] {
+  return Array.from(field, (col) => Array.from(col, (v) => slotConfig(v)));
 }
 
 function syncSlots() {
@@ -63,9 +57,9 @@ function syncSlots() {
         continue;
       }
 
-      const s = slotFromValue(field[x][y]);
+      const s = slotConfig(field[x][y]);
       if (!(px === x && py === y)) {
-        s.style.transitionDuration = UPDATE_DURATION + "ms";
+        s.duration = UPDATE_DURATION;
       }
 
       slots[x][y] = s;
@@ -80,12 +74,10 @@ function randomDurations() {
 
   for (let x = 0; x < FIELD_SIZE; x++) {
     for (let y = 0; y < FIELD_SIZE; y++) {
-      const del = randomRange(DELAY_MIN, DELAY_MAX);
-      const dur = randomRange(CLEAR_DURATION_MIN, CLEAR_DURATION_MAX);
-      slots[x][y].style = {
-        transitionDuration: Math.floor(dur) + "ms",
-        transitionDelay: Math.floor(del) + "ms",
-      };
+      const duration = randomRange(CLEAR_DURATION_MIN, CLEAR_DURATION_MAX);
+      const delay = randomRange(DELAY_MIN, DELAY_MAX);
+      slots[x][y].duration = duration;
+      slots[x][y].delay = delay;
     }
   }
 
@@ -137,7 +129,7 @@ watch(gameUIStore, () => {
     <div class="focus-ring" :style="focusRingStyle"></div>
     <div v-for="(col, x) in slotsRef" :key="x" class="col">
       <div v-for="(slot, y) in col" :key="y" class="slot-container">
-        <div class="slot" :class="slot.playerClass" :style="slot.style"></div>
+        <ConnectFourSlot :config="slot" />
       </div>
     </div>
   </div>
@@ -184,7 +176,6 @@ watch(gameUIStore, () => {
   border-radius: 50%;
   border: var(--c0-slot-none-border);
   background-color: var(--c0-slot-none-background);
-  background-image: url("data:image/svg+xml,<svg width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'></svg>");
   background-position: center;
 }
 
@@ -202,9 +193,5 @@ watch(gameUIStore, () => {
   border: var(--c0-slot-p2-border);
   background-color: var(--c0-slot-p2-background);
   background-image: var(--c-p2-image);
-}
-
-.slot {
-  transition-property: border-color, width, height, background-image;
 }
 </style>
