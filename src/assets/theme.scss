@@ -207,11 +207,14 @@ $p2-svg: "data:image/svg+xml," +
   --c0-game-border: 2px solid #{$black-text-secondary-solid};
   --c0-p1: #{$blue500};
   --c0-p2: #{$red500};
-  --c0-slot-none-border: 1px solid #{$black-text-tertiary-solid};
+  --c0-slot-none-border-color: #{$black-text-tertiary-solid};
+  --c0-slot-none-border: 1px solid var(--c0-slot-none-border-color);
   --c0-slot-none-background: var(--c0);
-  --c0-slot-p1-border: 2px solid var(--c0-p1);
+  --c0-slot-p1-border-color: var(--c0-p1);
+  --c0-slot-p1-border: 2px solid var(--c0-slot-p1-border-color);
   --c0-slot-p1-background: var(--c0);
-  --c0-slot-p2-border: 2px solid var(--c0-p2);
+  --c0-slot-p2-border-color: var(--c0-p2);
+  --c0-slot-p2-border: 2px solid var(--c0-slot-p2-border-color);
   --c0-slot-p2-background: var(--c0);
 
   --c1: #{$tb-gray700};
@@ -329,11 +332,14 @@ $p2-svg: "data:image/svg+xml," +
   --c0-game-border: 2px solid #{$dark-gray900-text-secondary-solid};
   --c0-p1: #{$blue500};
   --c0-p2: #{$red500};
-  --c0-slot-none-border: 1px solid #{$dark-gray900-text-tertiary-solid};
+  --c0-slot-none-border-color: #{$dark-gray900-text-tertiary-solid};
+  --c0-slot-none-border: 1px solid var(--c0-slot-none-border-color);
   --c0-slot-none-background: #{$dark-gray800};
-  --c0-slot-p1-border: 2px solid var(--c0-p1);
+  --c0-slot-p1-border-color: var(--c0-p1);
+  --c0-slot-p1-border: 2px solid var(--c0-slot-p1-border-color);
   --c0-slot-p1-background: #{$blue900};
-  --c0-slot-p2-border: 2px solid var(--c0-p2);
+  --c0-slot-p2-border-color: var(--c0-p2);
+  --c0-slot-p2-border: 2px solid var(--c0-slot-p2-border-color);
   --c0-slot-p2-background: #{$red900};
 
   --c1: #{$dark-gray700};
@@ -451,11 +457,14 @@ $p2-svg: "data:image/svg+xml," +
   --c0-game-border: 2px solid #{$light-gray100-text-secondary-solid};
   --c0-p1: #{$blue500};
   --c0-p2: #{$red500};
-  --c0-slot-none-border: 1px solid #{$light-gray100-text-tertiary-solid};
+  --c0-slot-none-border-color: #{$light-gray100-text-tertiary-solid};
+  --c0-slot-none-border: 1px solid var(--c0-slot-none-border-color);
   --c0-slot-none-background: #{$light-gray200};
-  --c0-slot-p1-border: 2px solid var(--c0-p1);
+  --c0-slot-p1-border-color: var(--c0-p1);
+  --c0-slot-p1-border: 2px solid var(-c0-slot-p1-border-color);
   --c0-slot-p1-background: #{$blue100};
-  --c0-slot-p2-border: 2px solid var(--c0-p2);
+  --c0-slot-p2-border-color: var(--c0-p2);
+  --c0-slot-p2-border: 2px solid var(--c0-slot-p2-border-color);
   --c0-slot-p2-background: #{$red100};
 
   --c1: #{$light-gray300};
@@ -576,10 +585,13 @@ body {
   --c-game-border: var(--c0-game-border);
   --c-p1: var(--c0-p1);
   --c-p2: var(--c0-p2);
+  --c-slot-none-border-color: var(--c0-slot-none-border-color);
   --c-slot-none-border: var(--c0-slot-none-border);
   --c-slot-none-background: var(--c0-slot-none-background);
+  --c-slot-p1-border-color: var(--c0-slot-p1-border-color);
   --c-slot-p1-border: var(--c0-slot-p1-border);
   --c-slot-p1-background: var(--c0-slot-p1-background);
+  --c-slot-p2-border-color: var(--c0-slot-p2-border-color);
   --c-slot-p2-border: var(--c0-slot-p2-border);
   --c-slot-p2-background: var(--c0-slot-p2-background);
 }
