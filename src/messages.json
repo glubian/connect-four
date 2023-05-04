@@ -80,7 +80,7 @@
       },
       "dialog": {
         "playerSelection": {
-          "title": "Who is starting the next game?",
+          "title": "Who is starting?",
           "p1": "Blue",
           "p2": "Red"
         },
@@ -165,8 +165,8 @@
       },
       "statusIndicator": {
         "paused": "Paused",
-        "p1Won": "Blue won!",
-        "p2Won": "Red won!",
+        "p1Won": "Blue wins!",
+        "p2Won": "Red wins!",
         "victory": "You win!",
         "defeat": "You lose!",
         "draw": "It's a draw!"
@@ -178,9 +178,9 @@
         "copyLinkButton": "Copy",
         "shareTitle": "Connect Four",
         "qrCodeLinkAlt": "QR code",
-        "qrCodeNoLinkAlt": "QR code failed to load",
+        "qrCodeNoLinkAlt": "QR code failed to load.",
         "addYourFriend": "Add your friend",
-        "addYourFriendText": "People trying to join will appear here. Make sure the code matches the one on your friends' device.",
+        "addYourFriendText": "People trying to join will appear here. Make sure the code matches the one on your friend's device.",
         "searchPlaceholder": "Search...",
         "joinAsP1": "As blue",
         "joinAsP2": "As red"
@@ -293,12 +293,12 @@
       },
       "dialog": {
         "playerSelection": {
-          "title": "Kto zaczyna następną grę?",
+          "title": "Kto zaczyna?",
           "p1": "Niebieski",
           "p2": "Czerwony"
         },
         "disconnect": {
-          "areYouSure": "Czy na pewno chcesz się rozłączyć?",
+          "areYouSure": "Rozłączyć się?",
           "closeButton": "Anuluj",
           "disconnectButton": "Rozłącz"
         },
@@ -380,7 +380,7 @@
         "paused": "Pauza",
         "p1Won": "Niebieski wygrywa!",
         "p2Won": "Czerwony wygrywa!",
-        "victory": "Zwycięstwo!",
+        "victory": "Wygrana!",
         "defeat": "Przegrana!",
         "draw": "Remis!"
       },
