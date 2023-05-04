@@ -1,3 +1,4 @@
+import { clamp } from "@/math";
 import { store } from "@/store";
 import { TIME_PER_TURN_MIN } from "@/ws";
 import {
@@ -22,7 +23,7 @@ export function useTimerAnimation() {
       return;
     }
 
-    timerAnimation.end = (turnTimeout - Date.now()) / timeCap;
+    timerAnimation.end = clamp((turnTimeout - Date.now()) / timeCap, 0, 1);
     timerAnimation.isOngoing = true;
     requestFrame(drawFrame);
   }
