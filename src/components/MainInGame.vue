@@ -13,9 +13,10 @@ const emit = defineEmits<{ (ev: "showRequest"): void }>();
 
 const { t } = useI18n();
 
-const showPausedControls = computed(
-  () => layoutStore.panelLayout === PanelLayout.Desktop
-);
+const showPausedControls = computed(() => {
+  const { isPanelShown, panelLayout } = layoutStore;
+  return isPanelShown && panelLayout === PanelLayout.Desktop;
+});
 
 const statusMessage = computed(() => {
   const { result } = gameUIStore.state;

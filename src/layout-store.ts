@@ -23,6 +23,11 @@ function updateFullscreen() {
   layoutStore.isFullscreen = isFullscreen();
 }
 
+const isPanelShown = computed(() => {
+  const { isConnected, lobby } = store;
+  return isConnected && !!lobby && lobby.isHost;
+});
+
 /** Contains values related to UI layout. */
 export const layoutStore = reactive({
   panelLayout: panelLayout(innerWidth),
@@ -32,7 +37,7 @@ export const layoutStore = reactive({
   innerWidth,
   innerHeight,
   isFullscreen: isFullscreen(),
-  isPanelShown: computed(() => !!store.lobby && store.lobby.isHost),
+  isPanelShown,
   setFullscreen,
 });
 

@@ -197,7 +197,11 @@ export const gameUIStore = reactive({
 });
 
 watch(gameRef, sync);
-watch(store, ({ round, playerSelection, isConnected }) => {
+watch(store, ({ round, playerSelection, isConnected, lobby }) => {
+  if (!isConnected) {
+    gameUIStore.lockField = !!lobby;
+  }
+
   if (round !== gameUIStore.round) {
     sync();
   }

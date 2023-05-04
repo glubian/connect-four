@@ -21,6 +21,8 @@ import {
 import { layoutStore } from "./layout-store";
 import { PlayerSelection, store } from "./store";
 
+const headerStyle = computed(() => (store.lobby ? "pointer-events: none" : ""));
+
 const disconnectedDialogShown = computed({
   get() {
     return !!store.disconnectedReason && !store.disconnectedByUser;
@@ -139,7 +141,7 @@ function onSlideAnimationEvent() {
 </script>
 
 <template>
-  <AppHeader v-show="showHeaderAndFooter" />
+  <AppHeader :style="headerStyle" v-show="showHeaderAndFooter" />
 
   <RequestPopover v-model:shown="reqShown" :zIndex="90" />
   <RequestStatus class="request-status" v-if="!reqShown" />
@@ -155,7 +157,7 @@ function onSlideAnimationEvent() {
     </Transition>
   </main>
 
-  <footer class="small" v-show="showHeaderAndFooter">
+  <footer class="small" :style="headerStyle" v-show="showHeaderAndFooter">
     <a href="https://github.com/glubian/connect-four" target="_blank">{{
       $t("page.links.github")
     }}</a>
