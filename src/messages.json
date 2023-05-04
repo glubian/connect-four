@@ -71,7 +71,9 @@
         "waiting": "Waiting for your opponent..."
       },
       "hint": {
-        "youStart": "You start",
+        "moveToStart": "Move to start",
+        "moveToStartTimed": "Move to start a timed game",
+        "moveToResume": "Move to resume the timer",
         "yourMove": "Your move",
         "opponentMoving": "Opponent is moving.",
         "opponentStarts": "Opponent was chosen to start the game."
@@ -282,7 +284,9 @@
         "waiting": "Oczekiwanie na przeciwnika..."
       },
       "hint": {
-        "youStart": "Rozpocznij grę",
+        "moveToStart": "Rozpocznij grę",
+        "moveToStartTimed": "Rozpocznij grę na czas",
+        "moveToResume": "Kontynuuj grę na czas",
         "yourMove": "Twoja tura",
         "opponentMoving": "Przeciwnik się rusza.",
         "opponentStarts": "Przeciwnik rozpoczyna grę."

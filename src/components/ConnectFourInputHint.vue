@@ -14,13 +14,15 @@ const emit = defineEmits<{ (ev: "update:shown", isShown: boolean): void }>();
 
 enum Display {
   YourMove,
-  YouStart,
+  MoveToStart,
+  MoveToStartTimed,
+  MoveToResume,
   OpponentMoving,
   OpponentStarts,
 }
 
 const display = computed(() => {
-  const { lobby, isConnected, remoteRole } = store;
+  const { lobby, isConnected, remoteRole, timeCap, turnTimeout } = store;
   const { turn, player, result } = gameUIStore.state;
   if (result || lobby) {
     return null;
@@ -32,7 +34,13 @@ const display = computed(() => {
   }
 
   if (hintVisible) {
-    return turn === 0 ? Display.YouStart : Display.YourMove;
+    if (turn === 0) {
+      return timeCap > 0 ? Display.MoveToStartTimed : Display.MoveToStart;
+    }
+    if (isConnected && timeCap > 0 && turnTimeout === null) {
+      return Display.MoveToResume;
+    }
+    return Display.YourMove;
   }
 
   return null;
@@ -56,9 +64,23 @@ watch(display, (d) => emit("update:shown", d !== null));
       <span
         class="shift emphasis"
         :class="activeClass"
-        v-else-if="display === Display.YouStart"
+        v-else-if="display === Display.MoveToStart"
       >
-        {{ $t("page.hint.youStart") }}
+        {{ $t("page.hint.moveToStart") }}
+      </span>
+      <span
+        class="shift emphasis"
+        :class="activeClass"
+        v-else-if="display === Display.MoveToStartTimed"
+      >
+        {{ $t("page.hint.moveToStartTimed") }}
+      </span>
+      <span
+        class="shift emphasis"
+        :class="activeClass"
+        v-else-if="display === Display.MoveToResume"
+      >
+        {{ $t("page.hint.moveToResume") }}
       </span>
       <span class="inactive" v-else-if="display === Display.OpponentMoving">
         {{ $t("page.hint.opponentMoving") }}
