@@ -3,8 +3,8 @@ import { GameWinner, Player } from "@/game";
 import { gameUIStore } from "@/game-ui-store";
 import { PanelLayout, RestartPopoverAppearance } from "@/layout";
 import { layoutStore } from "@/layout-store";
-import { PlayerSelection, store } from "@/store";
-import { computed } from "vue";
+import { store } from "@/store";
+import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import ConnectFour from "./ConnectFour.vue";
 import RequestStatus from "./RequestStatus.vue";
@@ -20,10 +20,6 @@ const showPausedControls = computed(() => {
 
 const statusMessage = computed(() => {
   const { result } = gameUIStore.state;
-  if (layoutStore.isPanelShown) {
-    return t("page.statusIndicator.paused");
-  }
-
   if (result) {
     const { winner } = result;
     if (store.isConnected && winner !== GameWinner.Draw) {
@@ -47,8 +43,13 @@ const statusMessage = computed(() => {
   return "";
 });
 
-const statusMessageSlideUp = computed(() =>
-  !layoutStore.isPanelShown && gameUIStore.state.result ? "slide-up" : ""
+const statusMessageSlideUp = ref("");
+watch(
+  [() => layoutStore.isPanelShown, () => gameUIStore.state.result],
+  ([isPanelShown, result], [, prevResult]) => {
+    const slideUp = !isPanelShown && result && !prevResult;
+    statusMessageSlideUp.value = slideUp ? "slide-up" : "";
+  }
 );
 
 const showRequestStatus = computed(() => {
@@ -58,15 +59,10 @@ const showRequestStatus = computed(() => {
 });
 
 const showStatusMessage = computed(() => {
-  const { lobby, isConnected } = store;
-  const { playerSelection } = gameUIStore;
-  const { Hidden } = PlayerSelection;
   const { restartPopoverAppearance } = layoutStore;
   const { Desktop } = RestartPopoverAppearance;
   return (
     statusMessage.value &&
-    (!lobby || showPausedControls.value) &&
-    (!isConnected || playerSelection === Hidden) &&
     (!showRequestStatus.value || restartPopoverAppearance === Desktop)
   );
 });
@@ -81,7 +77,14 @@ const welcomeSectionStyle = computed(() => {
     <div class="top">
       <Transition mode="out-in">
         <h1
-          v-if="showStatusMessage"
+          class="game-state large"
+          :class="[layoutStore.panelLayout]"
+          v-if="showPausedControls"
+        >
+          {{ t("page.statusIndicator.paused") }}
+        </h1>
+        <h1
+          v-else-if="showStatusMessage"
           class="game-state large"
           :class="[layoutStore.panelLayout, statusMessageSlideUp]"
         >
