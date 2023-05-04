@@ -156,7 +156,7 @@ function onSlideAnimationEvent() {
   </main>
 
   <footer class="small" v-show="showHeaderAndFooter">
-    <a href="https://github.com/glubian/connect-four">{{
+    <a href="https://github.com/glubian/connect-four" target="_blank">{{
       $t("page.links.github")
     }}</a>
   </footer>
