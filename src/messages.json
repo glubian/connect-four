@@ -369,7 +369,7 @@
         },
         "offline": {
           "title": "Brak połączenia",
-          "description": "Nie można się połączyć z internetem. Sprawdź konfigurację łącza.",
+          "description": "Nie można się połączyć z internetem. Sprawdź ustawienia.",
           "closeButton": "Zamknij"
         }
       },
