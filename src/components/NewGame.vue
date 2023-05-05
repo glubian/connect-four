@@ -224,6 +224,7 @@ $height: 40px;
 
 input[type="checkbox"] {
   margin-left: 0;
+  margin-right: 0;
 }
 
 label {
