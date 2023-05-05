@@ -12,9 +12,6 @@ const props = defineProps<{ req: RestartRequest; player: Player }>();
 
 const restartDetails = computed(() => playerClass(props.player));
 
-/** Milliseconds in a second. */
-const MS_IN_S = 1000;
-
 const { t } = useI18n();
 
 // namespace
@@ -26,48 +23,44 @@ const ns = computed(() =>
 
 const title = computed(() => t(ns.value + ".title"));
 const description = computed(() => t(ns.value + ".description"));
-const timeChanged = computed(() => {
+
+const timerChanges = computed(() => {
+  const res: string[] = [];
+
   const { config } = props.req;
-  return (
-    !config ||
-    config.timePerTurn !== store.config.timePerTurn ||
-    config.timeCap !== store.config.timeCap
-  );
-});
-const timePerTurn = computed(() => {
-  const { config } = props.req;
-  if (!(config && timeChanged.value)) {
-    return "";
+  if (!config) {
+    return res;
   }
 
-  if (config.timePerTurn < TIME_PER_TURN_MIN) {
-    return t(ns.value + ".time.unlimited");
+  const { timePerTurn, timeCap } = config;
+  const curr = store.config;
+  if (curr.timePerTurn === timePerTurn && curr.timeCap === timeCap) {
+    return res;
   }
 
-  const timePerTurn = config.timePerTurn / MS_IN_S;
-  return t(ns.value + ".time.perTurn", [t("unit.seconds", timePerTurn)]);
-});
-const timeCapEnabled = computed(() => {
-  const { config } = props.req;
-  if (
-    !config ||
-    config.timeCap === store.config.timeCap ||
-    !config.timePerTurn
-  ) {
-    return "";
+  const MS_IN_S = 1000;
+  if (timePerTurn < TIME_PER_TURN_MIN) {
+    res.push(t(ns.value + ".time.unlimited"));
+    return res;
+  } else {
+    const secondsPerTurn = timePerTurn / MS_IN_S;
+    const secondsStr = t("unit.seconds", secondsPerTurn);
+    res.push(t(ns.value + ".time.perTurn", [secondsStr]));
   }
 
-  return t(`${ns.value}.time.cap${config.timeCap ? "" : "Disabled"}`);
-});
-const timeCap = computed(() => {
-  const { config } = props.req;
-  if (!config || config.timeCap === store.config.timeCap || !config.timeCap) {
-    return "";
+  const timeCapEnabled = timeCap > timePerTurn;
+  if (curr.timeCap !== timeCap) {
+    res.push(t(`${ns.value}.time.cap${timeCapEnabled ? "" : "Disabled"}`));
+    if (timeCapEnabled) {
+      const secondsPerTurn = timeCap / MS_IN_S;
+      const secondsStr = t("unit.seconds", secondsPerTurn);
+      res.push(t(ns.value + ".time.capAt", [secondsStr]));
+    }
   }
 
-  const timeCap = Math.floor(config.timeCap / MS_IN_S);
-  return t(ns.value + ".time.capAt", [t("unit.seconds", timeCap)]);
+  return res;
 });
+
 const allowDraws = computed(() => {
   const { config } = props.req;
   if (!config || config.allowDraws === store.config.allowDraws) {
@@ -94,19 +87,17 @@ const acceptLabel = computed(() => t(ns.value + ".accept"));
       />
     </div>
     <div class="description">{{ description }}</div>
-    <ul v-if="timePerTurn">
-      <li class="section-label">
-        <i class="mi-clock"></i>
-        <span class="item">{{ timePerTurn }}</span>
-      </li>
-      <li v-if="timeCapEnabled">
-        <span class="icon dot"></span>
-        <span class="item">{{ timeCapEnabled }}</span>
-      </li>
-      <li v-if="timeCap">
-        <span class="icon dot"></span>
-        <span class="item">{{ timeCap }}</span>
-      </li>
+    <ul v-if="!!timerChanges.length">
+      <template v-for="(msg, i) in timerChanges" :key="i">
+        <li class="section-label" v-if="i === 0">
+          <i class="mi-clock"></i>
+          <span class="item">{{ msg }}</span>
+        </li>
+        <li v-else>
+          <span class="icon dot"></span>
+          <span class="item">{{ msg }}</span>
+        </li>
+      </template>
     </ul>
     <ul v-if="allowDraws">
       <li class="section-label">
