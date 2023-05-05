@@ -35,14 +35,18 @@ function genTimeCap(timePerTurn: number): number[] {
     return [0];
   }
 
+  const min = 32000; // ms
   const max = 60000; // ms
   const out = [timePerTurn + timePerTurn];
   for (
     let i = out[0] + timePerTurn;
-    i <= max && out.length < 3;
+    i <= max && (out.length < 3 || i <= min);
     i += timePerTurn
   ) {
     out.push(i);
+    if (out.length >= 3) {
+      i += timePerTurn;
+    }
   }
 
   return out;
