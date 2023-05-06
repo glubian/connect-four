@@ -21,7 +21,10 @@ import {
 import { layoutStore } from "./layout-store";
 import { PlayerSelection, store } from "./store";
 
-const headerStyle = computed(() => (store.lobby ? "pointer-events: none" : ""));
+const headerStyle = computed(() => {
+  const { lobby } = store;
+  return lobby && lobby.isHost ? "pointer-events: none" : "";
+});
 
 const disconnectedDialogShown = computed({
   get() {
