@@ -68,7 +68,7 @@ function defaultSettings(): Cookie {
     gameConfig: {
       timePerTurn: 0,
       timeCap: 0,
-      allowDraws: true,
+      allowDraws: false,
     },
     userPreferences: {
       lang: null,
