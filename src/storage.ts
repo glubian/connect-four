@@ -43,15 +43,19 @@ type NotAnObject =
   | undefined
   | null;
 
-/** Forces type checking of all object properties at runtime. */
+/**
+ * In addition to applying type `U` to `T`, applies it recursively to all of
+ * its properties or items.
+ */
 // Based on https://stackoverflow.com/a/51365037
-type RecursiveOr<T, U> = {
-  [P in keyof T]?: T[P] extends (infer W)[]
-    ? RecursiveOr<W, U>[]
-    : T[P] extends object
-    ? RecursiveOr<T[P], U> | U
-    : T[P];
-};
+type RecursiveOr<T, U> = T extends (infer I)[]
+  ? RecursiveOr<I, U>[] | U
+  : T extends object
+  ? { [P in keyof T]: RecursiveOr<T[P], U> } | U
+  : T | U;
+
+/** Forces type checking of all object properties at runtime. */
+type Maybe<T extends {}> = RecursiveOr<T, NotAnObject>;
 
 function isLang(value: unknown): value is Lang {
   return value === "en" || value === "pl";
@@ -92,7 +96,7 @@ function readStorage(): Storage {
     storage.theme = theme;
   }
 
-  let gameConfig: RecursiveOr<GameConfig, NotAnObject> | NotAnObject;
+  let gameConfig: Maybe<GameConfig>;
   try {
     const gameConfigStr = localStorage.getItem(STORAGE_KEYS.gameConfig) ?? "";
     gameConfig = JSON.parse(gameConfigStr);
