@@ -1,8 +1,8 @@
 import type { GameConfig } from "./ws";
 import { TIME_PER_TURN_MIN } from "./ws";
 
-/** Contents of the cookie. */
-export const cookie = parseCookie();
+/** Values read from the storage. */
+export const storage = readStorage();
 
 /** Language setting. */
 export enum Lang {
@@ -52,8 +52,7 @@ type RecursiveOr<T, U> = {
     : T[P];
 };
 
-/** Structure of the cookie. */
-interface Cookie {
+interface Storage {
   userPreferences: UserPreferences;
   gameConfig: GameConfig;
 }
@@ -62,8 +61,8 @@ function isObject<T extends {}>(obj: T | NotAnObject): obj is T {
   return !!obj && typeof obj === "object" && !Array.isArray(obj);
 }
 
-/** Creates a `Cookie` object with default values. */
-function defaultSettings(): Cookie {
+/** Creates a `Storage` object with default values. */
+function defaultStorage(): Storage {
   return {
     gameConfig: {
       timePerTurn: 0,
@@ -77,62 +76,62 @@ function defaultSettings(): Cookie {
   };
 }
 
-/** Loads preferences from the cookie. */
-function parseCookie(): Cookie {
-  const cookie = defaultSettings();
+/** Reads values from the storage. */
+function readStorage(): Storage {
+  const storage = defaultStorage();
 
   if (!document.cookie) {
-    return cookie;
+    return storage;
   }
 
-  const parsed: RecursiveOr<Cookie, NotAnObject> = JSON.parse(document.cookie);
+  const parsed: RecursiveOr<Storage, NotAnObject> = JSON.parse(document.cookie);
   if (!isObject(parsed)) {
-    return cookie;
+    return storage;
   }
 
   const { gameConfig, userPreferences } = parsed;
 
   if (isObject(gameConfig)) {
     const { allowDraws, timeCap, timePerTurn } = gameConfig;
-    const cookieConfig = cookie.gameConfig;
+    const storageConfig = storage.gameConfig;
     if (typeof allowDraws === "boolean") {
-      cookieConfig.allowDraws = allowDraws;
+      storageConfig.allowDraws = allowDraws;
     }
     if (typeof timeCap === "number" && timeCap >= TIME_PER_TURN_MIN) {
-      cookieConfig.timeCap = timeCap;
+      storageConfig.timeCap = timeCap;
     }
     if (typeof timePerTurn === "number" && timePerTurn >= TIME_PER_TURN_MIN) {
-      cookieConfig.timePerTurn = timePerTurn;
+      storageConfig.timePerTurn = timePerTurn;
     }
   }
 
   if (isObject(userPreferences)) {
     const { theme, lang } = userPreferences;
-    const cookieUserPreferences = cookie.userPreferences;
+    const storageUserPreferences = storage.userPreferences;
     if (isLang(lang)) {
-      cookieUserPreferences.lang = lang;
+      storageUserPreferences.lang = lang;
     }
     if (isTheme(theme)) {
-      cookieUserPreferences.theme = theme;
+      storageUserPreferences.theme = theme;
     }
   }
 
-  return cookie;
+  return storage;
 }
 
-/** Saves preferences to the cookie. */
-function writeCookie() {
-  document.cookie = JSON.stringify(cookie, (_, v) => (v ??= void 0));
+/** Writes `storage` to `document.cookie`. */
+function writeStorage() {
+  document.cookie = JSON.stringify(storage, (_, v) => (v ??= void 0));
 }
 
 /** Update user preferences and save changes. */
 export function updateUserPreferences(userPreferences: UserPreferences) {
-  cookie.userPreferences = userPreferences;
-  writeCookie();
+  storage.userPreferences = userPreferences;
+  writeStorage();
 }
 
 /** Update game configuration and save changes. */
 export function updateGameConfig(gameConfig: GameConfig) {
-  cookie.gameConfig = gameConfig;
-  writeCookie();
+  storage.gameConfig = gameConfig;
+  writeStorage();
 }

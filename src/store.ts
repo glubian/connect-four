@@ -6,7 +6,7 @@ import {
   watch,
   type ComputedRef,
 } from "vue";
-import { cookie, updateGameConfig } from "./cookie";
+import { storage, updateGameConfig } from "./storage";
 import { Game, Player, otherPlayer, type GameRules } from "./game";
 import { URL_LOBBY_PARAMETER } from "./urls";
 import type { DisconnectReason, GameConfig, QR } from "./ws";
@@ -54,7 +54,7 @@ export interface RestartRequest {
 }
 
 function defaultRules(): GameRules {
-  const { allowDraws } = cookie.gameConfig;
+  const { allowDraws } = storage.gameConfig;
   return {
     startingPlayer: Player.P1,
     allowDraws,
@@ -507,7 +507,7 @@ export const store = reactive({
    * For most cases, use `playerSelection` in `gameUIStore` instead.
    */
   playerSelection: PlayerSelection.Hidden,
-  config: { ...cookie.gameConfig },
+  config: { ...storage.gameConfig },
 
   /** In a timed game, indicates when the turn will end automatically. */
   turnTimeout: null as number | null,

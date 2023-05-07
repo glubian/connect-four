@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Lang, Theme } from "@/cookie";
+import { Lang, Theme } from "@/storage";
 import { layoutStore } from "@/layout-store";
 import { userStore } from "@/user-store";
 import { computed } from "vue";

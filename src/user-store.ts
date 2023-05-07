@@ -1,5 +1,5 @@
 import { computed, reactive, watch } from "vue";
-import { Lang, Theme, cookie, updateUserPreferences } from "./cookie";
+import { Lang, Theme, storage, updateUserPreferences } from "./storage";
 import { i18n } from "./i18n";
 
 const DEFAULT_THEME = defaultTheme();
@@ -47,7 +47,7 @@ function applyTheme(theme: Theme) {
 
 /** Handles user preferences. */
 export const userStore = reactive({
-  preferred: { ...cookie.userPreferences },
+  preferred: { ...storage.userPreferences },
   current: {
     lang: currentLang,
     theme: currentTheme,
