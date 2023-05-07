@@ -32,7 +32,9 @@ const HEARTBEAT_INTERVAL = 2000; // ms
 const DELAY_AVERAGE = 10;
 const TIME_DIFFERENCE_AVG = 3;
 
-/** A subset of `GameRules` used for starting a new game. */
+/**
+ * A subset of `GameRules` used for starting a new game and timer configuration.
+ */
 export interface GameConfig {
   timePerTurn: number; // ms
   timeCap: number; // ms
