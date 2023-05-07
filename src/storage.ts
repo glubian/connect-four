@@ -10,10 +10,6 @@ export enum Lang {
   Polish = "pl",
 }
 
-function isLang(value: unknown): value is Lang {
-  return value === "en" || value === "pl";
-}
-
 /** Theme setting. */
 export enum Theme {
   Light = "light",
@@ -21,13 +17,14 @@ export enum Theme {
   TrueBlack = "",
 }
 
-function isTheme(value: unknown): value is Theme {
-  return value === "" || value === "dark" || value === "light";
-}
-
 export interface UserPreferences {
   lang: Lang | null;
   theme: Theme | null;
+}
+
+interface Storage {
+  userPreferences: UserPreferences;
+  gameConfig: GameConfig;
 }
 
 /** Every type that is not an object, `null`, functions and arrays. */
@@ -52,9 +49,12 @@ type RecursiveOr<T, U> = {
     : T[P];
 };
 
-interface Storage {
-  userPreferences: UserPreferences;
-  gameConfig: GameConfig;
+function isLang(value: unknown): value is Lang {
+  return value === "en" || value === "pl";
+}
+
+function isTheme(value: unknown): value is Theme {
+  return value === "" || value === "dark" || value === "light";
 }
 
 function isObject<T extends {}>(obj: T | NotAnObject): obj is T {
