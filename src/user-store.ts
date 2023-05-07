@@ -47,7 +47,10 @@ function applyTheme(theme: Theme) {
 
 /** Handles user preferences. */
 export const userStore = reactive({
-  preferred: { ...storage.userPreferences },
+  preferred: {
+    lang: storage.lang,
+    theme: storage.theme,
+  },
   current: {
     lang: currentLang,
     theme: currentTheme,

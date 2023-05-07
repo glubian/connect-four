@@ -1,9 +1,6 @@
 import type { GameConfig } from "./ws";
 import { TIME_PER_TURN_MIN } from "./ws";
 
-/** Values read from the storage. */
-export const storage = readStorage();
-
 /** Language setting. */
 export enum Lang {
   English = "en",
@@ -22,10 +19,17 @@ export interface UserPreferences {
   theme: Theme | null;
 }
 
-interface Storage {
-  userPreferences: UserPreferences;
+/** Mirrors contents of `localStorage`. */
+interface Storage extends UserPreferences {
   gameConfig: GameConfig;
 }
+
+/** Maps properties of `Storage` to their keys in `localStorage`. */
+const STORAGE_KEYS = {
+  lang: "lang",
+  theme: "theme",
+  gameConfig: "game-config",
+} as const;
 
 /** Every type that is not an object, `null`, functions and arrays. */
 type NotAnObject =
@@ -64,14 +68,12 @@ function isObject<T extends {}>(obj: T | NotAnObject): obj is T {
 /** Creates a `Storage` object with default values. */
 function defaultStorage(): Storage {
   return {
+    lang: null,
+    theme: null,
     gameConfig: {
       timePerTurn: 0,
       timeCap: 0,
       allowDraws: false,
-    },
-    userPreferences: {
-      lang: null,
-      theme: null,
     },
   };
 }
@@ -80,16 +82,23 @@ function defaultStorage(): Storage {
 function readStorage(): Storage {
   const storage = defaultStorage();
 
-  if (!document.cookie) {
-    return storage;
+  const lang = localStorage.getItem(STORAGE_KEYS.lang);
+  if (isLang(lang)) {
+    storage.lang = lang;
   }
 
-  const parsed: RecursiveOr<Storage, NotAnObject> = JSON.parse(document.cookie);
-  if (!isObject(parsed)) {
-    return storage;
+  const theme = localStorage.getItem(STORAGE_KEYS.theme);
+  if (isTheme(theme)) {
+    storage.theme = theme;
   }
 
-  const { gameConfig, userPreferences } = parsed;
+  let gameConfig: RecursiveOr<GameConfig, NotAnObject> | NotAnObject;
+  try {
+    const gameConfigStr = localStorage.getItem(STORAGE_KEYS.gameConfig) ?? "";
+    gameConfig = JSON.parse(gameConfigStr);
+  } catch (_) {
+    gameConfig = null;
+  }
 
   if (isObject(gameConfig)) {
     const { allowDraws, timeCap, timePerTurn } = gameConfig;
@@ -105,33 +114,54 @@ function readStorage(): Storage {
     }
   }
 
-  if (isObject(userPreferences)) {
-    const { theme, lang } = userPreferences;
-    const storageUserPreferences = storage.userPreferences;
-    if (isLang(lang)) {
-      storageUserPreferences.lang = lang;
-    }
-    if (isTheme(theme)) {
-      storageUserPreferences.theme = theme;
-    }
-  }
-
   return storage;
 }
 
-/** Writes `storage` to `document.cookie`. */
-function writeStorage() {
-  document.cookie = JSON.stringify(storage, (_, v) => (v ??= void 0));
+/** Removes any unused items from the storage. */
+function cleanStorage() {
+  const ls = localStorage;
+  const keys = Object.values(STORAGE_KEYS);
+  const used = keys.reduce((i, k) => (ls.getItem(k) === null ? i : i + 1), 0);
+  if (localStorage.length === used) {
+    return;
+  }
+
+  const userPreferences = {
+    lang: storage.lang,
+    theme: storage.theme,
+  };
+  localStorage.clear();
+  updateUserPreferences(userPreferences);
+  updateGameConfig(storage.gameConfig);
 }
+
+/** Values read from the storage. */
+export const storage = readStorage();
+cleanStorage();
 
 /** Update user preferences and save changes. */
 export function updateUserPreferences(userPreferences: UserPreferences) {
-  storage.userPreferences = userPreferences;
-  writeStorage();
+  const { lang, theme } = userPreferences;
+
+  if (lang !== null) {
+    localStorage.setItem(STORAGE_KEYS.lang, lang);
+  } else {
+    localStorage.removeItem(STORAGE_KEYS.lang);
+  }
+
+  if (theme !== null) {
+    localStorage.setItem(STORAGE_KEYS.theme, theme);
+  } else {
+    localStorage.removeItem(STORAGE_KEYS.theme);
+  }
+
+  storage.lang = lang;
+  storage.theme = theme;
 }
 
 /** Update game configuration and save changes. */
 export function updateGameConfig(gameConfig: GameConfig) {
+  const gameConfigStr = JSON.stringify(gameConfig, (_, v) => v ?? void 0);
+  localStorage.setItem(STORAGE_KEYS.gameConfig, gameConfigStr);
   storage.gameConfig = gameConfig;
-  writeStorage();
 }
