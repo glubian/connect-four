@@ -100,9 +100,27 @@ button:is(button, :hover, :active) {
   }
 }
 
-button {
-  position: relative;
-  left: -1px;
+.copy-input > :not(:last-child) {
+  margin-right: -1px;
+}
+
+:focus-visible + button {
+  clip-path: polygon(
+    0 0,
+    calc(100% + 4px) 0,
+    calc(100% + 4px) calc(100% + 4px),
+    0 calc(100% + 4px)
+  );
+  transition: clip-path 48ms ease-in-out;
+}
+
+:focus-visible:not(:active) + button {
+  clip-path: polygon(
+    1px 0,
+    calc(100% + 4px) 0,
+    calc(100% + 4px) calc(100% + 4px),
+    1px calc(100% + 4px)
+  );
 }
 
 button::after {
