@@ -496,8 +496,11 @@ export const store = reactive({
   disconnectedByUser: false,
   /** Current round number. */
   round: 0,
-  /** Number of the last round received from the server. */
-  remoteRound: 0,
+  /**
+   * Number of the last round received from the server or `-1` if the user
+   * has never entered a remote game.
+   */
+  remoteRound: -1,
   restartRequests: [null, null] as RestartRequests,
 
   /**

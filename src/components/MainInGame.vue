@@ -21,8 +21,9 @@ const showPausedControls = computed(() => {
 const statusMessage = computed(() => {
   const { result } = gameUIStore.state;
   if (result) {
+    const { isConnected, remoteRound, round } = store;
     const { winner } = result;
-    if (store.isConnected && winner !== GameWinner.Draw) {
+    if (isConnected && remoteRound === round && winner !== GameWinner.Draw) {
       if ((winner as unknown as Player) === store.remoteRole) {
         return t("page.statusIndicator.victory");
       } else {
