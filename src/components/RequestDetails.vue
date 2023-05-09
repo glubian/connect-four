@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Player } from "@/game";
+import { otherPlayer, type Player } from "@/game";
 import { playerClass } from "@/game-ui";
 import { store, type RestartRequest } from "@/store";
 import { TIME_PER_TURN_MIN } from "@/ws";
@@ -10,7 +10,7 @@ import TimeoutCircle from "./TimeoutCircle.vue";
 
 const props = defineProps<{ req: RestartRequest; player: Player }>();
 
-const restartDetails = computed(() => playerClass(props.player));
+const restartDetails = computed(() => playerClass(otherPlayer(props.player)));
 
 const { t } = useI18n();
 
