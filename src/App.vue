@@ -211,6 +211,14 @@ function onSlideAnimationEvent() {
   }
 }
 
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 8;
+}
+
 main {
   display: flex;
   position: relative;
@@ -227,6 +235,11 @@ main > * {
 }
 
 footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 8;
+
   display: flex;
   align-items: center;
   justify-content: right;
