@@ -221,7 +221,7 @@ function dismissPlayerSelection() {
 
 /** Disconnects from the server. */
 function disconnect() {
-  if (store.isConnected) {
+  if (store.isConnected || store.lobby) {
     store.disconnectedByUser = true;
     wsController.disconnect();
   }

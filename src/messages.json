@@ -6,6 +6,10 @@
           "message": "Start playing locally, or",
           "button": "Join on another device"
         },
+        "cancelConnection": {
+          "message": "Connecting...",
+          "button": "Cancel"
+        },
         "resume": "Resume",
         "rematch": "Rematch"
       },
@@ -220,6 +224,10 @@
         "createLobby": {
           "message": "Graj lokalnie, lub",
           "button": "Dołącz na innym urządzeniu"
+        },
+        "cancelConnection": {
+          "message": "Łączenie...",
+          "button": "Anuluj"
         },
         "resume": "Wznów",
         "rematch": "Zagraj ponownie"

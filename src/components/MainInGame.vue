@@ -72,6 +72,31 @@ const welcomeSectionStyle = computed(() => {
   const { areTimerMarksVisible } = layoutStore;
   return { paddingTop: areTimerMarksVisible && store.timeCap ? "44px" : "" };
 });
+
+/* "Connecting..." message */
+
+const showCancelConnectionMsg = ref(false);
+const CANCEL_CONNECTION_MSG_AFTER = 5000; // ms
+let cancelConnectionHandle: ReturnType<typeof setTimeout> | null = null;
+
+function clearCancelConnectionHandle() {
+  if (cancelConnectionHandle !== null) {
+    clearTimeout(cancelConnectionHandle);
+    cancelConnectionHandle = null;
+  }
+}
+
+watch([() => store.isConnected, () => store.lobby], ([isConnected, lobby]) => {
+  clearCancelConnectionHandle();
+  if (!isConnected && lobby) {
+    cancelConnectionHandle = setTimeout(() => {
+      showCancelConnectionMsg.value = true;
+      cancelConnectionHandle = null;
+    }, CANCEL_CONNECTION_MSG_AFTER);
+  } else {
+    showCancelConnectionMsg.value = false;
+  }
+});
 </script>
 <template>
   <div class="main-in-game">
@@ -101,9 +126,15 @@ const welcomeSectionStyle = computed(() => {
     <ConnectFour />
     <div class="bottom">
       <Transition>
+        <div v-if="showCancelConnectionMsg">
+          <div>{{ $t("page.action.cancelConnection.message") }}</div>
+          <button @click="store.disconnect()">
+            {{ $t("page.action.cancelConnection.button") }}
+          </button>
+        </div>
         <button
           @click="store.disconnect()"
-          v-if="store.lobby && showPausedControls"
+          v-else-if="store.lobby && showPausedControls"
         >
           {{ $t("page.action.resume") }}
         </button>
