@@ -230,9 +230,6 @@ export default class WebSocketController {
   /** Whether the client entered a game. */
   private inGame = false;
 
-  /** True if a connection was successfully opened. */
-  private connectionEstablished = false;
-
   /** Used to disable pinging. */
   private heartbeatHandle: ReturnType<typeof setInterval> | null = null;
 
@@ -300,7 +297,6 @@ export default class WebSocketController {
   private onOpen = () => {
     store.wsConnected();
     this.clearConnectionTimeout();
-    this.connectionEstablished = true;
     this.heartbeatHandle = setInterval(this.ping, HEARTBEAT_INTERVAL);
     this.timeDifferenceAvg.reset();
     this.delayAvg.reset();
@@ -425,7 +421,7 @@ export default class WebSocketController {
         store.wsDisconnectReason(ev.reason as ServerDisconnectReason);
       } else if (ev.wasClean) {
         store.wsDisconnectReason(ClientDisconnectReason.ConnectionClosed);
-      } else if (navigator.onLine && this.connectionEstablished) {
+      } else if (navigator.onLine && this.connectionTimeoutHandle !== null) {
         store.wsDisconnectReason(ClientDisconnectReason.ConnectionError);
       } else if (navigator.onLine) {
         store.wsDisconnectReason(ClientDisconnectReason.CouldNotConnect);
@@ -435,7 +431,6 @@ export default class WebSocketController {
     }
 
     this.clearConnectionTimeout();
-    this.connectionEstablished = false;
     store.wsDisconnected();
   };
 
