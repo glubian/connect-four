@@ -105,22 +105,22 @@ const welcomeSectionStyle = computed(() => {
           @click="store.disconnect()"
           v-if="store.lobby && showPausedControls"
         >
-          {{ $t("page.resumeButton") }}
+          {{ $t("page.action.resume") }}
         </button>
         <div
           :style="welcomeSectionStyle"
           v-else-if="store.isUntouched && !store.lobby"
         >
-          <div>{{ $t("page.welcome.startPlayingLocally") }}</div>
+          <div>{{ $t("page.action.createLobby.message") }}</div>
           <button @click="store.connect()">
-            {{ $t("page.welcome.createLobbyButton") }}
+            {{ $t("page.action.createLobby.button") }}
           </button>
         </div>
         <button
           v-else-if="gameUIStore.state.result && !store.lobby"
           @click="store.restartGame()"
         >
-          {{ $t("page.rematchButton") }}
+          {{ $t("page.action.rematch") }}
         </button>
       </Transition>
     </div>

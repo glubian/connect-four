@@ -1,12 +1,14 @@
 {
   "en": {
     "page": {
-      "welcome": {
-        "startPlayingLocally": "Start playing locally, or",
-        "createLobbyButton": "Join on another device"
+      "action": {
+        "createLobby": {
+          "message": "Start playing locally, or",
+          "button": "Join on another device"
+        },
+        "resume": "Resume",
+        "rematch": "Rematch"
       },
-      "resumeButton": "Resume",
-      "rematchButton": "Rematch",
       "createLobbyButton": "Join on another device",
       "disconnectButton": "Disconnect",
       "changeRulesButton": "Change rules",
@@ -214,12 +216,14 @@
   },
   "pl": {
     "page": {
-      "welcome": {
-        "startPlayingLocally": "Graj lokalnie, lub",
-        "createLobbyButton": "Dołącz na innym urządzeniu"
+      "action": {
+        "createLobby": {
+          "message": "Graj lokalnie, lub",
+          "button": "Dołącz na innym urządzeniu"
+        },
+        "resume": "Wznów",
+        "rematch": "Zagraj ponownie"
       },
-      "resumeButton": "Wznów",
-      "rematchButton": "Zagraj ponownie",
       "createLobbyButton": "Dołącz na innym urządzeniu",
       "disconnectButton": "Rozłącz",
       "changeRulesButton": "Zmień zasady",
