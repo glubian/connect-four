@@ -33,6 +33,12 @@ const DELAY_AVERAGE = 10;
 const TIME_DIFFERENCE_AVG = 3;
 
 /**
+ * The amount of time since the connection was created after which it needs to
+ * be either established or terminated.
+ */
+const CONNECTION_TIMEOUT = 40000; // ms
+
+/**
  * A subset of `GameRules` used for starting a new game and timer configuration.
  */
 export interface GameConfig {
@@ -215,6 +221,12 @@ export default class WebSocketController {
   /** Current connection. */
   private socket: WebSocket | null = null;
 
+  /**
+   * Used to cancel timeout of the connection. `null` if there is no connection
+   * or the connection was established.
+   */
+  private connectionTimeoutHandle: ReturnType<typeof setTimeout> | null = null;
+
   /** Whether the client entered a game. */
   private inGame = false;
 
@@ -256,6 +268,10 @@ export default class WebSocketController {
     socket.addEventListener("open", this.onOpen);
     socket.addEventListener("message", this.onMessage);
     socket.addEventListener("close", this.onClose);
+    this.connectionTimeoutHandle = setTimeout(
+      this.onConnectionTimeout,
+      CONNECTION_TIMEOUT
+    );
     this.socket = socket;
     return true;
   }
@@ -269,8 +285,21 @@ export default class WebSocketController {
     this.socket.close();
   }
 
+  private onConnectionTimeout = () => {
+    this.disconnect();
+    this.clearConnectionTimeout();
+  };
+
+  private clearConnectionTimeout() {
+    if (this.connectionTimeoutHandle !== null) {
+      clearTimeout(this.connectionTimeoutHandle);
+      this.connectionTimeoutHandle = null;
+    }
+  }
+
   private onOpen = () => {
     store.wsConnected();
+    this.clearConnectionTimeout();
     this.connectionEstablished = true;
     this.heartbeatHandle = setInterval(this.ping, HEARTBEAT_INTERVAL);
     this.timeDifferenceAvg.reset();
@@ -405,6 +434,7 @@ export default class WebSocketController {
       }
     }
 
+    this.clearConnectionTimeout();
     this.connectionEstablished = false;
     store.wsDisconnected();
   };
