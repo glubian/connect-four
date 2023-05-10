@@ -76,7 +76,7 @@ const welcomeSectionStyle = computed(() => {
 /* "Connecting..." message */
 
 const showCancelConnectionMsg = ref(false);
-const CANCEL_CONNECTION_MSG_AFTER = 5000; // ms
+const CANCEL_CONNECTION_MSG_AFTER = 3000; // ms
 let cancelConnectionHandle: ReturnType<typeof setTimeout> | null = null;
 
 function clearCancelConnectionHandle() {
