@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { FocusTrap } from "focus-trap-vue";
 import { computed, onUnmounted, ref, watch, type Ref } from "vue";
 import AppDialog from "./components/AppDialog.vue";
 import AppHeader from "./components/AppHeader.vue";
@@ -150,14 +151,16 @@ function onSlideAnimationEvent() {
   <RequestStatus class="request-status" v-if="!reqShown" />
 
   <main :style="mainStyle" ref="mainRef">
-    <Transition name="main">
-      <MainJoining v-if="store.lobby && !store.lobby.isHost" />
-      <MainPlayerSelection
-        @show-request="reqShown = true"
-        v-else-if="showPlayerSelectionScreen"
-      />
-      <MainInGame @show-request="reqShown = true" v-else />
-    </Transition>
+    <FocusTrap :active="!!store.lobby && !store.isConnected">
+      <Transition name="main">
+        <MainJoining v-if="store.lobby && !store.lobby.isHost" />
+        <MainPlayerSelection
+          @show-request="reqShown = true"
+          v-else-if="showPlayerSelectionScreen"
+        />
+        <MainInGame @show-request="reqShown = true" v-else />
+      </Transition>
+    </FocusTrap>
   </main>
 
   <footer class="small" :style="headerStyle" v-show="showHeaderAndFooter">

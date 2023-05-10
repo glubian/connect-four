@@ -304,7 +304,7 @@ watch(gameRef, (game) => {
 <template>
   <div
     class="event-area"
-    :tabindex="-!!store.lobby"
+    :tabindex="-(!!store.lobby && store.isConnected)"
     @touchstart="onTouchStart"
     @touchmove="onTouchMove"
     @touchend="onTouchEndOrCancel"
