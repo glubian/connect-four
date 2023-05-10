@@ -74,7 +74,7 @@ export enum ServerDisconnectReason {
 /** Reason for closing the connection determined by the client. */
 export enum ClientDisconnectReason {
   CouldNotConnect = "couldNotConnect",
-  ConnectionError = "connectionError",
+  NoResponse = "noResponse",
   ConnectionClosed = "connectionClosed",
   Offline = "offline",
 }
@@ -422,7 +422,7 @@ export default class WebSocketController {
       } else if (ev.wasClean) {
         store.wsDisconnectReason(ClientDisconnectReason.ConnectionClosed);
       } else if (navigator.onLine && this.connectionTimeoutHandle !== null) {
-        store.wsDisconnectReason(ClientDisconnectReason.ConnectionError);
+        store.wsDisconnectReason(ClientDisconnectReason.NoResponse);
       } else if (navigator.onLine) {
         store.wsDisconnectReason(ClientDisconnectReason.CouldNotConnect);
       } else {

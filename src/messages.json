@@ -150,9 +150,9 @@
           "description": "Unexpected error occurred.",
           "closeButton": "Close"
         },
-        "connectionError": {
-          "title": "Connection error",
-          "description": "Unexpected connection error. Server might have shut down.",
+        "noResponse": {
+          "title": "Could not connect",
+          "description": "Server is not responding.",
           "closeButton": "Close"
         },
         "connectionClosed": {
@@ -369,9 +369,9 @@
           "description": "Nie udało się połączyć z serwerem.",
           "closeButton": "Zamknij"
         },
-        "connectionError": {
-          "title": "Błąd połączenia",
-          "description": "Nieoczekiwany błąd połączenia.",
+        "noResponse": {
+          "title": "Nie udało się połączyć",
+          "description": "Serwer nie odpowiada.",
           "closeButton": "Zamknij"
         },
         "connectionClosed": {
