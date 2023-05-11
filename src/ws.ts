@@ -29,7 +29,7 @@ export const URL_VERSION_VALUE = "1";
 
 /** Heartbeat interval in milliseconds. */
 const HEARTBEAT_INTERVAL = 2000; // ms
-const DELAY_AVERAGE = 10;
+const DELAY_AVG = 10;
 const TIME_DIFFERENCE_AVG = 3;
 
 /**
@@ -243,7 +243,7 @@ export default class WebSocketController {
    * An estimated difference in time configuration between
    * client and server in milliseconds.
    */
-  private readonly delayAvg = new Average(DELAY_AVERAGE);
+  private readonly delayAvg = new Average(DELAY_AVG);
 
   /**
    * Connects to the server if not already connected.
