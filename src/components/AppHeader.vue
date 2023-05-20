@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useSettingsAnimation } from "@/composables/settings-animation";
 import { PopoverAppearance } from "@/layout";
 import { layoutStore } from "@/layout-store";
 import { PlayerSelection, store } from "@/store";
@@ -79,7 +78,6 @@ const showRestartButton = computed(() => {
 
 const settingsButtonRef: Ref<HTMLButtonElement | null> = ref(null);
 const settingsIconRef: Ref<HTMLElement | null> = ref(null);
-const settingsIcon = useSettingsAnimation(settingsIconRef);
 const settingsShown = ref(false);
 const SETTINGS_TOP = 8; // px
 const settingsRight = ref(getSettingsRight());
@@ -156,11 +154,7 @@ watch(
 
       <div class="space"></div>
 
-      <button
-        class="icon"
-        @click="openSettings"
-        @mouseenter="settingsIcon.turn()"
-      >
+      <button class="icon" @click="openSettings">
         <i class="mi-settings" ref="settingsIconRef"></i>
       </button>
 
@@ -178,12 +172,7 @@ watch(
     </div>
     <div class="desktop">
       <!-- The references are needed to position popovers properly. -->
-      <button
-        class="icon"
-        @click="openSettings"
-        @mouseenter="settingsIcon.turn()"
-        ref="settingsButtonRef"
-      >
+      <button class="icon" @click="openSettings" ref="settingsButtonRef">
         <i class="mi-settings" ref="settingsIconRef"></i>
       </button>
 
