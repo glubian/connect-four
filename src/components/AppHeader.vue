@@ -19,13 +19,13 @@ const joiningPage = computed(() => {
 // change rules button
 
 const changeRulesButtonRef: Ref<HTMLButtonElement | null> = ref(null);
-const changeRulesButtonStyle = computed(() => ({
-  opacity:
-    changeRulesPopover.value &&
-    layoutStore.popoverAppearance === PopoverAppearance.Desktop
-      ? "0"
-      : "",
-}));
+const changeRulesButtonStyle = computed(() => {
+  const isPopoverVisible = changeRulesPopover.value;
+  const { popoverAppearance } = layoutStore;
+  const { Desktop } = PopoverAppearance;
+  const opacity = isPopoverVisible && popoverAppearance === Desktop ? "0" : "";
+  return { opacity };
+});
 
 // change rules popover
 
