@@ -17,7 +17,6 @@
       "disconnectButton": "Disconnect",
       "changeRulesButton": "Change rules",
       "restartButton": "Restart",
-      "newGameButton": "New game",
       "playerSelection": {
         "message": "Who is starting the next game?",
         "me": "I want to start",
@@ -25,10 +24,7 @@
         "waiting": "Waiting for your opponent..."
       },
       "changeRules": {
-        "title": {
-          "newGame": "Start a new game",
-          "changeRules": "Change rules"
-        },
+        "title": "Change rules",
         "section": {
           "timer": {
             "label": "Timer",
@@ -45,7 +41,7 @@
         "action": {
           "reset": "Reset",
           "cancel": "Cancel",
-          "start": "Start",
+          "apply": "Apply",
           "restart": "Restart to apply"
         }
       },
@@ -236,7 +232,6 @@
       "disconnectButton": "Rozłącz",
       "changeRulesButton": "Zmień zasady",
       "restartButton": "Zrestartuj",
-      "newGameButton": "Nowa gra",
       "playerSelection": {
         "message": "Kto zaczyna następną grę?",
         "me": "Ja chcę zacząć",
@@ -244,10 +239,7 @@
         "waiting": "Oczekiwanie na przeciwnika..."
       },
       "changeRules": {
-        "title": {
-          "newGame": "Rozpocznij nową grę",
-          "changeRules": "Zmień zasady"
-        },
+        "title": "Zmień zasady",
         "section": {
           "timer": {
             "label": "Limit czasu",
@@ -264,7 +256,7 @@
         "action": {
           "reset": "Zresetuj",
           "cancel": "Anuluj",
-          "start": "Rozpocznij",
+          "apply": "Zastosuj",
           "restart": "Zrestartuj i zastosuj"
         }
       },

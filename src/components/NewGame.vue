@@ -10,11 +10,6 @@ const emit = defineEmits<{ (ev: "hide", config: GameConfig | null): void }>();
 
 const { t } = useI18n();
 
-const title = computed(() => {
-  const property = props.restartLabel ? "newGame" : "changeRules";
-  return t("page.changeRules.title." + property);
-});
-
 /** Milliseconds in a second. */
 const MS_IN_S = 1000;
 
@@ -63,6 +58,10 @@ const timeCapList = computed(() => {
   return out;
 });
 
+const applyButtonLabel = computed(() =>
+  t(`page.changeRules.action.${props.restartLabel ? "restart" : "apply"}`)
+);
+
 watch(timeCapList, () => {
   if (!(timeCap.value in timeCapList.value)) {
     const timePerTurnValue = +timePerTurn.value;
@@ -96,7 +95,7 @@ function cancel() {
   emit("hide", null);
 }
 
-function start() {
+function apply() {
   emit("hide", {
     timePerTurn: +timePerTurn.value,
     timeCap: timeCapEnabled.value ? +timeCap.value : 0,
@@ -107,7 +106,7 @@ function start() {
 
 <template>
   <form class="change-rules-popover" @submit="$event.preventDefault()">
-    <div class="dialog-title">{{ title }}</div>
+    <div class="dialog-title">{{ $t("page.changeRules.title") }}</div>
 
     <div class="section-label">
       <i class="mi-clock"></i>
@@ -161,8 +160,8 @@ function start() {
       <button class="flat" type="button" @click="cancel">
         {{ $t("page.changeRules.action.cancel") }}
       </button>
-      <button class="flat" type="button" @click="start">
-        {{ $t(`page.changeRules.action.${restartLabel ? "re" : ""}start`) }}
+      <button class="flat" type="button" @click="apply">
+        {{ applyButtonLabel }}
       </button>
     </div>
   </form>

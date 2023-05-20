@@ -4,7 +4,6 @@ import { PopoverAppearance } from "@/layout";
 import { layoutStore } from "@/layout-store";
 import { PlayerSelection, store } from "@/store";
 import { computed, ref, watch, type Ref } from "vue";
-import { useI18n } from "vue-i18n";
 import AppDialog from "./AppDialog.vue";
 import AppPopover from "./AppPopover.vue";
 import AppSettings from "./AppSettings.vue";
@@ -12,7 +11,6 @@ import NewGame from "./NewGame.vue";
 import type { GameConfig } from "@/ws";
 
 const gameRef = store.getGame();
-const { t } = useI18n();
 
 const joiningPage = computed(() => {
   const { lobby } = store;
@@ -29,11 +27,6 @@ const changeRulesButtonStyle = computed(() => ({
       ? "0"
       : "",
 }));
-const changeRulesButtonLabel = computed(() => {
-  return restartLabel.value
-    ? t("page.newGameButton")
-    : t("page.changeRulesButton");
-});
 
 // change rules popover
 
@@ -204,7 +197,7 @@ watch(
         ref="changeRulesButtonRef"
         v-if="!joiningPage"
       >
-        {{ changeRulesButtonLabel }}
+        {{ $t("page.changeRulesButton") }}
       </button>
 
       <button @click="store.connect()" v-if="createLobbyButton">
