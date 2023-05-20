@@ -77,7 +77,6 @@ const showRestartButton = computed(() => {
 // settings
 
 const settingsButtonRef: Ref<HTMLButtonElement | null> = ref(null);
-const settingsIconRef: Ref<HTMLElement | null> = ref(null);
 const settingsShown = ref(false);
 const SETTINGS_TOP = 8; // px
 const settingsRight = ref(getSettingsRight());
@@ -155,7 +154,7 @@ watch(
       <div class="space"></div>
 
       <button class="icon" @click="openSettings">
-        <i class="mi-settings" ref="settingsIconRef"></i>
+        <i class="mi-settings"></i>
       </button>
 
       <button class="icon" @click="store.connect()" v-if="createLobbyButton">
@@ -173,7 +172,7 @@ watch(
     <div class="desktop">
       <!-- The references are needed to position popovers properly. -->
       <button class="icon" @click="openSettings" ref="settingsButtonRef">
-        <i class="mi-settings" ref="settingsIconRef"></i>
+        <i class="mi-settings"></i>
       </button>
 
       <button @click="store.restartGame()" v-if="showRestartButton">
