@@ -6,7 +6,7 @@ import { computed, ref, watch, type Ref } from "vue";
 import AppDialog from "./AppDialog.vue";
 import AppPopover from "./AppPopover.vue";
 import AppSettings from "./AppSettings.vue";
-import NewGame from "./NewGame.vue";
+import ChangeRules from "./ChangeRules.vue";
 import type { GameConfig } from "@/ws";
 
 const gameRef = store.getGame();
@@ -211,7 +211,10 @@ watch(
       v-model:shown="changeRulesPopover"
       @after-leave="changeRulesAfterLeave"
     >
-      <NewGame :restart-label="restartLabel" @hide="hideChangeRulesPopover" />
+      <ChangeRules
+        :restart-label="restartLabel"
+        @hide="hideChangeRulesPopover"
+      />
     </AppPopover>
 
     <AppDialog
