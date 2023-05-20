@@ -42,7 +42,8 @@
           "reset": "Reset",
           "cancel": "Cancel",
           "apply": "Apply",
-          "restart": "Restart to apply"
+          "restart": "Restart to apply",
+          "request": "Propose changes"
         }
       },
       "restartRequest": {
@@ -257,7 +258,8 @@
           "reset": "Zresetuj",
           "cancel": "Anuluj",
           "apply": "Zastosuj",
-          "restart": "Zrestartuj i zastosuj"
+          "restart": "Zrestartuj i zastosuj",
+          "request": "Zaproponuj zmiany"
         }
       },
       "restartRequest": {

@@ -58,9 +58,12 @@ const timeCapList = computed(() => {
   return out;
 });
 
-const applyButtonLabel = computed(() =>
-  t(`page.changeRules.action.${props.restartLabel ? "restart" : "apply"}`)
-);
+const applyButtonLabel = computed(() => {
+  const { isConnected } = store;
+  const { restartLabel } = props;
+  const action = isConnected ? "request" : restartLabel ? "restart" : "apply";
+  return t("page.changeRules.action." + action);
+});
 
 watch(timeCapList, () => {
   if (!(timeCap.value in timeCapList.value)) {
