@@ -3,7 +3,7 @@ import { GameWinner, Player } from "@/game";
 import { gameUIStore } from "@/game-ui-store";
 import { PanelLayout, RestartPopoverAppearance } from "@/layout";
 import { layoutStore } from "@/layout-store";
-import { store } from "@/store";
+import { ServiceStatus, store } from "@/store";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import ConnectFour from "./ConnectFour.vue";
@@ -68,7 +68,18 @@ const showStatusMessage = computed(() => {
   );
 });
 
-const welcomeSectionStyle = computed(() => {
+const showCreateLobbyButton = computed(() => {
+  const { isUntouched, lobby, remotePlayStatus } = store;
+  return isUntouched && !lobby && remotePlayStatus === ServiceStatus.Available;
+});
+
+const showRemotePlayUnavailableMsg = computed(() => {
+  const { isUntouched, lobby, remotePlayStatus } = store;
+  const { Unavailable } = ServiceStatus;
+  return isUntouched && !lobby && remotePlayStatus === Unavailable;
+});
+
+const timerSpacing = computed(() => {
   const { areTimerMarksVisible } = layoutStore;
   return { paddingTop: areTimerMarksVisible && store.timeCap ? "44px" : "" };
 });
@@ -132,21 +143,31 @@ watch([() => store.isConnected, () => store.lobby], ([isConnected, lobby]) => {
             {{ $t("page.action.cancelConnection.button") }}
           </button>
         </div>
+
+        <div :style="timerSpacing" v-else-if="showCreateLobbyButton">
+          <div>{{ $t("page.action.createLobby.message") }}</div>
+          <button @click="store.connect()">
+            {{ $t("page.action.createLobby.button") }}
+          </button>
+        </div>
+
+        <div
+          class="remote-play-unavailable"
+          :style="timerSpacing"
+          v-else-if="showRemotePlayUnavailableMsg"
+        >
+          {{ $t("page.action.remotePlayUnavailable.top") }}
+          <br />
+          {{ $t("page.action.remotePlayUnavailable.bottom") }}
+        </div>
+
         <button
           @click="store.disconnect()"
           v-else-if="store.lobby && showPausedControls"
         >
           {{ $t("page.action.resume") }}
         </button>
-        <div
-          :style="welcomeSectionStyle"
-          v-else-if="store.isUntouched && !store.lobby"
-        >
-          <div>{{ $t("page.action.createLobby.message") }}</div>
-          <button @click="store.connect()">
-            {{ $t("page.action.createLobby.button") }}
-          </button>
-        </div>
+
         <button
           v-else-if="gameUIStore.state.result && !store.lobby"
           @click="store.restartGame()"
@@ -254,6 +275,10 @@ watch([() => store.isConnected, () => store.lobby], ([isConnected, lobby]) => {
   & > :is(.v-enter-from, .v-leave-to) {
     opacity: 0;
   }
+}
+
+.remote-play-unavailable {
+  line-height: 1.5;
 }
 
 @media (min-width: layout.$panel-layout-tablet) {

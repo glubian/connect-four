@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PopoverAppearance } from "@/layout";
 import { layoutStore } from "@/layout-store";
-import { PlayerSelection, store } from "@/store";
+import { PlayerSelection, ServiceStatus, store } from "@/store";
 import { computed, ref, watch, type Ref } from "vue";
 import AppDialog from "./AppDialog.vue";
 import AppPopover from "./AppPopover.vue";
@@ -98,8 +98,13 @@ function openSettings() {
 // create lobby button
 
 const createLobbyButton = computed(() => {
-  const { isUntouched, remoteRole } = store;
-  return !isUntouched && remoteRole === null && !joiningPage.value;
+  const { remotePlayStatus, isUntouched, remoteRole } = store;
+  return (
+    remotePlayStatus === ServiceStatus.Available &&
+    !isUntouched &&
+    remoteRole === null &&
+    !joiningPage.value
+  );
 });
 
 // disconnect buttons

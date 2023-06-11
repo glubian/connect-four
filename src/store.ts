@@ -6,11 +6,19 @@ import {
   watch,
   type ComputedRef,
 } from "vue";
-import { storage, updateGameConfig } from "./storage";
+import { queryDNS } from "./dns-over-https";
 import { Game, Player, otherPlayer, type GameRules } from "./game";
-import { URL_LOBBY_PARAMETER } from "./urls";
+import { storage, updateGameConfig } from "./storage";
+import { URL_LOBBY_PARAMETER, WS_SERVER_URL } from "./urls";
 import type { DisconnectReason, GameConfig, QR } from "./ws";
 import WebSocketController, { TIME_PER_TURN_MIN } from "./ws";
+
+/** Indicates availability of a service. */
+export enum ServiceStatus {
+  Unknown,
+  Available,
+  Unavailable,
+}
 
 interface Lobby {
   isHost: true;
@@ -302,6 +310,7 @@ function wsSyncGame(g: Game, round: number, timeout?: string | null) {
 /** Signals the connection was successfully opened. */
 function wsConnected() {
   store.isConnected = true;
+  store.remotePlayStatus = ServiceStatus.Available;
 }
 
 /** Sets the reason for closing the connection. */
@@ -323,6 +332,9 @@ function wsDisconnected() {
 
   if (lobby && !lobby.isHost) {
     store.isUntouched = true;
+    if (store.remotePlayStatus === ServiceStatus.Unknown) {
+      checkRemotePlayAvailability();
+    }
   }
 
   if (wasGameSynced) {
@@ -376,17 +388,26 @@ function createLobby(id?: string | null): Lobby | JoiningLobby {
   };
 }
 
-/** Attempts to join the lobby specified in the URL. */
-function tryToJoin() {
+/**
+ * Attempts to join the lobby specified in the URL and updates
+ * `remotePlayStatus`. Should be called only once.
+ */
+function initializeRemotePlay() {
   if (!document.location) {
-    return null;
+    checkRemotePlayAvailability();
+    return;
   }
 
   const url = new URL(document.location.toString());
   const lobbyId = url.searchParams.get(URL_LOBBY_PARAMETER);
   if (lobbyId) {
+    // If the client connects successfully `remotePlayStatus` is set to
+    // `Available`. Otherwise, `checkRemotePlayAvailability()` is called
+    // in `wsDisconnected()`.
     store.isUntouched = false;
     connect(lobbyId);
+  } else {
+    checkRemotePlayAvailability();
   }
 }
 
@@ -486,6 +507,26 @@ function pauseLocalTurnTimeout(isPaused: boolean) {
   }
 }
 
+/**
+ * Checks whether `hostname` of `WS_SERVER_URL` can be resolved and
+ * updates `remotePlayStatus`. Should be called only once.
+ */
+async function checkRemotePlayAvailability() {
+  const { hostname } = new URL(WS_SERVER_URL);
+  if (hostname === "localhost" || hostname.match(/^\d/)) {
+    // always enable for testing
+    store.remotePlayStatus = ServiceStatus.Available;
+    return;
+  }
+
+  const res = await queryDNS(new URL(WS_SERVER_URL).hostname + ".");
+  if (res && res.Status === 0) {
+    store.remotePlayStatus = ServiceStatus.Available;
+  } else {
+    store.remotePlayStatus = ServiceStatus.Unavailable;
+  }
+}
+
 /** Handles the game state. */
 export const store = reactive({
   lobby: null as Lobby | JoiningLobby | null,
@@ -516,6 +557,9 @@ export const store = reactive({
   turnTimeout: null as number | null,
   timePerTurn,
   timeCap,
+
+  /** Indicates whether remote games are available. */
+  remotePlayStatus: ServiceStatus.Unknown,
 
   /**
    * An estimate of the time it takes for a packet to reach the server
@@ -564,7 +608,7 @@ export const store = reactive({
   wsDisconnected,
 });
 
-tryToJoin();
+initializeRemotePlay();
 updateUntouched();
 
 watch(

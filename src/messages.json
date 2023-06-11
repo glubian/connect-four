@@ -6,6 +6,10 @@
           "message": "Start playing locally, or",
           "button": "Join on another device"
         },
+        "remotePlayUnavailable": {
+          "top": "Online games are unavailable.",
+          "bottom": "You can still play in hotseat mode."
+        },
         "cancelConnection": {
           "message": "Connecting...",
           "button": "Cancel"
@@ -221,6 +225,10 @@
         "createLobby": {
           "message": "Graj lokalnie, lub",
           "button": "Dołącz na innym urządzeniu"
+        },
+        "remotePlayUnavailable": {
+          "top": "Gry online są niedostępne.",
+          "bottom": "Możliwa jest gra tylko w trybie hotseat."
         },
         "cancelConnection": {
           "message": "Łączenie...",
