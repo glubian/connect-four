@@ -254,7 +254,6 @@ watch([() => store.isConnected, () => store.lobby], ([isConnected, lobby]) => {
   flex: 1;
 
   div {
-    width: 100%;
     text-align: center;
     margin-bottom: 16px;
   }
