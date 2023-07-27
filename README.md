@@ -3,7 +3,7 @@
 Play connect four together - locally and remotely.
 
 Remote play functionality is provided by
-[Connect Four Server](https://github.com/glubian/connect-four-server).
+[connect four server](https://github.com/glubian/connect-four-server).
 
 
 # Development setup
