@@ -624,15 +624,13 @@ watch(
   }
 );
 
-{
-  watch(
-    () => store.lobby,
-    (lobby) => {
-      if (!wasGameSynced) {
-        pauseLocalTurnTimeout(!!lobby);
-      }
+watch(
+  () => store.lobby,
+  (lobby) => {
+    if (!wasGameSynced) {
+      pauseLocalTurnTimeout(!!lobby);
     }
-  );
-}
+  }
+);
 
 watch(() => store.config, updateGameConfig, { deep: true });
