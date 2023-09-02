@@ -323,7 +323,7 @@ export function slotAnimation({
 
   let mode = Mode.Off;
   let prevMode = Mode.Off;
-  const transition = new Tween(MODE_TRANSITION);
+  const modeTransition = new Tween(MODE_TRANSITION);
 
   let col = 0;
 
@@ -349,7 +349,7 @@ export function slotAnimation({
   /** Resets the animation state. */
   function reset() {
     const a = animation;
-    transition.complete();
+    modeTransition.complete();
     a.locked.complete();
     a.gravity.fall(null);
   }
@@ -459,10 +459,10 @@ export function slotAnimation({
 
     // Prevent mode transition
     if (mode === Mode.Off || mode === Mode.Inert || mode === Mode.Falling) {
-      transition.complete();
+      modeTransition.complete();
       reset();
     } else {
-      transition.reset();
+      modeTransition.reset();
     }
 
     const isHintVisible = mode === Mode.Hint;
@@ -821,7 +821,7 @@ export function slotAnimation({
     prev ??= curr;
     curr ??= prev;
 
-    return lerpVector(prev, curr, transition.value(ts));
+    return lerpVector(prev, curr, modeTransition.value(ts));
   }
 
   /**
