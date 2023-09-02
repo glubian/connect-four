@@ -581,7 +581,7 @@ export const store = reactive({
     return game;
   },
 
-  // These mutations can invoked from the UI
+  // These mutations can be invoked from the UI
   connect,
   acceptPlayer,
   setPlayerCode,

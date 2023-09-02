@@ -122,7 +122,7 @@ interface GameSetupMessage {
   type: typeof GAME_SETUP;
   /** Game configuration. */
   config?: GameConfig | null;
-  /** Which role the client should assume - `P1` (blue) or `P2` (red). */
+  /** Role which the client should assume - `P1` (blue) or `P2` (red). */
   role?: Player | null;
 }
 
