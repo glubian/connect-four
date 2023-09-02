@@ -298,7 +298,7 @@ export function slotAnimation({
   const animation = {
     locked: new LockAnimation(),
     gravity: new GravityAnimation(),
-    raise: new NumberTween(
+    focusRing: new NumberTween(
       0,
       -FOCUS_RING_OFFSET - FOCUS_RING_WIDTH,
       RAISE_DURATION,
@@ -443,9 +443,9 @@ export function slotAnimation({
     }
 
     if (mode === Mode.Constrained) {
-      a.raise.forward();
+      a.focusRing.forward();
     } else {
-      a.raise.reverse();
+      a.focusRing.reverse();
     }
 
     if (
@@ -453,7 +453,7 @@ export function slotAnimation({
       prevMode === Mode.Hint ||
       (prevMode === Mode.Freeform && mode === Mode.Locked)
     ) {
-      a.raise.complete();
+      a.focusRing.complete();
       a.locked.complete();
     }
 
@@ -780,13 +780,13 @@ export function slotAnimation({
       case Mode.Hint:
         return [0, 0];
       case Mode.Freeform:
-        return [v.pointer.x, v.nudge.y + a.raise.valueAsType(ts)];
+        return [v.pointer.x, v.nudge.y + a.focusRing.valueAsType(ts)];
       case Mode.Constrained:
-        return [a.locked.getX(ts), a.raise.valueAsType(ts)];
+        return [a.locked.getX(ts), a.focusRing.valueAsType(ts)];
       case Mode.Inert:
-        return [v.inertia.x, v.nudge.y + a.raise.valueAsType(ts)];
+        return [v.inertia.x, v.nudge.y + a.focusRing.valueAsType(ts)];
       case Mode.Locked: {
-        const y = v.nudge.y + a.raise.valueAsType(ts);
+        const y = v.nudge.y + a.focusRing.valueAsType(ts);
         return [a.locked.getX(ts) + v.nudge.x, y];
       }
       case Mode.Falling:
