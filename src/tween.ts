@@ -35,6 +35,10 @@ export class Tween {
     return this;
   }
 
+  isComplete(timestamp = performance.now()): boolean {
+    return this.timestamp + this.duration <= timestamp;
+  }
+
   rawValue(timestamp = performance.now()): number {
     return clamp((timestamp - this.timestamp) / this.duration, 0, 1);
   }
