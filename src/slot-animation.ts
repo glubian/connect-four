@@ -417,7 +417,7 @@ export function slotAnimation({
   }
 
   /**
-   * Changes the current mode and facilitate the transition.
+   * Changes the current mode and facilitates the transition.
    *
    * This method does not check whether the change is appropriate.
    *
