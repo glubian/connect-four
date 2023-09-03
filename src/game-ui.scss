@@ -11,6 +11,8 @@ $field-size-ui: $field-size * $cont-size;
 $focus-ring-width: 1px;
 $focus-ring-offset: 4px;
 $raise-duration: 120ms;
+$mode-transition-min: 48ms;
+$mode-transition-max: 96ms;
 
 $timer-width-00: 20px; // Maximum expected width of a number.
 $timer-min-width: $field-size-ui + 2 * ($border-width + $timer-width-00 + 48px);

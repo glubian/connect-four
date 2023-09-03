@@ -5,18 +5,21 @@ import {
   FOCUS_RING_OFFSET,
   FOCUS_RING_WIDTH,
   HALF_CONT_SIZE,
+  MODE_TRANSITION_MAX,
+  MODE_TRANSITION_MIN,
   RAISE_DURATION,
 } from "@/game-ui";
 import { gameUIStore } from "@/game-ui-store";
-import { clamp, lerp, mag, normalize } from "@/math";
+import { clamp, lerp, mag, normalize, sign } from "@/math";
 import { store } from "@/store";
 import { NumberTween, Tween } from "@/tween";
 import { otherPlayer } from "@/game";
 import { playerClass } from "@/game-ui";
 import { useAnimations } from "./composables/animations";
 import type { ExtendedTouch } from "./extended-touch";
+import { SIZE } from "@/game-ui";
 
-const { min, floor, sqrt } = Math;
+const { abs, min, floor, sqrt } = Math;
 
 // motion
 const NUDGE_MAX = 6; // px;
@@ -24,10 +27,15 @@ const NUDGE_ACCUM_SCALE = 1; // px;
 const NUDGE_RET_VELOCITY = 8; // px / s
 const FRICTION = 15;
 const FALL_ACCELERATION = 1200; // px / (s^2)
+const MODE_WARP_DISTANCE = CONT_SIZE * 2.5; // px
+const MODE_LERP_DISTANCE = CONT_SIZE * 2; // px
+const HALF_MODE_WARP_DISTANCE = MODE_WARP_DISTANCE / 2; // px
+const MODE_DISTANCE_DIFF = MODE_WARP_DISTANCE - MODE_LERP_DISTANCE; // px
+const MODE_VELOCITY = (1000 * MODE_LERP_DISTANCE) / MODE_TRANSITION_MAX; // px / s
+const MODE_SHRINK = 8; // px
 
 // timing
 const SLIDE_DURATION = 120; // ms
-const MODE_TRANSITION = 48; // ms
 
 // CSS classes
 const ENTER_CLASS = "appear-enter-active";
@@ -234,6 +242,133 @@ class GravityAnimation {
   }
 }
 
+/**
+ * Keeps track of chip position and styles as well as transitioning
+ * between modes.
+ */
+class ChipTransition {
+  private readonly tween = new Tween(MODE_TRANSITION_MIN).complete();
+  private direction = 0; // px
+  private value = MODE_WARP_DISTANCE; // px
+  private frames = 0;
+  private isComplete = true;
+
+  opacity = 1; // <0, 1>
+  size = SIZE; // px
+
+  constructor(public x: number /* px */, public y: number /* px */) {}
+
+  private setPosition(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
+
+  /** Updates styles. */
+  animationFrame(
+    curr: [number, number],
+    prev: [number, number],
+    ts: number,
+    secondsElapsed: number
+  ) {
+    const { value, direction, frames, tween, isComplete } = this;
+    if (isComplete) {
+      const [x, y] = curr;
+      this.setPosition(x, y);
+      return;
+    }
+
+    if (value === MODE_WARP_DISTANCE && tween.isComplete(ts)) {
+      this.complete(curr);
+      return;
+    }
+
+    const [currX, currY] = curr;
+    const [prevX, prevY] = prev;
+    const distance = currX - prevX;
+    if (distance < 0 !== direction < 0) {
+      if (frames === 0) {
+        // sometimes the cursor can move slightly in the other direction
+        // before the first frame is rendered and cause the animation to be
+        // cancelled prematurely
+        this.reset(curr, prev, ts);
+      } else {
+        this.complete(curr);
+        return;
+      }
+    }
+
+    const distanceToTraverse = min(MODE_WARP_DISTANCE, abs(distance));
+    const threshold = distanceToTraverse / 2;
+    const tweenValue = tween.value(ts);
+
+    let newValue = value + MODE_VELOCITY * secondsElapsed;
+    if (value < HALF_MODE_WARP_DISTANCE && newValue >= threshold) {
+      newValue += MODE_WARP_DISTANCE - 2 * threshold;
+    }
+    newValue = clamp(newValue, 0, MODE_WARP_DISTANCE);
+
+    const isAnchoredToCurrent = newValue >= HALF_MODE_WARP_DISTANCE;
+    const warpX = isAnchoredToCurrent
+      ? currX + (newValue - MODE_WARP_DISTANCE) * direction
+      : prevX + newValue * direction;
+    const lerpX = lerp(prevX, currX, tweenValue);
+    const x =
+      (direction < 0 && lerpX > warpX) || (direction > 0 && lerpX < warpX)
+        ? lerpX
+        : warpX;
+
+    const y = lerp(prevY, currY, tweenValue);
+
+    const warpSpeed =
+      1 - abs(newValue - HALF_MODE_WARP_DISTANCE) / HALF_MODE_WARP_DISTANCE;
+    const distortion = clamp(
+      (distanceToTraverse - MODE_LERP_DISTANCE) / MODE_DISTANCE_DIFF,
+      0,
+      1
+    );
+    const speed = lerp(0, warpSpeed, distortion);
+
+    this.value = newValue;
+    this.frames++;
+
+    this.setPosition(x, y);
+    this.opacity = 1 - speed;
+    this.size = SIZE - speed * MODE_SHRINK;
+  }
+
+  /** (Re)starts the transition between modes. */
+  reset(curr: [number, number], prev: [number, number], ts: number) {
+    const [currX, currY] = curr;
+    const [prevX, prevY] = prev;
+    if (currX === prevX && currY === prevY) {
+      this.complete(curr);
+      return;
+    }
+
+    this.tween.reset(ts);
+    this.value = 0;
+    this.direction = sign(currX - prevX);
+    this.frames = 0;
+    this.isComplete = false;
+
+    this.setPosition(prevX, prevY);
+    this.opacity = 1;
+    this.size = SIZE;
+  }
+
+  /** Completes the transition between modes. */
+  complete([currX, currY]: [number, number]) {
+    this.tween.complete();
+    this.value = MODE_WARP_DISTANCE;
+    this.direction = 0;
+    this.isComplete = true;
+
+    this.setPosition(currX, currY);
+    this.opacity = 1;
+    this.size = SIZE;
+  }
+}
+
 export function slotAnimation({
   el,
   updateVisible,
@@ -275,7 +410,8 @@ export function slotAnimation({
    * The position of the slot is calculated using a handful of vectors,
    * which are defined above. Each mode can define its own way to calculate the
    * position in `getVectorForMode()`. To make transitions smoother, the final
-   * result is calculated using the current and last position in `getVector()`.
+   * result is calculated using the current and last position
+   * in `ChipTransition`.
    *
    * A few technical details:
    *
@@ -323,7 +459,7 @@ export function slotAnimation({
 
   let mode = Mode.Off;
   let prevMode = Mode.Off;
-  const modeTransition = new Tween(MODE_TRANSITION);
+  const chipTransition = new ChipTransition(0, 0);
 
   let col = 0;
 
@@ -347,11 +483,22 @@ export function slotAnimation({
   }
 
   /** Resets the animation state. */
-  function reset() {
+  function reset(ts: number) {
     const a = animation;
-    modeTransition.complete();
+    completeModeTransition(ts);
     a.locked.complete();
     a.gravity.fall(null);
+  }
+
+  /** Completes the transition between previous and current mode. */
+  function completeModeTransition(ts: number) {
+    chipTransition.complete(getPositions(ts)[0]);
+  }
+
+  /** Starts the transition between previous and current mode. */
+  function transitionModes(ts: number) {
+    const [curr, prev] = getPositions(ts);
+    chipTransition.reset(curr, prev, ts);
   }
 
   /**
@@ -383,6 +530,9 @@ export function slotAnimation({
 
   /** Removes visibility animation classes. */
   function removeAnimationClasses() {
+    el.style.width = "";
+    el.style.height = "";
+
     if (el.classList.contains(ENTER_CLASS)) {
       el.style.opacity = "1";
       el.classList.remove(ENTER_CLASS);
@@ -435,10 +585,11 @@ export function slotAnimation({
     mode = newMode;
 
     const a = animation;
+    const ts = performance.now();
 
     setVisible(mode !== Mode.Off && mode !== Mode.Inert);
+
     if (prevMode === Mode.Off) {
-      reset();
       requestFrame(animationFrame);
     }
 
@@ -458,11 +609,15 @@ export function slotAnimation({
     }
 
     // Prevent mode transition
-    if (mode === Mode.Off || mode === Mode.Inert || mode === Mode.Falling) {
-      modeTransition.complete();
-      reset();
+    if (
+      prevMode === Mode.Off ||
+      mode === Mode.Off ||
+      mode === Mode.Inert ||
+      mode === Mode.Falling
+    ) {
+      reset(ts);
     } else {
-      modeTransition.reset();
+      transitionModes(ts);
     }
 
     const isHintVisible = mode === Mode.Hint;
@@ -799,25 +954,11 @@ export function slotAnimation({
   }
 
   /**
-   * Linearly interpolates two vectors.
-   *
-   * @param param0 - vector a
-   * @param param1 - vector b
-   * @param t - value between 0 and 1
+   * Returns vectors for the current and previous mode.
+   * @param ts - timestamp in milliseconds
+   * @returns an array containing `[currentVector, previousVector]`
    */
-  function lerpVector(
-    [ax, ay]: [number, number],
-    [bx, by]: [number, number],
-    t: number
-  ): [number, number] {
-    return [lerp(ax, bx, t), lerp(ay, by, t)];
-  }
-
-  /**
-   * Calculates current vector position.
-   * @param ts - timestamp, in milliseconds
-   */
-  function getVector(ts: number): [number, number] {
+  function getPositions(ts: number): [[number, number], [number, number]] {
     let prev = getVectorForMode(prevMode, ts) as [number, number];
     let curr = getVectorForMode(mode, ts) as [number, number];
 
@@ -825,7 +966,7 @@ export function slotAnimation({
     prev ??= curr;
     curr ??= prev;
 
-    return lerpVector(prev, curr, modeTransition.value(ts));
+    return [curr, prev];
   }
 
   /**
@@ -843,10 +984,12 @@ export function slotAnimation({
       v.inertia.animationFrame(secondsElapsed);
     }
 
-    applyTransform(ts);
+    const [currPos, prevPos] = getPositions(ts);
+    chipTransition.animationFrame(currPos, prevPos, ts, secondsElapsed);
 
     const visible = isTransitionForward || !isTransitionComplete;
     if (mode !== Mode.Off || visible || !a.gravity.isFinished(ts)) {
+      applyTransform();
       requestFrame(animationFrame);
     }
 
@@ -878,9 +1021,12 @@ export function slotAnimation({
     lastAnimationFrame = ts;
   }
 
-  function applyTransform(ts: number) {
-    const [x, y] = getVector(ts);
+  function applyTransform() {
+    const { x, y, opacity, size } = chipTransition;
     el.style.transform = `translate(${x}px, ${y}px)`;
+    el.style.opacity = opacity.toString();
+    el.style.width = size + "px";
+    el.style.height = el.style.width;
     if (updatePosition) {
       updatePosition(x, y);
     }

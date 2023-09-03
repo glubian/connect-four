@@ -114,13 +114,12 @@ watch(display, (d) => emit("update:shown", d !== null));
   opacity: 0;
 }
 
-$duration: 120ms;
 .v-enter-active {
-  transition: opacity $duration ease-out;
+  transition: opacity 120ms ease-out;
 }
 
 .v-leave-active {
-  transition: opacity $duration ease-in;
+  transition: opacity #{game-ui.$mode-transition-min} ease-in;
 }
 
 .shift {
