@@ -5,6 +5,11 @@ const { PI, sqrt, sin, abs, atan, random } = Math;
 const PI_HALF = PI / 2;
 const TAU = PI * 2;
 
+/** Returns 1 if the number is positive, -1 if it is negative or otherwise 0. */
+function sign(n: number): number {
+  return n < 0 ? -1 : n > 0 ? 1 : 0;
+}
+
 /** Linear interpolation. */
 function lerp(a: number, b: number, t: number): number {
   return a + (b - a) * t;
@@ -139,6 +144,7 @@ export type { Line, LinearFunction };
 export {
   PI_HALF,
   TAU,
+  sign,
   lerp,
   clamp,
   mag,
