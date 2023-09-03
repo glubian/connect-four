@@ -478,6 +478,10 @@ export function slotAnimation({
       const startingPosition = getVectorForMode(prevMode, performance.now());
       a.gravity.fall(y, startingPosition ? startingPosition[1] : 0);
     }
+
+    if (prevMode === Mode.Falling && mode === Mode.Off) {
+      removeAnimationClasses();
+    }
   }
 
   /** Returns the index of the column currently being hovered over */
@@ -851,11 +855,10 @@ export function slotAnimation({
       // Reset state
       const submittedIn = prevMode;
       setMode(Mode.Off);
-      setVisible(false);
-      removeAnimationClasses();
-      reset();
+
       // Trigger game update
       gameUIStore.stopAnimation();
+
       // Set mode
       if (isInputContinuous && !isDisabled) {
         setTimeout(() => {
