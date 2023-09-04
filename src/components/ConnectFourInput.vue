@@ -256,6 +256,7 @@ watch(
   () => gameRef.value.state.turn,
   () => {
     hasMoved.value = false;
+    inactivityTimer.reset();
     turnDebounceTimer.reset();
   }
 );
