@@ -989,7 +989,7 @@ export function slotAnimation({
 
     const visible = isTransitionForward || !isTransitionComplete;
     if (mode !== Mode.Off || visible || !a.gravity.isFinished(ts)) {
-      applyTransform();
+      applyStyles();
       requestFrame(animationFrame);
     }
 
@@ -1021,7 +1021,7 @@ export function slotAnimation({
     lastAnimationFrame = ts;
   }
 
-  function applyTransform() {
+  function applyStyles() {
     const { x, y, opacity, size } = chipTransition;
     el.style.transform = `translate(${x}px, ${y}px)`;
     el.style.opacity = opacity.toString();
