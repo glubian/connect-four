@@ -471,15 +471,15 @@ export function slotAnimation({
   /** Initializes slot animation. */
   function init() {
     el.style.opacity = "0";
-    el.addEventListener("animationend", removeAnimationClasses);
-    el.addEventListener("animationcancel", removeAnimationClasses);
+    el.addEventListener("animationend", removeAnimationStyles);
+    el.addEventListener("animationcancel", removeAnimationStyles);
   }
 
   /** Removes CSS classes and event listeners. */
   function destroy() {
     el.classList.remove(ENTER_CLASS, LEAVE_CLASS);
-    el.removeEventListener("animationend", removeAnimationClasses);
-    el.removeEventListener("animationcancel", removeAnimationClasses);
+    el.removeEventListener("animationend", removeAnimationStyles);
+    el.removeEventListener("animationcancel", removeAnimationStyles);
   }
 
   /** Resets the animation state. */
@@ -528,16 +528,14 @@ export function slotAnimation({
     isTransitionComplete = false;
   }
 
-  /** Removes visibility animation classes. */
-  function removeAnimationClasses() {
-    el.style.width = "";
-    el.style.height = "";
-
+  /** Removes visibility animation classes and clears inline styles. */
+  function removeAnimationStyles() {
     if (el.classList.contains(ENTER_CLASS)) {
-      el.style.opacity = "1";
       el.classList.remove(ENTER_CLASS);
     } else if (el.classList.contains(LEAVE_CLASS)) {
       el.style.opacity = "0";
+      el.style.width = "";
+      el.style.height = "";
       setMode(Mode.Off);
       el.classList.remove(LEAVE_CLASS);
       if (updateVisible) {
@@ -635,7 +633,7 @@ export function slotAnimation({
     }
 
     if (prevMode === Mode.Falling && mode === Mode.Off) {
-      removeAnimationClasses();
+      removeAnimationStyles();
     }
   }
 
