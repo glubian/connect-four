@@ -120,7 +120,7 @@ export default class SVGPathBuilder {
 
   /**
    * Draws a line from the current position back to the first point of the path.
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths#arcs}
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths#line_commands}
    */
   closePath(): this {
     this.path += "Z";
