@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { usePreventContextMenu } from "@/composables/prevent-context-menu";
 import { useTimer } from "@/composables/timer";
-import { CONT_SIZE, FIELD_SIZE_UI, HALF_CONT_SIZE } from "@/game-ui";
+import { CONT_SIZE, FIELD_SIZE_UI, HALF_CONT_SIZE, SIZE } from "@/game-ui";
 import { store } from "@/store";
 import SVGPathBuilder from "@/svg-path-builder";
 import { computed, onMounted, onUnmounted, ref, watch, type Ref } from "vue";
@@ -26,7 +26,7 @@ const gameRef = store.getGame();
 
 const chipVisible = ref(false);
 const chipPosition = ref(0);
-const chipSize = ref(0);
+const chipSize = ref(SIZE);
 const hintVisible = ref(false);
 const hasMoved = ref(false);
 
