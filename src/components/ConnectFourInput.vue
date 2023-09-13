@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { usePreventContextMenu } from "@/composables/prevent-context-menu";
 import { useTimer } from "@/composables/timer";
-import { HALF_CONT_SIZE } from "@/game-ui";
+import { CONT_SIZE, FIELD_SIZE_UI, HALF_CONT_SIZE } from "@/game-ui";
 import { store } from "@/store";
+import SVGPathBuilder from "@/svg-path-builder";
 import { computed, onMounted, onUnmounted, ref, watch, type Ref } from "vue";
 import type { ExtendedTouch } from "../extended-touch";
 import { extendTouch } from "../extended-touch";
@@ -25,6 +26,7 @@ const gameRef = store.getGame();
 
 const chipVisible = ref(false);
 const chipPosition = ref(0);
+const chipSize = ref(0);
 const hintVisible = ref(false);
 const hasMoved = ref(false);
 
@@ -246,10 +248,32 @@ function updateChipVisible(isVisible: boolean) {
 }
 
 const hintStyle = computed(() => {
-  const x = chipPosition.value;
-  const isVisible = chipVisible.value;
-  const clipPath = isVisible ? `inset(0 0 0 ${x + HALF_CONT_SIZE}px)` : "";
-  return { clipPath };
+  if (!chipVisible.value) {
+    return { clipPath: "" };
+  }
+
+  const size = Math.round(chipSize.value + 0.3);
+  const halfSize = size / 2;
+  const x = chipPosition.value + HALF_CONT_SIZE;
+  const xhs = x + halfSize;
+  const mid = HALF_CONT_SIZE;
+  const top = mid - halfSize;
+  const btm = mid + halfSize;
+  const curvature = 8.83656 * (size / 32);
+
+  const clipPath = SVGPathBuilder.absolute()
+    .moveTo(FIELD_SIZE_UI, 0)
+    .horizontalTo(x)
+    .verticalTo(top)
+    .cubicBezierTo(x + curvature, top, xhs, mid - curvature, xhs, mid)
+    .cubicBezierTo(xhs, mid + curvature, x + curvature, btm, x, btm)
+    .verticalTo(CONT_SIZE)
+    .horizontalTo(FIELD_SIZE_UI)
+    .verticalTo(0)
+    .closePath()
+    .finish();
+
+  return { clipPath: `path("${clipPath}")` };
 });
 
 watch(
@@ -268,7 +292,10 @@ onMounted(() => {
   const slotAnim = slotAnimation({
     el: slotEl,
     updateVisible: updateChipVisible,
-    updatePosition: (x) => void (chipPosition.value = x),
+    updateStyles: (x, _, s) => {
+      chipPosition.value = x;
+      chipSize.value = s;
+    },
     updateHint: (v) => void (hintVisible.value = v),
     updateFocusVisible: (v) => emit("update-focus-visible", v),
   });
