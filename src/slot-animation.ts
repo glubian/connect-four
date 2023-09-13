@@ -67,10 +67,10 @@ interface SlotAnimationParameters {
   /** Called when element becomes visible or completely hidden. */
   updateVisible?: (isVisible: boolean) => void;
   /**
-   * Called when position changes, with coordinates of the top left
-   * corner of `el`.
+   * Called when the appearance changes, with coordinates of the top left
+   * corner of `el` as well as the current size and opacity.
    */
-  updatePosition?: (x: number, y: number) => void;
+  updateStyles?: (x: number, y: number, size: number, opacity: number) => void;
   /** Called when the hint should be shown or hidden. */
   updateHint?: (isVisible: boolean) => void;
   /** Called when focus ring is shown or hidden. */
@@ -372,7 +372,7 @@ class ChipTransition {
 export function slotAnimation({
   el,
   updateVisible,
-  updatePosition,
+  updateStyles,
   updateHint,
   updateFocusVisible,
 }: SlotAnimationParameters) {
@@ -1025,8 +1025,8 @@ export function slotAnimation({
     el.style.opacity = opacity.toString();
     el.style.width = size + "px";
     el.style.height = el.style.width;
-    if (updatePosition) {
-      updatePosition(x, y);
+    if (updateStyles) {
+      updateStyles(x, y, size, opacity);
     }
   }
 
