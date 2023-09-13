@@ -1,4 +1,4 @@
-import { FIELD_SIZE } from "@/game";
+import { FIELD_SIZE, otherPlayer } from "@/game";
 import {
   BORDER_WIDTH,
   CONT_SIZE,
@@ -8,16 +8,15 @@ import {
   MODE_TRANSITION_MAX,
   MODE_TRANSITION_MIN,
   RAISE_DURATION,
+  SIZE,
+  playerClass,
 } from "@/game-ui";
 import { gameUIStore } from "@/game-ui-store";
 import { clamp, lerp, mag, normalize, sign } from "@/math";
 import { store } from "@/store";
 import { NumberTween, Tween } from "@/tween";
-import { otherPlayer } from "@/game";
-import { playerClass } from "@/game-ui";
 import { useAnimations } from "./composables/animations";
 import type { ExtendedTouch } from "./extended-touch";
-import { SIZE } from "@/game-ui";
 
 const { abs, min, floor, sqrt } = Math;
 
