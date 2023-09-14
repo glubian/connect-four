@@ -1,14 +1,20 @@
 /** A class for building SVG paths */
 export default class SVGPathBuilder {
-  /** Path buffer */
+  /** SVG path */
   private path = "";
 
-  /** Creates a new builder in absolute mode. */
+  /**
+   * Creates a new builder in absolute mode. Coordinates passed to subsequent
+   * method calls will be interpreted as absolute.
+   */
   static absolute(): SVGPathBuilder {
     return new SVGPathBuilder(true);
   }
 
-  /** Creates a new builder in relative mode. */
+  /**
+   * Creates a new builder in relative mode. Coordinates passed to subsequent
+   * method calls will be interpreted as relative to the last position.
+   */
   static relative(): SVGPathBuilder {
     return new SVGPathBuilder(false);
   }
@@ -26,7 +32,7 @@ export default class SVGPathBuilder {
 
   /**
    * Switches to relative mode. Coordinates passed to subsequent method calls
-   * will be interpreted as relative to last position.
+   * will be interpreted as relative to the last position.
    */
   relative(): this {
     this.isAbsolute = false;
@@ -52,7 +58,7 @@ export default class SVGPathBuilder {
   }
 
   /**
-   * Draws a horizontal line to a specified coordinate.
+   * Draws a horizontal line to the specified position.
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths#line_commands}
    */
   horizontalTo(x: number): this {
@@ -61,7 +67,7 @@ export default class SVGPathBuilder {
   }
 
   /**
-   * Draws a vertical line to a specified coordinate.
+   * Draws a vertical line to the specified position.
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths#line_commands}
    */
   verticalTo(y: number): this {
@@ -106,8 +112,8 @@ export default class SVGPathBuilder {
    */
   extendBezierTo(x2: number, y2: number, x: number, y: number): this;
   /**
-   * Continues a Bézier curve. The type of the curve is determined by
-   * the amount of arguments supplied.
+   * Continues a Bézier curve. Type of the curve is determined by the amount of
+   * arguments supplied.
    */
   extendBezierTo(xOrX2: number, yOrY2: number, x?: number, y?: number): this {
     if (x === void 0) {
@@ -145,7 +151,7 @@ export default class SVGPathBuilder {
     return this;
   }
 
-  /** Returns the complete path. */
+  /** Returns the SVG path. */
   finish(): string {
     return this.path;
   }
