@@ -2,6 +2,7 @@ import { FIELD_SIZE, otherPlayer } from "@/game";
 import {
   BORDER_WIDTH,
   CONT_SIZE,
+  FIELD_SIZE_UI,
   FOCUS_RING_OFFSET,
   FOCUS_RING_WIDTH,
   HALF_CONT_SIZE,
@@ -605,6 +606,21 @@ export function slotAnimation({
       a.locked.complete();
     }
 
+    if (prevMode === Mode.Hint && mode === Mode.Constrained) {
+      // "Pick up" the chip instead of moving it to its previous position.
+      col = 0;
+      a.locked.select(0);
+      a.locked.complete();
+    }
+
+    if (prevMode === Mode.Constrained || prevMode === Mode.Locked) {
+      // Because the column at which the chip appears is derived from the last
+      // cursor position, treat the pointer vector as the last position the user
+      // was focusing on. This will be quickly overridden should the user switch
+      // input devices.
+      vector.pointer.x = pointerFromCol(col);
+    }
+
     // Prevent mode transition
     if (
       prevMode === Mode.Off ||
@@ -634,6 +650,11 @@ export function slotAnimation({
     if (prevMode === Mode.Falling && mode === Mode.Off) {
       removeAnimationStyles();
     }
+  }
+
+  /** Returns a pointer position centered on a specified column. */
+  function pointerFromCol(col: number): number {
+    return clamp(col * CONT_SIZE, 0, FIELD_SIZE_UI);
   }
 
   /** Returns the index of the column currently being hovered over */
@@ -824,6 +845,10 @@ export function slotAnimation({
    * @param src - source event
    */
   function pointerMove(src: MouseEvent | ExtendedTouch) {
+    if (mode === Mode.Off) {
+      return;
+    }
+
     const v = vector;
     v.pointer.updatePointer(src);
     if (mode !== Mode.Falling) {
@@ -909,10 +934,10 @@ export function slotAnimation({
     isInputContinuous = v;
   }
 
-  /** Shows hint if the element is currently hidden. */
+  /** Shows the hint if the chip is currently hidden. */
   function hint() {
     if (!isDisabled && mode === Mode.Off) {
-      setMode(Mode.Hint);
+      setMode(isFocusVisible ? Mode.Constrained : Mode.Hint);
     }
   }
 
