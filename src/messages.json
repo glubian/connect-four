@@ -46,7 +46,7 @@
           "reset": "Reset",
           "cancel": "Cancel",
           "apply": "Apply",
-          "restart": "Restart to apply",
+          "restart": "Restart and apply",
           "request": "Propose changes"
         }
       },
