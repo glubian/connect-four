@@ -184,20 +184,13 @@ $height: 40px;
 .section-label {
   display: flex;
   align-items: center;
+  margin-top: 24px;
   height: 40px;
   gap: 16px;
 
   i {
     font-size: 24px;
   }
-}
-
-.dialog-title + .section-label {
-  margin-top: 24px;
-}
-
-.section + .section-label {
-  margin-top: 32px;
 }
 
 .setting {
