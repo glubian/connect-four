@@ -13,9 +13,14 @@ function defaultTheme(): Theme {
 
 /** Determines the default language. */
 function defaultLang(): Lang {
-  const langs = navigator.languages ? navigator.languages[0] : null;
-  const lang = (langs ?? navigator.language).slice(0, 2);
-  return lang in messages ? (lang as Lang) : Lang.English;
+  for (const lang of navigator.languages ?? [navigator.language]) {
+    const code = lang.slice(0, 2);
+    if (code in messages) {
+      return code as Lang;
+    }
+  }
+
+  return Lang.English;
 }
 
 /** Current language setting. */
