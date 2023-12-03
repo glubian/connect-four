@@ -1,7 +1,7 @@
 @use "sass:math";
 @use "./theme";
 @use "./typography";
-@use "/gen/dist/icons.scss";
+@use "/gen/dist/inline-images.scss";
 @use "mono-icons/iconfont/icons.css" as mono-icons;
 
 html,
@@ -77,11 +77,11 @@ button.icon {
   opacity: var(--c-icon-opacity);
 
   &.objectives {
-    background-image: url(icons.$objectives);
+    background-image: url(inline-images.$objectives-icon);
   }
 
   &.dot {
-    background-image: url(icons.$dot);
+    background-image: url(inline-images.$dot-icon);
   }
 }
 
@@ -110,7 +110,7 @@ input[type="checkbox"] {
     width: 100%;
     height: 100%;
 
-    background-image: url(icons.$fat-check);
+    background-image: url(inline-images.$fat-check-icon);
     background-position: center;
     background-repeat: no-repeat;
 

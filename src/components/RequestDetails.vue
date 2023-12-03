@@ -119,7 +119,7 @@ const acceptLabel = computed(() => t(ns.value + ".accept"));
 <style lang="scss" scoped>
 @use "sass:math";
 @use "@/layout.scss";
-@use "/gen/dist/icons.scss";
+@use "/gen/dist/inline-images.scss";
 
 $list-indent: 40px;
 $dot-size: 4px;
