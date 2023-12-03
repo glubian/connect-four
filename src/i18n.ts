@@ -1,5 +1,7 @@
+import { watch } from "vue";
 import { createI18n } from "vue-i18n";
 import messages from "./messages.json";
+import { userStore } from "./user-store";
 
 function polishPluralRules(num: number): number {
   const SEKUNDA = 0;
@@ -27,4 +29,11 @@ export const i18n = createI18n({
   messages,
   missingWarn: false,
   fallbackWarn: false,
+  locale: userStore.current.lang,
 });
+
+// Automatically apply locale.
+watch(
+  () => userStore.current.lang,
+  (lang) => (i18n.global.locale.value = lang)
+);
