@@ -151,16 +151,16 @@ function onSlideAnimationEvent() {
   <RequestStatus class="request-status" v-if="!reqShown" />
 
   <main :style="mainStyle" ref="mainRef">
-    <FocusTrap :active="!!store.lobby && !store.isConnected">
-      <Transition name="main">
-        <MainJoining v-if="store.lobby && !store.lobby.isHost" />
-        <MainPlayerSelection
-          @show-request="reqShown = true"
-          v-else-if="showPlayerSelectionScreen"
-        />
-        <MainInGame @show-request="reqShown = true" v-else />
-      </Transition>
-    </FocusTrap>
+    <Transition name="main">
+      <MainJoining v-if="store.lobby && !store.lobby.isHost" />
+      <MainPlayerSelection
+        @show-request="reqShown = true"
+        v-else-if="showPlayerSelectionScreen"
+      />
+      <FocusTrap :active="!!store.lobby && !store.isConnected" v-else>
+        <MainInGame @show-request="reqShown = true" />
+      </FocusTrap>
+    </Transition>
   </main>
 
   <footer class="small" :style="headerStyle" v-show="showHeaderAndFooter">
