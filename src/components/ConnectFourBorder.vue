@@ -38,7 +38,7 @@ const dashArray = computed(() =>
 </script>
 
 <template>
-  <svg :width="SIZE" :height="SIZE">
+  <svg :width="SIZE" :height="SIZE" :class="activeClass">
     <rect
       fill="transparent"
       class="bg"
@@ -64,7 +64,6 @@ const dashArray = computed(() =>
     <rect
       fill="transparent"
       class="bar"
-      :class="activeClass"
       :stroke-width="STROKE_WIDTH"
       :stroke-dasharray="dashArray"
       :x="STROKE_WIDTH"
@@ -89,13 +88,16 @@ svg {
 }
 
 .bg-dots {
-  stroke: var(--c-text-tertiary-solid);
+  stroke: transparent;
+  .active & {
+    stroke: var(--c-text-tertiary-solid);
+  }
 }
 
 .bar {
   stroke: var(--c-text-secondary-solid);
   transition: stroke 120ms ease-in-out;
-  &.active {
+  .active & {
     stroke: var(--c-text-solid);
   }
 }
