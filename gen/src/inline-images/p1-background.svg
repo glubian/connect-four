@@ -1,5 +1,7 @@
 <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <g stroke="rgba(102, 144, 253, 1)">
+  <!-- Setting stroke width fixes issue on Chrome where the background gets blurry after three or
+  more chips are on screen. -->
+  <g stroke="rgba(102, 144, 253, 1)" stroke-width="1.01">
     <line x1="19.7071" y1="5.66525" x2="42.3345" y2="28.2927" />
     <line x1="16.1968" y1="9.17574" x2="38.8242" y2="31.8032" />
     <line x1="12.6861" y1="12.6862" x2="35.3135" y2="35.3137" />
