@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { FIELD_SIZE_UI } from "@/game-ui";
-import { TAU } from "@/math";
+import { TAU, PI_HALF } from "@/math";
 import { computed } from "vue";
 
 const props = defineProps<{ start: number; end: number; isActive?: boolean }>();
@@ -15,8 +15,9 @@ const R = 24; //px
 const RX = R + STROKE_WIDTH;
 const CIRCUMFERENCE = 4 * (RECT_SIZE - R - R) + TAU * R;
 const OFFSET = FIELD_SIZE_UI / 2 - R;
+const DOTS = genDots(STROKE_WIDTH, 3 * STROKE_WIDTH).join(" ");
 
-function genDashArray(start: number, end: number) {
+function genDashArray(start: number, end: number): number[] {
   if (Math.abs(start - end) >= CIRCUMFERENCE) {
     return [CIRCUMFERENCE];
   }
@@ -30,6 +31,39 @@ function genDashArray(start: number, end: number) {
   }
 
   return [0, start, end - start, CIRCUMFERENCE - end];
+}
+
+function genDots(filled: number, gap: number): number[] {
+  const segmentLength = filled + gap;
+
+  const sideLength = RECT_SIZE - RX - RX;
+  const sideSpace = (sideLength - filled) / 2;
+  const sideSegments = Math.floor(sideSpace / segmentLength);
+  const sideOffset = sideSpace - sideSegments * segmentLength;
+
+  const cornerLength = RX * PI_HALF;
+  const cornerFullLength = cornerLength + sideOffset * 2;
+  const cornerSegments = Math.floor((cornerFullLength - gap) / segmentLength);
+  const cornerEmptySpace = cornerFullLength - filled * cornerSegments;
+  const cornerGap = cornerEmptySpace / (cornerSegments + 1);
+
+  const res = [0, sideOffset, filled];
+  let accum = sideOffset + filled;
+
+  for (let i = 0; i < sideSegments * 2; i++) {
+    res.push(gap, filled);
+    accum += gap + filled;
+  }
+
+  for (let i = 0; i < cornerSegments; i++) {
+    res.push(cornerGap, filled);
+    accum += cornerGap + filled;
+  }
+
+  const error = sideLength + cornerLength - accum;
+  res.push(cornerGap - sideOffset - error / 4);
+
+  return res;
 }
 
 const dashArray = computed(() =>
@@ -52,8 +86,7 @@ const dashArray = computed(() =>
     <rect
       fill="transparent"
       class="bg-dots"
-      :stroke-dasharray="STROKE_WIDTH + ' ' + 3 * STROKE_WIDTH"
-      :stroke-dashoffset="STROKE_WIDTH + STROKE_WIDTH"
+      :stroke-dasharray="DOTS"
       :stroke-width="STROKE_WIDTH"
       :x="STROKE_WIDTH"
       :y="STROKE_WIDTH"
