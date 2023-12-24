@@ -95,6 +95,13 @@ const dashArray = computed(() =>
       :rx="RX"
     />
     <rect
+      class="dot"
+      :y="STROKE_WIDTH - 1"
+      :x="STROKE_WIDTH + RECT_SIZE / 2 - 1"
+      :width="STROKE_WIDTH"
+      :height="STROKE_WIDTH"
+    />
+    <rect
       fill="transparent"
       class="bar"
       :stroke-width="STROKE_WIDTH"
@@ -124,6 +131,14 @@ svg {
   stroke: transparent;
   .active & {
     stroke: var(--c-text-tertiary-solid);
+  }
+}
+
+.dot {
+  fill: var(--c-text-secondary-solid);
+  transition: fill 120ms ease-in-out;
+  .active & {
+    fill: var(--c-text-solid);
   }
 }
 
