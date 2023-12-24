@@ -3,7 +3,7 @@ import { FIELD_SIZE_UI } from "@/game-ui";
 import { TAU, PI_HALF } from "@/math";
 import { computed } from "vue";
 
-const props = defineProps<{ start: number; end: number; isActive?: boolean }>();
+const props = defineProps<{ value: number; isActive?: boolean }>();
 
 const ACTIVE_CLASS = "active";
 const activeClass = computed(() => (props.isActive ? ACTIVE_CLASS : ""));
@@ -14,24 +14,7 @@ const SIZE = RECT_SIZE + STROKE_WIDTH + 1;
 const R = 24; //px
 const RX = R + STROKE_WIDTH;
 const CIRCUMFERENCE = 4 * (RECT_SIZE - R - R) + TAU * R;
-const OFFSET = FIELD_SIZE_UI / 2 - R;
 const DOTS = genDots(STROKE_WIDTH, 3 * STROKE_WIDTH).join(" ");
-
-function genDashArray(start: number, end: number): number[] {
-  if (Math.abs(start - end) >= CIRCUMFERENCE) {
-    return [CIRCUMFERENCE];
-  }
-
-  start = (start + OFFSET + CIRCUMFERENCE) % CIRCUMFERENCE;
-  end = (end + OFFSET + CIRCUMFERENCE) % CIRCUMFERENCE;
-
-  if (end < start) {
-    // reverse direction
-    return [end, start - end, CIRCUMFERENCE - start, 0];
-  }
-
-  return [0, start, end - start, CIRCUMFERENCE - end];
-}
 
 function genDots(filled: number, gap: number): number[] {
   const segmentLength = filled + gap;
@@ -66,9 +49,10 @@ function genDots(filled: number, gap: number): number[] {
   return res;
 }
 
-const dashArray = computed(() =>
-  genDashArray(CIRCUMFERENCE * props.start, CIRCUMFERENCE * props.end).join(" ")
-);
+const barDashArray = computed(() => {
+  const strokeLength = Math.max(CIRCUMFERENCE * props.value, 2);
+  return [strokeLength, CIRCUMFERENCE - strokeLength].join(" ");
+});
 </script>
 
 <template>
@@ -95,17 +79,11 @@ const dashArray = computed(() =>
       :rx="RX"
     />
     <rect
-      class="dot"
-      :y="STROKE_WIDTH - 1"
-      :x="STROKE_WIDTH + RECT_SIZE / 2 - 1"
-      :width="STROKE_WIDTH"
-      :height="STROKE_WIDTH"
-    />
-    <rect
       fill="transparent"
       class="bar"
       :stroke-width="STROKE_WIDTH"
-      :stroke-dasharray="dashArray"
+      :stroke-dasharray="barDashArray"
+      :stroke-dashoffset="-(RECT_SIZE - RX - RX) / 2 + 1"
       :x="STROKE_WIDTH"
       :y="STROKE_WIDTH"
       :width="RECT_SIZE"
@@ -131,14 +109,6 @@ svg {
   stroke: transparent;
   .active & {
     stroke: var(--c-text-tertiary-solid);
-  }
-}
-
-.dot {
-  fill: var(--c-text-secondary-solid);
-  transition: fill 120ms ease-in-out;
-  .active & {
-    fill: var(--c-text-solid);
   }
 }
 

@@ -109,8 +109,7 @@ watch(gameUIStore, () => {
 <template>
   <div class="connect-four" :class="rootClassListRef">
     <ConnectFourBorder
-      :start="timerAnimation.start"
-      :end="timerAnimation.end"
+      :value="timerAnimation.value"
       :is-active="timerAnimation.isOngoing"
     />
     <ConnectFourTimer
